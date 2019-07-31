@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Kali-Dirbuster工具用法]]></title>
+    <url>%2Fblog%2F2019%2F07%2F31%2FKali-Dirbuster%E5%B7%A5%E5%85%B7%E7%94%A8%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[工具说明 目录扫描工具DirBuster支持全部的Web目录扫描方式。它既支持网页爬虫方式扫描，也支持基于字典暴力扫描，还支持纯暴力扫描。该工具使用Java语言编写，提供命令行（Headless）和图形界面（GUI）两种模式。其中，图形界面模式功能更为强大。用户不仅可以指定纯暴力扫描的字符规则，还可以设置以URL模糊方式构建网页路径。同时，用户还对网页解析方式进行各种定制，提高网址解析效率。 下载链接DirBuster下载 工具用法 1 .打开终端输入 dirbuster 2 . 填写扫描信息 设置fuzz的时候，因为{dir}是个变量，可以自由变换。/{dir} http://xxx.com/{dir} 这个{dir} 对应的就是字典的每一行进行爆破可以加目录/admin/{dir}.php 这样就是爆破admin目录下所有php文件 3 . 查看扫描信息 字典分享字典分享]]></content>
+      <categories>
+        <category>工具教程</category>
+      </categories>
+      <tags>
+        <tag>教程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Markdown的基本使用]]></title>
     <url>%2Fblog%2F2019%2F07%2F28%2FMarkdown%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%2F</url>
-    <content type="text"><![CDATA[标题一级标题二级标题三级标题列表 列表1 列表2 a 子列表1 b 子列表2 列表3 插入横线 Yangfan插入链接馨客栈 插入图片 字体斜线这个是斜线字体 字体加粗这个字体加粗了 插入单行代码&lt;html&gt;hello word&lt;html&gt; 插入多行代码1234567&lt;html&gt; &lt;head&gt; &lt;title&gt;hello&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;/body&gt;&lt;/html&gt; 引用 引用这段内容]]></content>
+    <content type="text"><![CDATA[标题 # 一级标题## 二级标题### 三级标题 一级标题二级标题三级标题四级标题五级标题列表 -列表1-列表2 a 子列表1 b 子列表2-列表3 列表1 列表2 a 子列表1 b 子列表2 列表3 插入横线 - - - 粗- - - - - - - - 细 插入链接 [馨客栈](“http://www.mackxin.com/nav.html&quot;\) 馨客栈 插入图片 ![日出](https://ssyerv1.oss-cn-hangzhou.aliyuncs.com/picture/c443d1ac78344c688a710ac6ce072a0b.jpg ) 字体斜线 *这个是斜线字体* 这个是斜线字体 字体加粗 **这个字体加粗了** 这个字体加粗了 插入单行代码 `hello word` &lt;html&gt;hello word&lt;html&gt; 插入多行代码 ```&lt;html&gt; &lt;head&gt; &lt;title&gt;hello&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;/body&gt;&lt;/html&gt;``` 1234567&lt;html&gt; &lt;head&gt; &lt;title&gt;hello&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;/body&gt;&lt;/html&gt; 引用 &gt;引用这段内容 引用这段内容]]></content>
+      <categories>
+        <category>技术教程</category>
+      </categories>
       <tags>
-        <tag>技术教程</tag>
+        <tag>教程</tag>
       </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Vmware]]></title>
-    <url>%2Fblog%2F2019%2F07%2F28%2FVmware%2F</url>
-    <content type="text"><![CDATA[Vmware]]></content>
-      <tags>
-        <tag>技术文章</tag>
-        <tag>工具教程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hello World]]></title>
-    <url>%2Fblog%2F2019%2F07%2F23%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Hello bolgQuick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
   </entry>
 </search>
