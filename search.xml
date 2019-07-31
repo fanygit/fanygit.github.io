@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[VMware安装ubuntu]]></title>
-    <url>%2Fblog%2F2019%2F07%2F31%2FVMware%E5%AE%89%E8%A3%85ubuntu%2F</url>
-    <content type="text"><![CDATA[前期准备 安装包ubuntu-18.04.2 操作系统 下载链接ubuntu镜像 Ubuntu镜像安装 1 . 打开vmware软件 2 .菜单栏选择 文件-新建虚拟机 3 . 4 . 5 . 6 . 完成 7 . 8 .开启虚拟机 弹出一些提示 全选 是 9 .往下滑 找到汉语 10 . 11 . 13 . 14 . 15 .漫长的安装等待过程 安装完成 重启即可 遇到错误 1 . 没有开启虚拟化 摘选自: https://blog.csdn.net/u013142781/article/details/50529030 可能原因是：你的电脑没有支持虚拟化 解决办法：重启电脑，进入bios（博主的进入bios的键是F10），设置虚拟化启用。 进入bois后选择Security选项： 选择Virtualization，回车进入，按+键修改俩个选项为enabled：然后按F10，输入y保存退出即可。 设置了启用了虚拟化之后，继续上面没有完成的步骤即可]]></content>
-      <categories>
-        <category>技术教程</category>
-      </categories>
-      <tags>
-        <tag>教程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[VMware虚拟机安装]]></title>
     <url>%2Fblog%2F2019%2F07%2F31%2FVMware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%2F</url>
     <content type="text"><![CDATA[前期准备 VMware 虚拟机安装包 下载链接 VMware 下载链接 提取码: 5l5m 安装步骤 1 . 双击vmware 安装包 下一步 2 . 接受协议 下一步 3 . 选择vmware存放目录 下一步 4 . 取消勾选 下一步 5 . 下一步后，点击安装。 等待安装 6 . 点击许可证 输入密钥 FF31K-AHZD1-H8ETZ-8WWEZ-WUUVA 7 .打开Vmware 安装完成]]></content>
