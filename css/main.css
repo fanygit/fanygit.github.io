@@ -157,7 +157,8 @@ body {
   font-size: 14px;
   line-height: 2;
   color: #555;
-  background: #eee;
+  background: url("../images/bj2.jpg");
+  background-attachment: fixed;
 }
 @media (max-width: 991px) {
   body {
@@ -182,22 +183,22 @@ h6 {
   font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 h1 {
-  font-size: 28px;
-}
-h2 {
-  font-size: 26px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
   font-size: 22px;
 }
-h5 {
+h2 {
   font-size: 20px;
 }
-h6 {
+h3 {
   font-size: 18px;
+}
+h4 {
+  font-size: 16px;
+}
+h5 {
+  font-size: 14px;
+}
+h6 {
+  font-size: 12px;
 }
 p {
   margin: 0 0 20px 0;
@@ -1639,7 +1640,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ffe2cb;
+  background: #e0ff00;
 }
 .feed-link,
 .chat {
@@ -2305,9 +2306,9 @@ ul.breadcrumb li+li:last-child {
   overflow: hidden;
   padding: 0;
   width: 240px;
-  background: #fff;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12);
-  border-radius: initial;
+  background: rgba(255,255,255,0.7);
+  box-shadow: initial;
+  border-radius: 20px;
 }
 @media (min-width: 1200px) {
   .container .header-inner {
@@ -2339,10 +2340,10 @@ ul.breadcrumb li+li:last-child {
   box-sizing: border-box;
   padding: 40px;
   width: calc(100% - 252px);
-  background: #fff;
+  background: rgba(255,255,255,0.9);
   min-height: 700px;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12);
-  border-radius: initial;
+  box-shadow: initial;
+  border-radius: 20px;
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .content-wrap {
@@ -2364,7 +2365,7 @@ ul.breadcrumb li+li:last-child {
   float: left;
   margin-left: -100%;
   width: 240px;
-  background: #eee;
+  background: rgba(255,255,255,0.7);
   box-shadow: none;
 }
 @media (max-width: 991px) {
@@ -2566,9 +2567,9 @@ ul.breadcrumb li+li:last-child {
   box-sizing: border-box;
   width: 240px;
   color: #555;
-  background: #fff;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12), 0 -1px 0.5px 0 rgba(0,0,0,0.09);
-  border-radius: initial;
+  background: rgba(255,255,255,0.7);
+  box-shadow: initial;
+  border-radius: 20px;
   opacity: 0;
 }
 .sidebar-inner.affix {
@@ -2685,149 +2686,4 @@ ul.breadcrumb li+li:last-child {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-.content-wrap {
-  padding: initial;
-  background: initial;
-  box-shadow: initial;
-  border-radius: initial;
-}
-.post-block {
-  padding: 40px;
-  background: #fff;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12);
-  border-radius: initial;
-}
-#posts > article + article .post-block {
-  margin-top: 12px;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12), 0 -1px 0.5px 0 rgba(0,0,0,0.09);
-  border-radius: initial;
-}
-.comments {
-  padding: 40px;
-  margin: auto;
-  margin-top: 12px;
-  background: #fff;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12), 0 -1px 0.5px 0 rgba(0,0,0,0.09);
-  border-radius: initial;
-}
-.posts-expand {
-  padding-top: initial;
-}
-.post-nav-divider {
-  width: 4%;
-}
-.post-nav-item {
-  width: 48%;
-}
-.post-eof {
-  display: none;
-}
-.pagination {
-  margin: 12px 0 0;
-  border-top: initial;
-  background: #fff;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12), 0 -1px 0.5px 0 rgba(0,0,0,0.09);
-  border-radius: initial;
-  padding: 10px 0 10px;
-}
-.pagination .prev,
-.pagination .next,
-.pagination .page-number {
-  margin-bottom: initial;
-  top: initial;
-}
-.main {
-  padding-bottom: initial;
-}
-.footer {
-  bottom: auto;
-}
-.sub-menu {
-  border-bottom: initial !important;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12);
-}
-.sub-menu+ #content > #posts .post-block {
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12), 0 -1px 0.5px 0 rgba(0,0,0,0.09);
-  margin-top: 12px;
-}
-@media (min-width: 768px) and (max-width: 991px) {
-  .sub-menu+ #content > #posts .post-block {
-    margin-top: 10px;
-  }
-}
-@media (max-width: 767px) {
-  .sub-menu+ #content > #posts .post-block {
-    margin-top: 8px;
-  }
-}
-.post-header h1,
-.post-header h2 {
-  margin: initial;
-}
-.posts-expand .post-title-link {
-  line-height: inherit;
-}
-.post-body h1,
-.post-body h2 {
-  border-bottom: 1px solid #eee;
-}
-.post-body h3 {
-  border-bottom: 1px dotted #eee;
-}
-@media (min-width: 768px) and (max-width: 991px) {
-  .content-wrap {
-    padding: 10px;
-  }
-  .posts-expand {
-    margin: initial;
-  }
-  .posts-expand .post-button {
-    margin-top: 20px;
-  }
-  .post-block {
-    padding: 20px;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12), 0 -1px 0.5px 0 rgba(0,0,0,0.09);
-    border-radius: initial;
-  }
-  #posts > article + article .post-block {
-    margin-top: 10px;
-  }
-  .comments {
-    margin-top: 10px;
-    padding: 10px 20px;
-  }
-  .pagination {
-    margin: 10px 0 0;
-  }
-}
-@media (max-width: 767px) {
-  .content-wrap {
-    padding: 8px;
-  }
-  .posts-expand {
-    margin: initial;
-  }
-  .posts-expand .post-button {
-    margin: 12px 0px;
-  }
-  .posts-expand img {
-    padding: initial !important;
-  }
-  .post-block {
-    padding: 12px;
-    min-height: auto;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12), 0 -1px 0.5px 0 rgba(0,0,0,0.09);
-    border-radius: initial;
-  }
-  #posts > article + article .post-block {
-    margin-top: 8px;
-  }
-  .comments {
-    margin-top: 8px;
-    padding: 10 12px;
-  }
-  .pagination {
-    margin: 8px 0 0;
-  }
 }
