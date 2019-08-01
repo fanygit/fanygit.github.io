@@ -1640,7 +1640,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #e7ff54;
+  background: #1f6bda;
 }
 .feed-link,
 .chat {
@@ -2340,7 +2340,7 @@ ul.breadcrumb li+li:last-child {
   box-sizing: border-box;
   padding: 40px;
   width: calc(100% - 252px);
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.7);
   min-height: 700px;
   box-shadow: initial;
   border-radius: 20px;
@@ -2365,7 +2365,8 @@ ul.breadcrumb li+li:last-child {
   float: left;
   margin-left: -100%;
   width: 240px;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.5);
+  border-radius: 20px;
   box-shadow: none;
 }
 @media (max-width: 991px) {
@@ -2567,7 +2568,7 @@ ul.breadcrumb li+li:last-child {
   box-sizing: border-box;
   width: 240px;
   color: #555;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.5);
   box-shadow: initial;
   border-radius: 20px;
   opacity: 0;
