@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/blog/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="Nmap 是一款网络扫描和主机侦测的非常有用的工具。合理使用，不仅可以用来信息收集和枚举，同时也可以用来作为一个漏洞探测器或安全扫描器。另外 Nmap 还跨平台，适用于 Windows、Linux 和 Macintosh 等主流操作系统，功能强大，乃居家旅行之必备良品。  总的来说，Nmap 具有四大功能。  主机发现 端口扫描 服务版本侦测 操作系统侦测">
+<meta name="keywords" content="Nmap,CSDN,文章转载,技术文章">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSDN转载:《你不可不知的Nmap使用技巧》">
+<meta property="og:url" content="https://fanygit.github.io/blog/2019/08/08/CSDN转载-你不可不知的Nmap使用技巧》/index.html">
+<meta property="og:site_name" content="Fan的秘密小酒馆">
+<meta property="og:description" content="Nmap 是一款网络扫描和主机侦测的非常有用的工具。合理使用，不仅可以用来信息收集和枚举，同时也可以用来作为一个漏洞探测器或安全扫描器。另外 Nmap 还跨平台，适用于 Windows、Linux 和 Macintosh 等主流操作系统，功能强大，乃居家旅行之必备良品。  总的来说，Nmap 具有四大功能。  主机发现 端口扫描 服务版本侦测 操作系统侦测">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.1.png">
+<meta property="og:image" content="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.2.png">
+<meta property="og:image" content="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.3.png">
+<meta property="og:image" content="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.4.png">
+<meta property="og:image" content="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.5.png">
+<meta property="og:image" content="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.6.png">
+<meta property="og:image" content="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.7.png">
+<meta property="og:image" content="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.8.png">
+<meta property="og:image" content="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.9.png">
+<meta property="og:updated_time" content="2019-08-08T07:14:22.663Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSDN转载:《你不可不知的Nmap使用技巧》">
+<meta name="twitter:description" content="Nmap 是一款网络扫描和主机侦测的非常有用的工具。合理使用，不仅可以用来信息收集和枚举，同时也可以用来作为一个漏洞探测器或安全扫描器。另外 Nmap 还跨平台，适用于 Windows、Linux 和 Macintosh 等主流操作系统，功能强大，乃居家旅行之必备良品。  总的来说，Nmap 具有四大功能。  主机发现 端口扫描 服务版本侦测 操作系统侦测">
+<meta name="twitter:image" content="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.1.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://fanygit.github.io/blog/2019/08/08/CSDN转载-你不可不知的Nmap使用技巧》/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>CSDN转载:《你不可不知的Nmap使用技巧》 | Fan的秘密小酒馆</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fan的秘密小酒馆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">弱小和无知不是生存的阻碍，傲慢才是</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/blog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/blog/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/blog/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/blog/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/blog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-playlist">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/blog/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanygit.github.io/blog/blog/2019/08/08/CSDN转载-你不可不知的Nmap使用技巧》/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yang Fan">
+      <meta itemprop="description" content="我还是我，但不是别人眼中的我">
+      <meta itemprop="image" content="/blog/images/tx2.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的秘密小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CSDN转载:《你不可不知的Nmap使用技巧》
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-08 14:16:59 / 修改时间：15:14:22" itemprop="dateCreated datePublished" datetime="2019-08-08T14:16:59+08:00">2019-08-08</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/工具教程/" itemprop="url" rel="index"><span itemprop="name">工具教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p> <strong>Nmap</strong> 是一款<strong>网络扫描</strong>和<strong>主机侦测</strong>的非常有用的工具。合理使用，不仅可以用来信息收集和枚举，同时也可以用来作为一个漏洞探测器或安全扫描器。另外 Nmap 还跨平台，适用于 Windows、Linux 和 Macintosh 等主流操作系统，功能强大，乃居家旅行之必备良品。</p>
+<p> 总的来说，Nmap 具有四大功能。</p>
+<ul>
+<li>主机发现</li>
+<li>端口扫描</li>
+<li>服务版本侦测</li>
+<li>操作系统侦测</li>
+</ul>
+<p><img src="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.1.png" alt="1"></p>
+<a id="more"></a>
+<p>这四大应用乃 Nmap 之精髓，同时它们之间具有逻辑上的顺序关系。首先进行主机判断，发现在指定信道上存活的主机，然后对这些存活的主机进行端口扫描，接着记录这些运行服务的版本号，最后针对不同操作系统我们还可以有不同的具体应对方案，顺手便把对方的操作系统给侦测了。</p>
+<p>在这四大基本应用之上，Nmap 还有一些用来规避、绕过防火墙的组合技巧。最后本文将介绍 Nmap 的一个强大的应用模块，名曰 Nmap 脚本引擎（Nmap Script Engine），简称 NSE。在本文中，我们将学习使用 NSE 来干一些本来看起来繁琐的事情，也就是说实现了自动化。</p>
+<h3 id="基本扫描策略"><a href="#基本扫描策略" class="headerlink" title="基本扫描策略"></a>基本扫描策略</h3><p>掌握以下几点基本操作，熟练后敲命令就像背书一样。排名不分先后。</p>
+<h4 id="0x01：无任何附加参数"><a href="#0x01：无任何附加参数" class="headerlink" title="0x01：无任何附加参数"></a>0x01：无任何附加参数</h4><p><code>nmap IP地址</code></p>
+<p>分情况。如果是超级用户，无参数扫描等价于 sS 参数扫描（SYN，半连接）；否则，无参数扫描等价于 sT 参数扫描（TCP，完整连接）。</p>
+<h4 id="0x02：冗余"><a href="#0x02：冗余" class="headerlink" title="0x02：冗余"></a>0x02：冗余</h4><p><code>nmap -vv IP地址</code></p>
+<p>按照基本法，v 参数通常表示冗余。我们使用两个 v 参数表示将侦测过程原原本本的打印输出出来。</p>
+<h4 id="0x03：指定端口号"><a href="#0x03：指定端口号" class="headerlink" title="0x03：指定端口号"></a>0x03：指定端口号</h4><p><code>nmap -p端口号 IP地址</code></p>
+<p>这里 p 参数表示端口，标准写法后面跟的端口号之间没有空格。但是如果写一个空格也并无妨。</p>
+<h4 id="0x04：操作系统侦测"><a href="#0x04：操作系统侦测" class="headerlink" title="0x04：操作系统侦测"></a>0x04：操作系统侦测</h4><p><code>nmap -O IP地址</code></p>
+<p><code>nmap -A IP地址</code></p>
+<p>操作系统侦测有两个参数选项，其一是参数 O，其二是参数A，后者乃前者的冗余版本。我更多的使用 A 参数，以得到更多的信息。</p>
+<h4 id="0x05：只进行主机发现"><a href="#0x05：只进行主机发现" class="headerlink" title="0x05：只进行主机发现"></a>0x05：只进行主机发现</h4><p><code>nmap -sn IP地址</code></p>
+<p>主机发现的手段不下几十种，但是最常用的却是 sn 参数，它表示 “使用 ping 扫描来侦测存活的主机，而不进行端口扫描”。</p>
+<h4 id="0x06：跳过主机发现"><a href="#0x06：跳过主机发现" class="headerlink" title="0x06：跳过主机发现"></a>0x06：跳过主机发现</h4><p><code>nmap -Pn IP地址</code></p>
+<p>有时候对方主机开启了防火墙（这是很自然的事情），可能过滤掉了你发送的ICMP协议数据包，这样如果想要使用 sn 参数来进行主机发现就不管用了，产生的结果也不可靠。于是你不得不使用 Pn 参数，它假设所有的目标 IP 均为存活，并一个一个主机的进行端口扫描，你懂的这样会牺牲一些时间作为代价。</p>
+<h4 id="0x07：扫描和版本号侦测"><a href="#0x07：扫描和版本号侦测" class="headerlink" title="0x07：扫描和版本号侦测"></a>0x07：扫描和版本号侦测</h4><p><code>nmap -sV IP地址</code></p>
+<p>该选项通过侦测开放的端口来判断开放的服务，并试图检测它的版本。虽然A选项也能做到，但是要检测开放的服务版本，sV 一定是最合适的。</p>
+<h4 id="0x08：UDP-扫描"><a href="#0x08：UDP-扫描" class="headerlink" title="0x08：UDP 扫描"></a>0x08：UDP 扫描</h4><p><code>nmap -sU IP地址</code></p>
+<p>之前我们的扫描都是针对TCP的，而有些服务却是建立在 UDP 协议上的。比如 NTP（123端口）、SNMP（161端口）等服务，就必须使用UDP协议进行扫描。</p>
+<h3 id="绕过防火墙"><a href="#绕过防火墙" class="headerlink" title="绕过防火墙"></a>绕过防火墙</h3><p>前面讲的 Pn 选项就可以看成是 sn 选项的逃脱策略。所谓逃脱，就是不让别人发现自己，否则要干的侦测工作还没搞完，就被迫中止岂不让人笑话。同样的，排名不分先后。</p>
+<h4 id="0x01：利用掩体"><a href="#0x01：利用掩体" class="headerlink" title="0x01：利用掩体"></a>0x01：利用掩体</h4><p><code>namp -D IP地址1,IP地址2... IP地址</code></p>
+<p>你可以使用 D 选项（英文 decoy）跟一些 IP 地址，IP 和 IP 之间用逗号隔开。这样看起来用来侦测而发送的数据包不仅来自于你的 IP 地址，还来自于这些掩体 IP。这就叫做 “混入其中”。</p>
+<h4 id="0x02：禁用-ping"><a href="#0x02：禁用-ping" class="headerlink" title="0x02：禁用 ping"></a>0x02：禁用 ping</h4><p><code>nmap -P0 IP地址</code></p>
+<p>在 2010 年之后，该选项和 PN 选项被一起合并到 Pn 选项之中。但是如果你愿意，你仍然可以使用 P0 选项（P 后面跟的是零）。</p>
+<h4 id="0x03：IP-地址伪装"><a href="#0x03：IP-地址伪装" class="headerlink" title="0x03：IP 地址伪装"></a>0x03：IP 地址伪装</h4><p><code>sudo proxychains nmap ...</code></p>
+<p>伪装 IP 地址的方法也有很多，比如你可以使用 prxychains 这款工具来实现匿名代理。</p>
+<h4 id="0x04：空闲扫描"><a href="#0x04：空闲扫描" class="headerlink" title="0x04：空闲扫描"></a>0x04：空闲扫描</h4><p><code>nmap -sI 僵尸IP地址[:开放的僵尸端口] IP地址</code></p>
+<p>和 D 选线不同的是，sI 根本不使用你自己的 IP 地址，而是使用空闲的网络资源。这样隐蔽性就更强了。开放的僵尸端口为选填，默认等于 80端口。具体原理请参考 <a href="https://nmap.org/book/idlescan.html" target="_blank" rel="noopener">Nmap 文档</a>。根据这个理论，你不能使用空闲扫描来扫描你自己的主机IP。在msfconsole 中，你可以使用 <strong>auxiliary/scanner/ip/ipidseq</strong>来完成这个工作。</p>
+<h4 id="0x05：指定网卡进行扫描"><a href="#0x05：指定网卡进行扫描" class="headerlink" title="0x05：指定网卡进行扫描"></a>0x05：指定网卡进行扫描</h4><p><code>nmap -e 网卡 IP地址</code></p>
+<p>当你拥有不止一个网卡的时候，这很有用。</p>
+<h4 id="0x06：限制扫描时间"><a href="#0x06：限制扫描时间" class="headerlink" title="0x06：限制扫描时间"></a>0x06：限制扫描时间</h4><p><code>nmap --host-timeout 时间 IP地址</code></p>
+<p>限制每个 IP 地址的扫描时间（单位为秒），当要扫描大量的主机 IP 时这很有用。</p>
+<h4 id="0x07：指定源-IP-地址"><a href="#0x07：指定源-IP-地址" class="headerlink" title="0x07：指定源 IP 地址"></a>0x07：指定源 IP 地址</h4><p><code>nmap -S 源IP地址 IP地址</code></p>
+<p>使用冒充的IP地址进行扫描以增强隐蔽性。这里伪装成的 IP 也可以来自于下线状态的主机地址。</p>
+<h4 id="0x08：指定源主机端口"><a href="#0x08：指定源主机端口" class="headerlink" title="0x08：指定源主机端口"></a>0x08：指定源主机端口</h4><p><code>nmap -g 53 IP地址</code></p>
+<p>使用 g 参数，或者 source-port 参数，来手动设定用来扫描的端口。常用的，如 20、53、67 端口。</p>
+<h4 id="0x09：数据包分片技术"><a href="#0x09：数据包分片技术" class="headerlink" title="0x09：数据包分片技术"></a>0x09：数据包分片技术</h4><p><code>nmap -f IP地址</code></p>
+<p><code>nmap --mtu mtu单元大小 IP地址</code></p>
+<p>上面两种方法都可以利用数据包分片技术，某些防火墙为了加快处理速度而不会进行重组处理，这样从而逃脱防火墙或闯入检测系统的检测。注意，mtu 的值必须是 8 的倍数（如8、16、24、32等）。</p>
+<h4 id="0x10：添加垃圾数据"><a href="#0x10：添加垃圾数据" class="headerlink" title="0x10：添加垃圾数据"></a>0x10：添加垃圾数据</h4><p><code>nmap --data-length 垃圾数据长度 IP地址</code></p>
+<p>一些常见的扫描之数据包是有特定的数据长度的，通过在发送的数据包末尾添加随机的垃圾数据，以达到混淆视听的作效果。</p>
+<h4 id="0x11：随机选择扫描对象"><a href="#0x11：随机选择扫描对象" class="headerlink" title="0x11：随机选择扫描对象"></a>0x11：随机选择扫描对象</h4><p><code>nmap --randomize-hosts IP地址</code></p>
+<p>如果你要扫描大量的，比如成百上千的主机 IP，这很有效。它会打乱扫描顺序，以规避检测系统的检测。</p>
+<h4 id="0x12：伪装-MAC-地址"><a href="#0x12：伪装-MAC-地址" class="headerlink" title="0x12：伪装 MAC 地址"></a>0x12：伪装 MAC 地址</h4><p><code>nmap --spoof-mac 伪造MAC IP地址</code></p>
+<p>你可以通过指定供应商的名字来伪装 MAC 地址。可选的名字有 Dell、Apple、3Com。当然也可以手动指定 MAC 地址的值。或者为了简单起见，可以在上面 “伪造IP” 的地方填写数字 0，这将生成一个随机的 MAC 地址。</p>
+<h4 id="0x13：伪造检验值"><a href="#0x13：伪造检验值" class="headerlink" title="0x13：伪造检验值"></a>0x13：伪造检验值</h4><p><code>nmap --badsum IP地址</code></p>
+<p>这将使用伪造的 TCP / UDP / SCTP 校验和发送数据。</p>
+<h4 id="0x14：扫描速度"><a href="#0x14：扫描速度" class="headerlink" title="0x14：扫描速度"></a>0x14：扫描速度</h4><p><code>nmap -T0 IP地址</code></p>
+<p>T后面跟的数字代表扫描速度，数字越大则速度越快。0～5分别表示：妄想症、鬼鬼祟祟、彬彬有礼、正常、好斗、精神病。</p>
+<h3 id="Nmap-脚本引擎"><a href="#Nmap-脚本引擎" class="headerlink" title="Nmap 脚本引擎"></a>Nmap 脚本引擎</h3><p>Nmap 脚本引擎内置在 Nmap 中，使用 script 参数进行调用。它的英文名是 Nmap Script Engine，简称 NSE。</p>
+<p>Nmap 内置了一些已经写好的脚本，在 Kali 等主流渗透系统中被保存在 <strong>/usr/share/nmap/scripts/</strong>文件夹下。文件后缀名是 <strong>.nse</strong>。使用 sC（等价于 script=default）或者 script 参数对 Nmap 脚本进行调用。</p>
+<h4 id="0x01：按类别扫描"><a href="#0x01：按类别扫描" class="headerlink" title="0x01：按类别扫描"></a>0x01：按类别扫描</h4><p><code>nmap --script=类别 IP地址</code></p>
+<p>Nmap 的脚本类别分为以下几类。</p>
+<ul>
+<li><p>auth：负责处理鉴权证书、绕开鉴权的脚本。</p>
+</li>
+<li><p>broadcast：处理在局域网内探查更多服务开启的状况，如 dhcp / dns / sqlserver 等服务。</p>
+</li>
+<li><p>brute：提供暴力破解方式，针对常见的应用如 http / snmp 等。</p>
+</li>
+<li><p>default：使用 sC 或 A 选项时默认的脚本，提供基本脚本扫描能力。</p>
+</li>
+<li><p>discovery：挖掘更多的网络服务信息，如 smb 枚举、snmp 查询等。</p>
+</li>
+<li><p>dos：用于进行拒绝服务攻击。</p>
+</li>
+<li><p>exploit：利用已知的漏洞入侵系统。</p>
+</li>
+<li><p>external：利用第三方的数据库或资源，如进行 whois 解析。</p>
+</li>
+<li><p>fuzzer：模糊测试脚本，发送异常的包到目标主机，探测出潜在的漏洞。</p>
+</li>
+<li><p>malware：探测目标是否感染了病毒，是否开启了后门。</p>
+</li>
+<li><p>safe：与 fuzzer 功能相反，属于安全性脚本。</p>
+</li>
+<li><p>version：负责增强信性服务与版本扫描功能的脚本。</p>
+</li>
+<li><p>vuln：负责检查目标主机是否有常见的漏洞，如 ms08_067。</p>
+</li>
+</ul>
+<p>你可以使用 vuln 脚本对目标主机进行简单的漏洞勘查。</p>
+<p><img src="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.2.png" alt="2"></p>
+<p>可以看到，就这么轻而易举的扫描出来靶机的两个漏洞，<strong>ms08_067</strong> 和 <strong>ms17_010</strong> 漏洞。对漏洞熟悉的同学知道，<strong>ms17_010</strong> 漏洞，它有一个名字好听的衍生版本，曰之 “永恒之蓝（externalblue）”。该攻击手段便是利用了这个漏洞。经检验，这两个靶机上的漏洞都可以被直接利用。<br><img src="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.3.png" alt="3"><br><img src="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.4.png" alt="4"></p>
+<h4 id="0x02：使用特定的脚本进行扫描"><a href="#0x02：使用特定的脚本进行扫描" class="headerlink" title="0x02：使用特定的脚本进行扫描"></a>0x02：使用特定的脚本进行扫描</h4><p><code>nmap --script=特定的脚本名字 IP地址</code></p>
+<p>所谓 Nmap 脚本的名字，就是 <strong>/usr/share/nmap/scripts/</strong> 文件夹下的那些文件，去掉后缀后的东西。</p>
+<p><img src="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.5.png" alt="5"></p>
+<h4 id="0x03：增强和个性化定制脚本"><a href="#0x03：增强和个性化定制脚本" class="headerlink" title="0x03：增强和个性化定制脚本"></a>0x03：增强和个性化定制脚本</h4><p>CVE（Common Vulnerablities and Exposures）是安全界的一个规范。一个较著名的，Exploit-DB 数据库以 CVE 规范为基础，对确定披露的漏洞进行了分类。我们将使用下面的脚本直接访问 Exploit-DB 数据库并导入 Nmap。这是 Exploit-DB 数据库的在线搜索接口。当然漏洞库多了去了，但我之所以将它列出，因为该地址默认是存储在 Kali 的收藏栏里面的。</p>
+<p><img src="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.6.png" alt="6"></p>
+<p>这里提供两个别人已经写好的脚本。（可以自己在 Github 寻找）</p>
+<ul>
+<li><a href="https://github.com/vulnersCom/nmap-vulners" target="_blank" rel="noopener">https://github.com/vulnersCom/nmap-vulners</a></li>
+<li><a href="https://github.com/scipag/vulscan" target="_blank" rel="noopener">https://github.com/scipag/vulscan</a></li>
+</ul>
+<p>想要安装这些 Nmap 脚本，很简单。</p>
+<blockquote>
+<p>1 . cd /usr/share/nmap/scripts<br>2 . 接着将链接提供的脚本复制粘贴到该路径即可。<br>3 . 具体细节或有不同，如 vulscan 还需要将漏洞数据库的相关信息存储到本地。<br>4 . 调用时以 scripts/ 为根目录，对后缀名为 nse 的脚本进行调用</p>
+</blockquote>
+<p>我已经安装好了，以下是一个使用示范。相比于普通的漏洞扫描，通常它会更多有价值的信息。</p>
+<p><code>nmap --script 脚本之间用逗号隔开 --script-args 参数之间用逗号隔开 IP地址</code></p>
+<p>GitHub 上说了，要使用这两个脚本，必须和 sV 参数一起调用。</p>
+<p><code>nmap -sV --script 脚本名 --script-args 参数 IP地址</code></p>
+<p>使用 vulners.nse</p>
+<p><img src="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.7.png" alt="7"></p>
+<p>使用 vulscan.nse</p>
+<p><img src="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.8.png" alt="8"></p>
+<p>将二者整合到一条命令</p>
+<p><img src="http://pvhvgji8a.bkt.clouddn.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.9.png" alt="9"></p>
+<hr>
+<blockquote>
+<p>版权声明：本文为CSDN博主「鸾林居士」的原创文章，遵循CC 4.0 by-sa版权协议，转载请附上原文出处链接及本声明。原文链接：<a href="https://blog.csdn.net/abc_12366/article/details/82807108" target="_blank" rel="noopener">https://blog.csdn.net/abc_12366/article/details/82807108</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Nmap/" rel="tag"># Nmap</a>
+          
+            <a href="/blog/tags/CSDN/" rel="tag"># CSDN</a>
+          
+            <a href="/blog/tags/文章转载/" rel="tag"># 文章转载</a>
+          
+            <a href="/blog/tags/技术文章/" rel="tag"># 技术文章</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2019/08/07/简书转载-《其实也可以，先结婚再恋爱》/" rel="next" title="简书转载:《其实也可以，先结婚再恋爱》">
+                <i class="fa fa-chevron-left"></i> 简书转载:《其实也可以，先结婚再恋爱》
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2019/08/08/Nmap常用参数笔记/" rel="prev" title="Nmap常用参数笔记">
+                Nmap常用参数笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="/blog/images/tx2.gif" alt="Yang Fan">
+  
+  <p class="site-author-name" itemprop="name">Yang Fan</p>
+  <div class="site-description motion-element" itemprop="description">我还是我，但不是别人眼中的我</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/blog/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/blog/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:483813121@qq.com" title="E-Mail &rarr; mailto:483813121@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+      
+        <li class="links-of-blogroll-item">
+          <a href="http://qq1748253177.gz01.bdysite.com/" title="http://qq1748253177.gz01.bdysite.com/" rel="noopener" target="_blank">DVWA环境</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://www.runoob.com/" title="https://www.runoob.com/" rel="noopener" target="_blank">菜鸟教程</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://portal.qiniu.com/bucket/hexo_images/resource" title="https://portal.qiniu.com/bucket/hexo_images/resource" rel="noopener" target="_blank">七牛云存储</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本扫描策略"><span class="nav-number">1.</span> <span class="nav-text">基本扫描策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01：无任何附加参数"><span class="nav-number">1.1.</span> <span class="nav-text">0x01：无任何附加参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x02：冗余"><span class="nav-number">1.2.</span> <span class="nav-text">0x02：冗余</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x03：指定端口号"><span class="nav-number">1.3.</span> <span class="nav-text">0x03：指定端口号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x04：操作系统侦测"><span class="nav-number">1.4.</span> <span class="nav-text">0x04：操作系统侦测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x05：只进行主机发现"><span class="nav-number">1.5.</span> <span class="nav-text">0x05：只进行主机发现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x06：跳过主机发现"><span class="nav-number">1.6.</span> <span class="nav-text">0x06：跳过主机发现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x07：扫描和版本号侦测"><span class="nav-number">1.7.</span> <span class="nav-text">0x07：扫描和版本号侦测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x08：UDP-扫描"><span class="nav-number">1.8.</span> <span class="nav-text">0x08：UDP 扫描</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绕过防火墙"><span class="nav-number">2.</span> <span class="nav-text">绕过防火墙</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01：利用掩体"><span class="nav-number">2.1.</span> <span class="nav-text">0x01：利用掩体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x02：禁用-ping"><span class="nav-number">2.2.</span> <span class="nav-text">0x02：禁用 ping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x03：IP-地址伪装"><span class="nav-number">2.3.</span> <span class="nav-text">0x03：IP 地址伪装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x04：空闲扫描"><span class="nav-number">2.4.</span> <span class="nav-text">0x04：空闲扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x05：指定网卡进行扫描"><span class="nav-number">2.5.</span> <span class="nav-text">0x05：指定网卡进行扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x06：限制扫描时间"><span class="nav-number">2.6.</span> <span class="nav-text">0x06：限制扫描时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x07：指定源-IP-地址"><span class="nav-number">2.7.</span> <span class="nav-text">0x07：指定源 IP 地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x08：指定源主机端口"><span class="nav-number">2.8.</span> <span class="nav-text">0x08：指定源主机端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x09：数据包分片技术"><span class="nav-number">2.9.</span> <span class="nav-text">0x09：数据包分片技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x10：添加垃圾数据"><span class="nav-number">2.10.</span> <span class="nav-text">0x10：添加垃圾数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x11：随机选择扫描对象"><span class="nav-number">2.11.</span> <span class="nav-text">0x11：随机选择扫描对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x12：伪装-MAC-地址"><span class="nav-number">2.12.</span> <span class="nav-text">0x12：伪装 MAC 地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x13：伪造检验值"><span class="nav-number">2.13.</span> <span class="nav-text">0x13：伪造检验值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x14：扫描速度"><span class="nav-number">2.14.</span> <span class="nav-text">0x14：扫描速度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nmap-脚本引擎"><span class="nav-number">3.</span> <span class="nav-text">Nmap 脚本引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01：按类别扫描"><span class="nav-number">3.1.</span> <span class="nav-text">0x01：按类别扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x02：使用特定的脚本进行扫描"><span class="nav-number">3.2.</span> <span class="nav-text">0x02：使用特定的脚本进行扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x03：增强和个性化定制脚本"><span class="nav-number">3.3.</span> <span class="nav-text">0x03：增强和个性化定制脚本</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yang Fan</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/blog/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/blog/js/utils.js?v=7.2.0"></script>
+
+  <script src="/blog/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/blog/js/affix.js?v=7.2.0"></script>
+
+  <script src="/blog/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/blog/js/scrollspy.js?v=7.2.0"></script>
+<script src="/blog/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/blog/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/blog/js/local-search.js?v=7.2.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">
+<div id="aplayer"></div>
+<script type="text/javascript" src="https://github.com/fanygit/dist/raw/master/APlayer.min.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/fanygit/dist/master/music.js"></script> -->
+</body>
+</html>
