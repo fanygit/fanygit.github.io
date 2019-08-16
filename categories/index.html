@@ -461,6 +461,9 @@
           </div>
           
   
+    
+    <div class="comments" id="comments"></div>
+  
 
 
 
@@ -488,7 +491,7 @@
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   
-    <img class="site-author-image" itemprop="image" src="/blog/images/tx2.gif" alt="Yang Fan">
+    <img class="site-author-image" itemprop="image" src="/blog/images/tx4.gif" alt="Yang Fan">
   
   <p class="site-author-name" itemprop="name">Yang Fan</p>
   <div class="site-description motion-element" itemprop="description">只要你想，没什么做不到</div>
@@ -867,6 +870,32 @@ setInterval("createtime()",250);
 
 
 
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'LG1yOQWE3t4WJKBXGLt78Cqb-gzGzoHsz',
+    appKey: 'DyG9SON6dzEHXsMLvkbYA0Xp',
+    placeholder: '请留下你宝贵的意见',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
 
   
 <!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">

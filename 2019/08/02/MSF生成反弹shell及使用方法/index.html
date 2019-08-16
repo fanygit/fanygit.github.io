@@ -100,7 +100,7 @@
 </script>
 
   <meta name="description" content="msfvenom参数解释 -p -payload  指定需要使用的payload-e -encoder  指定需要使用的encoder-i 5 -iterations  指定payload的编码次数为5次 (次数越多免杀的概率越大)LHOST 指定ip地址LPORT 指定监听的端口可任意更改-f -format  指定输出格式 (使用-help-formats 来获取msf支持的输出格式列表)/r">
-<meta name="keywords" content="Metasqloit,Shell,Kali">
+<meta name="keywords" content="Kali,Metasqloit,Shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MSF生成反弹shell及使用方法">
 <meta property="og:url" content="https://fanygit.github.io/blog/2019/08/02/MSF生成反弹shell及使用方法/index.html">
@@ -387,7 +387,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang Fan">
       <meta itemprop="description" content="只要你想，没什么做不到">
-      <meta itemprop="image" content="/blog/images/tx2.gif">
+      <meta itemprop="image" content="/blog/images/tx4.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -476,6 +476,24 @@
           
 
           
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/blog/2019/08/02/MSF生成反弹shell及使用方法/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/blog/2019/08/02/MSF生成反弹shell及使用方法/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
 
           <br>
           
@@ -557,11 +575,11 @@
         
         <div class="post-tags">
           
+            <a href="/blog/tags/Kali/" rel="tag"># Kali</a>
+          
             <a href="/blog/tags/Metasqloit/" rel="tag"># Metasqloit</a>
           
             <a href="/blog/tags/Shell/" rel="tag"># Shell</a>
-          
-            <a href="/blog/tags/Kali/" rel="tag"># Kali</a>
           
         </div>
       
@@ -607,6 +625,9 @@
           </div>
           
   
+    
+    <div class="comments" id="comments"></div>
+  
 
 
 
@@ -643,7 +664,7 @@
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   
-    <img class="site-author-image" itemprop="image" src="/blog/images/tx2.gif" alt="Yang Fan">
+    <img class="site-author-image" itemprop="image" src="/blog/images/tx4.gif" alt="Yang Fan">
   
   <p class="site-author-name" itemprop="name">Yang Fan</p>
   <div class="site-description motion-element" itemprop="description">只要你想，没什么做不到</div>
@@ -1039,6 +1060,32 @@ setInterval("createtime()",250);
 
 
 
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'LG1yOQWE3t4WJKBXGLt78Cqb-gzGzoHsz',
+    appKey: 'DyG9SON6dzEHXsMLvkbYA0Xp',
+    placeholder: '请留下你宝贵的意见',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
 
   
 <!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">

@@ -108,7 +108,7 @@
 <meta property="og:description" content="(两种获取IP方式：DHCP自动获取、静态配置)">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://pvhvgji8a.bkt.clouddn.com/Debian%E3%80%81ContOS%E3%80%81Ubuntu%E7%B3%BB%E7%BB%9F%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE%E7%BD%91%E5%8D%A1%E8%8E%B7%E5%8F%96IP%E6%96%B9%E5%BC%8F-photos.jfif">
-<meta property="og:updated_time" content="2019-08-02T10:31:12.880Z">
+<meta property="og:updated_time" content="2019-08-11T16:32:28.181Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Debian、ContOS、Ubuntu系统手动配置网卡获取IP方式">
 <meta name="twitter:description" content="(两种获取IP方式：DHCP自动获取、静态配置)">
@@ -389,7 +389,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang Fan">
       <meta itemprop="description" content="只要你想，没什么做不到">
-      <meta itemprop="image" content="/blog/images/tx2.gif">
+      <meta itemprop="image" content="/blog/images/tx4.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -442,7 +442,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-02 18:31:12" itemprop="dateModified" datetime="2019-08-02T18:31:12+08:00">2019-08-02</time>
+                <time title="修改时间：2019-08-12 00:32:28" itemprop="dateModified" datetime="2019-08-12T00:32:28+08:00">2019-08-12</time>
               </span>
             
           
@@ -477,6 +477,24 @@
             </span>
           
 
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/blog/2019/08/01/Debian、ContOS、Ubuntu系统手动配置网卡获取IP方式/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/blog/2019/08/01/Debian、ContOS、Ubuntu系统手动配置网卡获取IP方式/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
           
 
           <br>
@@ -529,7 +547,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">IPADDR=172.16.110.126</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=172.16.110.1</span><br><span class="line">DNS1=172.16.8.8</span><br><span class="line">DNS2=8.8.8.8</span><br></pre></td></tr></table></figure>
 
 <p>3 . 重启网络服务<br><code>service network restart</code></p>
-<h2 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h2><p>#####版本：ubuntu 12.04<br>1 . 打开<br><code>vim etc/network/interfaces</code></p>
+<h2 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h2><h5 id="版本：ubuntu-12-04"><a href="#版本：ubuntu-12-04" class="headerlink" title="版本：ubuntu 12.04"></a>版本：ubuntu 12.04</h5><p>1 . 打开<br><code>vim etc/network/interfaces</code></p>
 <p>2 . 添加网卡配置（静态获取IP和DHCP获取IP选一个配置即可）<br>静态获取IP</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line">auto eth0</span><br><span class="line"></span><br><span class="line">iface eth0 inet static</span><br><span class="line">address 192.168.31.99</span><br><span class="line">netmask 255.255.255.0</span><br><span class="line">gateway 192.168.31.1</span><br><span class="line">dns-nameservers 211.136.20.203</span><br></pre></td></tr></table></figure>
 
@@ -538,11 +556,10 @@
 
 <p>3 . 重启网络设备</p>
 <p><code>sudo /etc/init.d/networking   restart</code></p>
-<p>####版本：ubuntu 14.04</p>
-<p>（设置与12.04相同，但还需要再修改一个文件）<br>1 . 修改managed参数</p>
+<h4 id="版本：ubuntu-14-04"><a href="#版本：ubuntu-14-04" class="headerlink" title="版本：ubuntu 14.04"></a>版本：ubuntu 14.04</h4><p>（设置与12.04相同，但还需要再修改一个文件）<br>1 . 修改managed参数</p>
 <p><code>/etc/NetworkManager/NetworkManager.conf  # 将参数 managed 设置为 true</code></p>
 <p>2 . 按照12.04 修改配置</p>
-<p>####版本：ubuntu 16.04<br>1 . 打开<br><code>vim /etc/network/inrerfaces</code></p>
+<h4 id="版本：ubuntu-16-04"><a href="#版本：ubuntu-16-04" class="headerlink" title="版本：ubuntu 16.04"></a>版本：ubuntu 16.04</h4><p>1 . 打开<br><code>vim /etc/network/inrerfaces</code></p>
 <p>2 . 增加</p>
 <p>静态获取IP</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">auto ens33 # ens33 为网卡别名</span><br><span class="line">iface ens33 inet static # 设置为静态配置</span><br><span class="line">address 172.20.10.134 # 设置IP地址</span><br><span class="line">netmask 255.255.255.0 # 设置子网掩码</span><br><span class="line">gateway 172.20.10.2 # 设置网关</span><br></pre></td></tr></table></figure>
@@ -561,8 +578,7 @@
 <p>提示（ 因为机器在重启后，真正读取dns 的配置是在 /etc/resolv.conf，但是 /etc/resolv.conf 的数据来源于 /etc/resolvconf/resolv.conf.d/base）</p>
 <p>5 . 重启网络服务</p>
 <p><code>/etc/init.d/networking restart</code></p>
-<p>####版本：ubunut 18.04</p>
-<p>1 . 打开</p>
+<h4 id="版本：ubunut-18-04"><a href="#版本：ubunut-18-04" class="headerlink" title="版本：ubunut 18.04"></a>版本：ubunut 18.04</h4><p>1 . 打开</p>
 <p><code>/etc/netplan/01-network-manager-all.yaml</code></p>
 <p>2 . 修改为</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># Let NetworkManager manage all devices on this system</span><br><span class="line">network:</span><br><span class="line">  version: 2</span><br><span class="line">  renderer: NetworkManager</span><br><span class="line"></span><br><span class="line">  ethernets:</span><br><span class="line">    ens33:  #配置的网卡名称</span><br><span class="line">      dhcp4: no #dhcp4关闭</span><br><span class="line">      dhcp6: no #dhcp6关闭</span><br><span class="line">      addresses: [172.20.10.155/24] #设置本机IP及掩码</span><br><span class="line">      gateway4: 192.20.10.2 #设置网关</span><br><span class="line">      nameservers:</span><br><span class="line">              addresses: [114.114.114.114,8.8.8.8] #设置DNS</span><br></pre></td></tr></table></figure>
@@ -647,6 +663,9 @@
           </div>
           
   
+    
+    <div class="comments" id="comments"></div>
+  
 
 
 
@@ -683,7 +702,7 @@
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   
-    <img class="site-author-image" itemprop="image" src="/blog/images/tx2.gif" alt="Yang Fan">
+    <img class="site-author-image" itemprop="image" src="/blog/images/tx4.gif" alt="Yang Fan">
   
   <p class="site-author-name" itemprop="name">Yang Fan</p>
   <div class="site-description motion-element" itemprop="description">只要你想，没什么做不到</div>
@@ -849,7 +868,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Debian"><span class="nav-number">1.</span> <span class="nav-text">Debian</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ContOS"><span class="nav-number">2.</span> <span class="nav-text">ContOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu"><span class="nav-number">3.</span> <span class="nav-text">Ubuntu</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Debian"><span class="nav-number">1.</span> <span class="nav-text">Debian</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ContOS"><span class="nav-number">2.</span> <span class="nav-text">ContOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu"><span class="nav-number">3.</span> <span class="nav-text">Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#版本：ubuntu-12-04"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">版本：ubuntu 12.04</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#版本：ubuntu-14-04"><span class="nav-number">3.0.1.</span> <span class="nav-text">版本：ubuntu 14.04</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#版本：ubuntu-16-04"><span class="nav-number">3.0.2.</span> <span class="nav-text">版本：ubuntu 16.04</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#版本：ubunut-18-04"><span class="nav-number">3.0.3.</span> <span class="nav-text">版本：ubunut 18.04</span></a></li></ol></div>
             
 
           </div>
@@ -1079,6 +1098,32 @@ setInterval("createtime()",250);
 
 
 
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'LG1yOQWE3t4WJKBXGLt78Cqb-gzGzoHsz',
+    appKey: 'DyG9SON6dzEHXsMLvkbYA0Xp',
+    placeholder: '请留下你宝贵的意见',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
 
   
 <!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">
