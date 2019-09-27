@@ -99,16 +99,16 @@
   };
 </script>
 
-  <meta name="description" content="只要你想，没什么做不到">
+  <meta name="description" content="千里之行，始于足下。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Fan的小酒馆">
 <meta property="og:url" content="https://youlove.club/index.html">
 <meta property="og:site_name" content="Fan的小酒馆">
-<meta property="og:description" content="只要你想，没什么做不到">
+<meta property="og:description" content="千里之行，始于足下。">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fan的小酒馆">
-<meta name="twitter:description" content="只要你想，没什么做不到">
+<meta name="twitter:description" content="千里之行，始于足下。">
 
 
 
@@ -194,7 +194,7 @@
     </div>
     
       
-        <p class="site-subtitle">弱小和无知不是生存的阻碍，傲慢才是</p>
+        <p class="site-subtitle">弱小不是生存的阻碍，无知和傲慢才是</p>
       
     
     
@@ -381,11 +381,747 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/09/27/ezphp-writeup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yang Fan">
+      <meta itemprop="description" content="千里之行，始于足下。">
+      <meta itemprop="image" content="/images/tx4.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/27/ezphp-writeup/" class="post-title-link" itemprop="url">ezphp-writeup</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-27 23:47:22 / 修改时间：23:57:17" itemprop="dateCreated datePublished" datetime="2019-09-27T23:47:22+08:00">2019-09-27</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2019/09/27/ezphp-writeup/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/09/27/ezphp-writeup/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="0x01-分析"><a href="#0x01-分析" class="headerlink" title="0x01 分析"></a>0x01 分析</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    //flag in flag.php</span><br><span class="line">function is_save($file)&#123;</span><br><span class="line">    if(preg_match(&apos;/^flag.php$/&apos;, $file))&#123;     </span><br><span class="line">    	// /^flag.php$/  意思是 前后只能是flag.php</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@extract($_GET);</span><br><span class="line">// $_GET[&apos;file&apos;]</span><br><span class="line">// $file = $_GET[&apos;file&apos;]</span><br><span class="line">// 将$_GET和$_POST超级变量数组获取的变量转为正常的变量，这样直接显示变量名称即可</span><br><span class="line">if(isset($file)&amp;&amp;!empty($file))&#123;</span><br><span class="line">    //isset()判断变量是否定义</span><br><span class="line">    //empty()函数用于检查一个变量是否为空。</span><br><span class="line">    if(is_save($file))&#123;</span><br><span class="line">        include($file);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        echo &quot;Stupid Hacker!&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/09/27/ezphp-writeup/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/09/27/Discuz!-Writeup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yang Fan">
+      <meta itemprop="description" content="千里之行，始于足下。">
+      <meta itemprop="image" content="/images/tx4.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/27/Discuz!-Writeup/" class="post-title-link" itemprop="url">Discuz! Writeup</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-27 23:28:13 / 修改时间：23:46:33" itemprop="dateCreated datePublished" datetime="2019-09-27T23:28:13+08:00">2019-09-27</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2019/09/27/Discuz!-Writeup/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/09/27/Discuz!-Writeup/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="0x01-分析"><a href="#0x01-分析" class="headerlink" title="0x01 分析"></a>0x01 分析</h4><blockquote>
+<p>在主页找到discuz!版本，放入搜索引擎。找到这个版本的漏洞。根据一篇文章，得知。这道题获取flag的过程是通过注入漏洞，获取到uc-key。再通过然后通过php脚本以及获取到的uc-key将一句话写入config.inc.php,最后用菜刀连接，在根目录找到flag。</p>
+</blockquote>
+<h4 id="0x02-过程"><a href="#0x02-过程" class="headerlink" title="0x02 过程"></a>0x02 过程</h4><p> 在主页发现此论坛版本 </p>
+<p><img src="http://qiniu.xirrs.com/Discuz%21Writeup-1.1.png" alt="imgs1"></p>
+<p><code>Discuz! 7.2</code></p>
+<p> 根据得到的论坛版本号 进行google、百度搜索，得到此版本存在一个注入漏洞</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/09/27/Discuz!-Writeup/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/09/27/BugKu-Web题-备份是个好习惯/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yang Fan">
+      <meta itemprop="description" content="千里之行，始于足下。">
+      <meta itemprop="image" content="/images/tx4.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/27/BugKu-Web题-备份是个好习惯/" class="post-title-link" itemprop="url">BugKu-Web题[备份是个好习惯]</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-27 23:13:30 / 修改时间：23:31:35" itemprop="dateCreated datePublished" datetime="2019-09-27T23:13:30+08:00">2019-09-27</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2019/09/27/BugKu-Web题-备份是个好习惯/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/09/27/BugKu-Web题-备份是个好习惯/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="0x01-分析"><a href="#0x01-分析" class="headerlink" title="0x01 分析"></a>0x01 分析</h4><blockquote>
+<p>打开网页，发现是一堆md5加密后的字符。但是题目中提到了备份两个字眼，所以直接就在网页后面加上index.php.swp 发现没有这个文件，后面又加上 index.php.bak 。存在这个文件，直接下载在来打开得到下面代码。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">include_once &quot;flag.php&quot;;</span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = strstr($_SERVER[&apos;REQUEST_URI&apos;], &apos;?&apos;);</span><br><span class="line">//获取 访问页面的url 然后 截取?及后面的字符 赋值给 $str</span><br><span class="line"></span><br><span class="line">$str = substr($str,1);</span><br><span class="line">//截取 $str 第第一位及后边字符</span><br><span class="line"></span><br><span class="line">$str = str_replace(&apos;key&apos;,&apos;&apos;,$str);</span><br><span class="line">//把 $str 中的存在 &apos;key&apos; 字符 替换为 &apos;&apos;</span><br><span class="line"></span><br><span class="line">parse_str($str);</span><br><span class="line">//#parse_str()把查询的字符串解析到变量中</span><br><span class="line"></span><br><span class="line">echo md5($key1);</span><br><span class="line"></span><br><span class="line">echo md5($key2);</span><br><span class="line">if(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2)&#123;</span><br><span class="line">    echo $flag.&quot;取得flag&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/09/27/BugKu-Web题-备份是个好习惯/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/09/27/BugKu-Web题[flag在index里]/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yang Fan">
+      <meta itemprop="description" content="千里之行，始于足下。">
+      <meta itemprop="image" content="/images/tx4.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/27/BugKu-Web题[flag在index里]/" class="post-title-link" itemprop="url">BugKu-Web题[flag在index里]</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-27 23:00:00 / 修改时间：23:31:32" itemprop="dateCreated datePublished" datetime="2019-09-27T23:00:00+08:00">2019-09-27</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2019/09/27/BugKu-Web题[flag在index里]/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/09/27/BugKu-Web题[flag在index里]/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="0x01分析"><a href="#0x01分析" class="headerlink" title="0x01分析"></a>0x01分析</h4><p><strong>这道考的是文件包含漏洞 ,但是过滤了  ../，根据这道题名提示 ，需要绕过 ../ 把index 文件包含出来 。</strong></p>
+<h4 id="0x02-绕过过滤的Payload"><a href="#0x02-绕过过滤的Payload" class="headerlink" title="0x02 绕过过滤的Payload"></a>0x02 绕过过滤的Payload</h4><p><code>php://filter/read=convert.base64-encode/resource=index.php</code></p>
+<p>意思是将index.php的源码打开以base64的形式输出</p>
+<p><img src="http://qiniu.xirrs.com/flag%E5%9C%A8index%E9%87%8C-1.1.png" alt="img1"></p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/09/27/BugKu-Web题[flag在index里]/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/09/10/4-PHP-函数语法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang Fan">
-      <meta itemprop="description" content="只要你想，没什么做不到">
+      <meta itemprop="description" content="千里之行，始于足下。">
       <meta itemprop="image" content="/images/tx4.gif">
     </span>
 
@@ -575,7 +1311,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang Fan">
-      <meta itemprop="description" content="只要你想，没什么做不到">
+      <meta itemprop="description" content="千里之行，始于足下。">
       <meta itemprop="image" content="/images/tx4.gif">
     </span>
 
@@ -766,7 +1502,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang Fan">
-      <meta itemprop="description" content="只要你想，没什么做不到">
+      <meta itemprop="description" content="千里之行，始于足下。">
       <meta itemprop="image" content="/images/tx4.gif">
     </span>
 
@@ -956,7 +1692,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang Fan">
-      <meta itemprop="description" content="只要你想，没什么做不到">
+      <meta itemprop="description" content="千里之行，始于足下。">
       <meta itemprop="image" content="/images/tx4.gif">
     </span>
 
@@ -1162,7 +1898,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang Fan">
-      <meta itemprop="description" content="只要你想，没什么做不到">
+      <meta itemprop="description" content="千里之行，始于足下。">
       <meta itemprop="image" content="/images/tx4.gif">
     </span>
 
@@ -1218,7 +1954,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-10 14:45:18" itemprop="dateModified" datetime="2019-09-10T14:45:18+08:00">2019-09-10</time>
+                <time title="修改时间：2019-09-27 23:10:14" itemprop="dateModified" datetime="2019-09-27T23:10:14+08:00">2019-09-27</time>
               </span>
             
           
@@ -1232,7 +1968,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a></span>
 
                 
                 
@@ -1371,7 +2107,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang Fan">
-      <meta itemprop="description" content="只要你想，没什么做不到">
+      <meta itemprop="description" content="千里之行，始于足下。">
       <meta itemprop="image" content="/images/tx4.gif">
     </span>
 
@@ -1537,782 +2273,11 @@
   </article>
 
     
-        
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/08/08/CSDN转载-你不可不知的Nmap使用技巧》/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yang Fan">
-      <meta itemprop="description" content="只要你想，没什么做不到">
-      <meta itemprop="image" content="/images/tx4.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fan的小酒馆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/08/CSDN转载-你不可不知的Nmap使用技巧》/" class="post-title-link" itemprop="url">CSDN转载:《你不可不知的Nmap使用技巧》</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-08-08 14:16:59" itemprop="dateCreated datePublished" datetime="2019-08-08T14:16:59+08:00">2019-08-08</time>
-            </span>
-          
-
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-30 12:45:10" itemprop="dateModified" datetime="2019-08-30T12:45:10+08:00">2019-08-30</time>
-              </span>
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具教程/" itemprop="url" rel="index"><span itemprop="name">工具教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-          
-
-          
-
-          
-            
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="fa fa-comment-o"></i>
-    </span>
-    
-      <span class="post-meta-item-text">评论数：</span>
-    
-  
-    <a href="/2019/08/08/CSDN转载-你不可不知的Nmap使用技巧》/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/08/CSDN转载-你不可不知的Nmap使用技巧》/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p> <strong>Nmap</strong> 是一款<strong>网络扫描</strong>和<strong>主机侦测</strong>的非常有用的工具。合理使用，不仅可以用来信息收集和枚举，同时也可以用来作为一个漏洞探测器或安全扫描器。另外 Nmap 还跨平台，适用于 Windows、Linux 和 Macintosh 等主流操作系统，功能强大，乃居家旅行之必备良品。</p>
-<p> 总的来说，Nmap 具有四大功能。</p>
-<ul>
-<li>主机发现</li>
-<li>端口扫描</li>
-<li>服务版本侦测</li>
-<li>操作系统侦测</li>
-</ul>
-<p><img src="http://qiniu.xirrs.com/Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7-1.1.png" alt="1"></p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/08/08/CSDN转载-你不可不知的Nmap使用技巧》/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/08/07/简书转载-《其实也可以，先结婚再恋爱》/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yang Fan">
-      <meta itemprop="description" content="只要你想，没什么做不到">
-      <meta itemprop="image" content="/images/tx4.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fan的小酒馆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/07/简书转载-《其实也可以，先结婚再恋爱》/" class="post-title-link" itemprop="url">简书转载:《其实也可以，先结婚再恋爱》</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-08-07 22:27:54 / 修改时间：23:07:50" itemprop="dateCreated datePublished" datetime="2019-08-07T22:27:54+08:00">2019-08-07</time>
-            </span>
-          
-
-          
-            
-
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/阅读精选/" itemprop="url" rel="index"><span itemprop="name">阅读精选</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-          
-
-          
-
-          
-            
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="fa fa-comment-o"></i>
-    </span>
-    
-      <span class="post-meta-item-text">评论数：</span>
-    
-  
-    <a href="/2019/08/07/简书转载-《其实也可以，先结婚再恋爱》/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/07/简书转载-《其实也可以，先结婚再恋爱》/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <ul>
-<li><p>1</p>
-<p>人家说，一个男人智商没有200就不要想着出轨了。可顾青智商可能连20都没到，居然也出轨了。</p>
-<p>我当时准备跟顾青结婚的时候，身边朋友劝过我，说还是要跟很爱自己的人结婚，不然太容易出轨了。</p>
-<p>我特别不能理解，我说这个理论怎么可能成立？很爱我就不会出轨了吗？那些曾经爱得死去活来的不是照样离婚？再说了，他没那个智商出轨。</p>
-<p>朋友听完撇了撇嘴，又叹了口气，最后没再说什么。</p>
-<p>其实我心里想的是，大家都看得出来他不爱我吗？</p>
-<p>我跟他是相亲认识的。我从大学毕业开始就在相亲，遇过各种极品，都是奇葩类的。多数为歪瓜裂枣，比我大上很多岁。好男人要么已经娶了，要么喜欢男人去了。反正我遇不到。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/08/07/简书转载-《其实也可以，先结婚再恋爱》/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </li></ul></div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/08/04/简书转载-《那个嫁了穷人的女同学》/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yang Fan">
-      <meta itemprop="description" content="只要你想，没什么做不到">
-      <meta itemprop="image" content="/images/tx4.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fan的小酒馆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/04/简书转载-《那个嫁了穷人的女同学》/" class="post-title-link" itemprop="url">简书转载:《那个嫁了穷人的女同学》</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-08-04 21:41:54 / 修改时间：21:58:02" itemprop="dateCreated datePublished" datetime="2019-08-04T21:41:54+08:00">2019-08-04</time>
-            </span>
-          
-
-          
-            
-
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/阅读精选/" itemprop="url" rel="index"><span itemprop="name">阅读精选</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-          
-
-          
-
-          
-            
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="fa fa-comment-o"></i>
-    </span>
-    
-      <span class="post-meta-item-text">评论数：</span>
-    
-  
-    <a href="/2019/08/04/简书转载-《那个嫁了穷人的女同学》/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/04/简书转载-《那个嫁了穷人的女同学》/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>文/婉兮</p>
-<ul>
-<li><p>1</p>
-<p>我有个同学名叫杨丽丽，名字普通、长相也普通，但她做过一件不普通的事儿：义无反顾嫁了一穷二白的学长，由穷人家的女儿，变成穷人的妻子。</p>
-<p>这样的“弱弱联合”，在大部分姑娘眼里，无疑是个噩梦。</p>
-<p>杨丽丽家庭条件不好，入学那天我们就知道。她是独自拖着铺盖行李来报道的，而且晚了两天，班主任甚至打了电话去催。</p>
-<p>宿舍里只剩下角落一个上铺。她手脚利落地跳上去，一边整理一边自我介绍：“你们好，我叫杨丽丽，我在家里帮忙割稻子呢，所以来晚了几天。”</p>
-<p>她边说边笑，洗得发白的牛仔裤似乎也荡漾着笑意，身上有一种长年累月劳动积累下的朴实气息。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/08/04/简书转载-《那个嫁了穷人的女同学》/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </li></ul></div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/08/03/NC工具命令使用示例/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yang Fan">
-      <meta itemprop="description" content="只要你想，没什么做不到">
-      <meta itemprop="image" content="/images/tx4.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fan的小酒馆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/03/NC工具命令使用示例/" class="post-title-link" itemprop="url">NC工具命令使用示例</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-08-03 19:16:38" itemprop="dateCreated datePublished" datetime="2019-08-03T19:16:38+08:00">2019-08-03</time>
-            </span>
-          
-
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-09-10 11:36:31" itemprop="dateModified" datetime="2019-09-10T11:36:31+08:00">2019-09-10</time>
-              </span>
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具教程/" itemprop="url" rel="index"><span itemprop="name">工具教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-          
-
-          
-
-          
-            
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="fa fa-comment-o"></i>
-    </span>
-    
-      <span class="post-meta-item-text">评论数：</span>
-    
-  
-    <a href="/2019/08/03/NC工具命令使用示例/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/03/NC工具命令使用示例/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="主要参数"><a href="#主要参数" class="headerlink" title="主要参数"></a>主要参数</h4><blockquote>
-<p>-4 IPv4模式<br>-6 IPv6模式</p>
-</blockquote>
-<blockquote>
-<p>-b, –bluetooth 蓝牙模式 (默认为L2CAP协议)<br>-e,–exec=CMD 连接建立后执行命令<br>-l 监听入站连接<br>-n 指定数字的IP地址，不能用hostname</p>
-</blockquote>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/08/03/NC工具命令使用示例/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2347,7 +2312,7 @@
     <img class="site-author-image" itemprop="image" src="/images/tx4.gif" alt="Yang Fan">
   
   <p class="site-author-name" itemprop="name">Yang Fan</p>
-  <div class="site-description motion-element" itemprop="description">只要你想，没什么做不到</div>
+  <div class="site-description motion-element" itemprop="description">千里之行，始于足下。</div>
 </div>
 
 
@@ -2357,7 +2322,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2382,7 +2347,9 @@
         
           
         
-        <span class="site-state-item-count">4</span>
+          
+        
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -2439,7 +2406,17 @@
         
           
         
-        <span class="site-state-item-count">20</span>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
