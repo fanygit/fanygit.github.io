@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[操作系统的壳（Shell）]]></title>
+    <url>%2F2019%2F10%2F22%2F%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A3%B3%EF%BC%88Shell%EF%BC%89%2F</url>
+    <content type="text"><![CDATA[能更好的理解操作系统以及shell]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>汇编语言</tag>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[王爽《汇编语言第三版》习题答案]]></title>
+    <url>%2F2019%2F10%2F22%2F%E7%8E%8B%E7%88%BD%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%B8%89%E7%89%88%E3%80%8B%E4%B9%A0%E9%A2%98%E7%AD%94%E6%A1%88%2F</url>
+    <content type="text"><![CDATA[0x01 检测点1.1 0x02 检测点2.1 0x03 检测点2.2 0x04 检测点3.1 0x05 检测点6.1]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>汇编语言</tag>
+        <tag>课后习题</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[ezphp-writeup]]></title>
     <url>%2F2019%2F09%2F27%2Fezphp-writeup%2F</url>
     <content type="text"><![CDATA[0x01 分析123456789101112131415161718192021222324252627&lt;?php //flag in flag.phpfunction is_save($file)&#123; if(preg_match(&apos;/^flag.php$/&apos;, $file))&#123; // /^flag.php$/ 意思是 前后只能是flag.php return false; &#125; return true;&#125;@extract($_GET);// $_GET[&apos;file&apos;]// $file = $_GET[&apos;file&apos;]// 将$_GET和$_POST超级变量数组获取的变量转为正常的变量，这样直接显示变量名称即可if(isset($file)&amp;&amp;!empty($file))&#123; //isset()判断变量是否定义 //empty()函数用于检查一个变量是否为空。 if(is_save($file))&#123; include($file); &#125;else&#123; echo &quot;Stupid Hacker!&quot;; &#125;&#125;else&#123; highlight_file(__FILE__);&#125;?&gt; 题目意思 是 通过外部参数 输入 flag.php 来包含出 flag.php 文件 ,但存在两个个问题。一是找不到输入点。只有一@extract($_GET);二是得绕过正则匹配。 @extract是将$_GET和$_POST超级变量数组获取的变量转为正常的变量，这样直接显示变量名称即可所以@extract等于 $file = $_GET[‘file’] 接下来就是绕过正则了 0x02 使用payload绕过 php://filter/read=convert.base64-encode/resource=flag.php 意思是将flag.php的源码打开以base64的形式输出 得到一窜base64加密的字符串 解码得到flag 作者：YangFan链接：https://youlove.club来源：Fan的小酒馆著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。]]></content>
