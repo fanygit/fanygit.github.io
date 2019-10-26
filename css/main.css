@@ -157,7 +157,7 @@ body {
   font-size: 14px;
   line-height: 2;
   color: #555;
-  background: url("../images/bj2.jpg");
+  background: url("../images/bj7.jpg");
   background-attachment: fixed;
 }
 @media (max-width: 991px) {
@@ -1640,7 +1640,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #63b3ff;
+  background: #14785e;
 }
 .feed-link,
 .chat {
