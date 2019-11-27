@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="查找Kernel32.dll加载到内存的位置12345678xor ecx,ecx                     mov eax,fs:[ecx+0x30]    ;    EAX = PEBmov eax,[eax+0xc]        ;    EAX = PEB-&amp;gt;Ldrmov esi,[eax+0x14]       ;    ESI = PEB-&amp;gt;Ldr.InMe">
+<meta name="keywords" content="汇编语言,windows,ShellCode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows下ShellCode编写笔记">
+<meta property="og:url" content="https://youlove.club/2019/11/27/ShellCode编写笔记/index.html">
+<meta property="og:site_name" content="Fan的小酒馆">
+<meta property="og:description" content="查找Kernel32.dll加载到内存的位置12345678xor ecx,ecx                     mov eax,fs:[ecx+0x30]    ;    EAX = PEBmov eax,[eax+0xc]        ;    EAX = PEB-&amp;gt;Ldrmov esi,[eax+0x14]       ;    ESI = PEB-&amp;gt;Ldr.InMe">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-27T13:04:29.003Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows下ShellCode编写笔记">
+<meta name="twitter:description" content="查找Kernel32.dll加载到内存的位置12345678xor ecx,ecx                     mov eax,fs:[ecx+0x30]    ;    EAX = PEBmov eax,[eax+0xc]        ;    EAX = PEB-&amp;gt;Ldrmov esi,[eax+0x14]       ;    ESI = PEB-&amp;gt;Ldr.InMe">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://youlove.club/2019/11/27/ShellCode编写笔记/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Windows下ShellCode编写笔记 | Fan的小酒馆</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fan的小酒馆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">弱小不是生存的阻碍，无知和傲慢才是</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-playlist">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://youlove.club/2019/11/27/ShellCode编写笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yang Fan">
+      <meta itemprop="description" content="千里之行，始于足下。">
+      <meta itemprop="image" content="/images/tx4.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Windows下ShellCode编写笔记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-27 20:11:53 / 修改时间：21:04:29" itemprop="dateCreated datePublished" datetime="2019-11-27T20:11:53+08:00">2019-11-27</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2019/11/27/ShellCode编写笔记/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/27/ShellCode编写笔记/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="查找Kernel32-dll加载到内存的位置"><a href="#查找Kernel32-dll加载到内存的位置" class="headerlink" title="查找Kernel32.dll加载到内存的位置"></a>查找Kernel32.dll加载到内存的位置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xor ecx,ecx                     </span><br><span class="line">mov eax,fs:[ecx+0x30]    ;    EAX = PEB</span><br><span class="line">mov eax,[eax+0xc]        ;    EAX = PEB-&gt;Ldr</span><br><span class="line">mov esi,[eax+0x14]       ;    ESI = PEB-&gt;Ldr.InMemOrder</span><br><span class="line">lodsd                    ;    EAX = Second module</span><br><span class="line">xchg eax,esi             ;    EAX = ESI,    ESI = EAX</span><br><span class="line">lodsd                    ;    EAX = Third(Kernel32)</span><br><span class="line">mov ebx,[eax+0x10]       ;    EBX = Base address</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>   （1-2行）第一条指令将ecx清零<br>      第二条指令 为了避免产生空字节 不使用 mov eax,fs[30]而使用 mov eax,fs[ecx+0x30]<br>   （3-4行）现在PEB指针已经保存到eax寄存器，mov eax,[eax+0xc]    取得Ldr，mov esi,[eax+0x14]<br>            是顺着Ldr的0x14偏移处获得模块列表<br>   （5-7行）当前位于“inMemOrderLinks”链表的第一个模块，即“program.exe”,此处，该结构的<br>            第一个元素Fink指针，指向下一模块，然后，我们将这个指针存放在esi寄存器，接着，<br>            lodsd指令会根据esi寄存器指向的地址读取双字，即mov eax，[esi]，esi=esi+4；<br>            eax = 第二个模块 , 即ntdll.dll，通过xchg eax，esi 交换 eax 和 esi 寄存器中的值，便把<br>            第二个模块的指针存放到esi寄存器，再次调用lodsd，便得到第三个模块地址，即Kernel32.dll<br>   （8行）    此时，eax寄存器指向kernel32.dll的“InMemoryOrderLinks”，再加上0x10字节便可以获得<br>            “DllBase”指针，即kernel32.dll加载到内存中的位置</p>
+</blockquote>
+<a id="more"></a>
+
+<hr>
+<h4 id="找到Kernel32-dll导出表"><a href="#找到Kernel32-dll导出表" class="headerlink" title="找到Kernel32.dll导出表"></a>找到Kernel32.dll导出表</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mov edx,[ebx+03c]        ; EDX = Dos-&gt;e_lfanew</span><br><span class="line">add edx,ebx              ; EDX = PE Header</span><br><span class="line">mov edx,[edx+0x78]       ; EDX = Offset export table</span><br><span class="line">add edx,ebx              ; EDX = Export table</span><br><span class="line">mov esi,[edx+0x20]       ; ESI =    Offset name table</span><br><span class="line">add esi,ebx              ; ESI = Names table</span><br><span class="line">xor ecx,ecx              ; EXC = 0</span><br></pre></td></tr></table></figure>
+
+<p><em>上面的代码找到了Kernel32.dll加载到内存中的位置，</em></p>
+<blockquote>
+<p>   （1-2行）: 那么可以在0x3C偏移处获得e_lfanew指针，因为MS-DOS头的大小是0x40字节，而最后4个字节就是e_lfanew指针。<br>                    因为这个指针是相对于基地址的（只是偏移值，不是绝对地址），需要把基地址ebx加上<br>                    这个偏移值。<br>   （3-4行）：在PE头的0x78偏移处，可以找到导出表的”DataDirectory”.因为PE头（签名，文件头，可选头）在”DataDirectory”<br>                    之前的大小是0x78字节,而导出表”DataDirectory”表的第一个元素，再次把edx寄存器加上这个数值，就能抵达<br>                    kernel32.dll导出表<br>   （5-7行）：在IMAGE_EXPORT_DIRECTORY结构上，可以在0x20偏移处获得“AddressOfNames”的指针，从而导出函数的名称<br>                    这个步骤是需要的，尝试通过函数名来查找函数，也还有其他的方法。接下来将指针保存到esi寄存器，然后把ecx寄存器清零。</p>
+</blockquote>
+<p><em>AddressOfNames 一个指针数组（此处的指针是相对于映像基址的偏移而已，即Kernel32.dll加载到内存中的位置）。</em></p>
+<hr>
+<h5 id="获取GetProcAddress函数的序号"><a href="#获取GetProcAddress函数的序号" class="headerlink" title="获取GetProcAddress函数的序号"></a>获取GetProcAddress函数的序号</h5><p><em>找到函数名称 和函数名称的序号</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Get_Function:</span><br><span class="line">inc ecx                            ; Increment the ordinal</span><br><span class="line">lodsd                              ; Get name offset</span><br><span class="line">add eax,ebx                        ; Get function name</span><br><span class="line">cmp dword ptr[eax],0x50746547      ; GetP</span><br><span class="line">jnz Get_Function                                    </span><br><span class="line">cmp dword ptr[eax+0x4],0x41636f72  ; rocA</span><br><span class="line">jnz Get_Function</span><br><span class="line">cmp dword ptr[eax+0x8],0x65726464  ; ddre</span><br><span class="line">jnz Get_Function</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>   （1-2行）：第一行是个标号，用于跳转到这个地方执行。第二行自增ecx寄存器，是函数的计时器，也是函数的序号。<br>   （3-4行）：上一段代码中，esi寄存器指向第一个函数的名称，lodsd指令意思是取得双字节数据，赋给eax寄存器，<br>            即mov eax，[esi] ; esi = esi+4。然后把ebx（存放Kernel32的基址）加上这个偏移值便可以获取正确的指针。<br>            lodsd指令会把esi寄存器的值增加4，这点方便我们不需要手动增加它的值，只需要再次调用便可以取得下一函数名<br>            的指针。<br>   （5-10行）：不断地检查获取到地字符是不是“GetProcAddress”，数字在内存中是逆序排列的。检查拆分三次检查字符。第一个是GetP<br>            如果不匹配，jnz 指令跳转到Get_Funcction标签，继续比较下一个函数名，如果匹配就会比较后面4个字节，必须是“rocA”，<br>            如果不是也会跳转到Get_Function标签，最后才是“ddre”。</p>
+</blockquote>
+<hr>
+<h4 id="找到GetProcAddress函数地址（根据函数的序号）"><a href="#找到GetProcAddress函数地址（根据函数的序号）" class="headerlink" title="找到GetProcAddress函数地址（根据函数的序号）"></a>找到GetProcAddress函数地址（根据函数的序号）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mov esi,[edx+0x24]            ; ESI = Offset ordinals</span><br><span class="line">add esi,ebx                   ; ESI = Ordinals table</span><br><span class="line">mov cx,[esi+ecx*2]            ; CX = Number of function</span><br><span class="line">dec ecx                                </span><br><span class="line">mov esi,[edx+0x1c]            ; ESI = Offset address table</span><br><span class="line">add esi,ebx                   ; ESI = Address table</span><br><span class="line">mov edx,[esi+ecx*4]           ; EDX = Pointer(offset)</span><br><span class="line">add edx,ebx                   ; EDX = GetProcAddress</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>   （1-2行）：edx寄存器指向 IMAGE_EXPORT_DIRECTORY结构。在此结构的0x24偏移处，可以找到AddressOfNameOrdinals偏移，第二行，<br>            这个偏移值加上ebx寄存器，即Kernel32.dll基地址。可以获得指向名称序号表的有效指针。<br>   （3-4行）：esi寄存器指向名称的序号，这个数组包含2个字节大小的数字。已经知道GetProcAddress函数名称的序号（索引）<br>            存储在ecx寄存器，便可以获得函数地址的序号（索引）。需要递减这个数字，名称序号从0开始。<br>   （5-6行）：在0x1c偏移处，我们可以找到AddressOfFunctions，指向指针的数组，只需要加上Kernel32.dll的基地址便可以访问这个数组的开始位置。<br>   （7-8行）：ecx寄存器存储了AddressOfFunctions[ecx]位置读取GetProcAddress的函数指针（是相对于映像基地址的偏移）。我们使用ecx*4，每个<br>            指针占用4个字节，且esi指针指向数组的开始位置，在第八行，加上映像的基地址之后，edx寄存器便可以指向GetProcAddress函数。</p>
+</blockquote>
+<h4 id="获取LoadLibrary函数地址"><a href="#获取LoadLibrary函数地址" class="headerlink" title="获取LoadLibrary函数地址"></a>获取LoadLibrary函数地址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">xor ecx,ecx                         ; ECX = 0</span><br><span class="line">push ebx                            ; Kernel32 base address</span><br><span class="line">push edx                            ; GetProcAddress</span><br><span class="line">push ecx                            ; 0</span><br><span class="line">push 0x41797261                     ; aryA</span><br><span class="line">push 0x7262694c                     ; Libr</span><br><span class="line">push 0x64616f4c                     ; Load</span><br><span class="line">push esp                            ; &quot;LoadLibraryA&quot;</span><br><span class="line">push ebx                            ; Kernel32 base address</span><br><span class="line">call edx                            ; GetProcAddress(LL)</span><br></pre></td></tr></table></figure>
+
+<h4 id="加载user32-dll-动态链接库"><a href="#加载user32-dll-动态链接库" class="headerlink" title="加载user32.dll 动态链接库"></a>加载user32.dll 动态链接库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">add esp,0xc                         ; pop &quot;LoadLibraryA&quot;</span><br><span class="line">pop ecx                             ; ECX = 0</span><br><span class="line">push eax                            ; EAX = LoadLibraryA</span><br><span class="line">push ecx                            </span><br><span class="line">mov cx,0x6c6c                       ;11</span><br><span class="line">push ecx</span><br><span class="line">push 0x642e3233                     ; 32.d</span><br><span class="line">push 0x72657375                     ; user</span><br><span class="line">push esp                            ; &quot;user32.dll&quot;</span><br><span class="line">call eax                            ; LoadLibrary(&quot;user32.dll&quot;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="功能区域"><a href="#功能区域" class="headerlink" title="功能区域"></a>功能区域</h3><h4 id="获取SwapMouseButton函数地址（通过调用GetProcAddress的方式来获取SwapMouseButton函数的地址）"><a href="#获取SwapMouseButton函数地址（通过调用GetProcAddress的方式来获取SwapMouseButton函数的地址）" class="headerlink" title="获取SwapMouseButton函数地址（通过调用GetProcAddress的方式来获取SwapMouseButton函数的地址）"></a>获取SwapMouseButton函数地址（通过调用GetProcAddress的方式来获取SwapMouseButton函数的地址）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">add esp,0x10                        ; Clean stack</span><br><span class="line">mov edx,[esp+0x4]                   ; EDX = GetProcAddress</span><br><span class="line">xor ecx,ecx                         ; ECX = 0</span><br><span class="line">push ecx            </span><br><span class="line">mov ecx,0x616E6F74                  ; tona</span><br><span class="line">push ecx</span><br><span class="line">sub dword ptr[esp+0x3],0x61         ; Remove &quot;a&quot;</span><br><span class="line">push 0x74754265                     ; eBut</span><br><span class="line">push 0x73756F4D                     ; Mous</span><br><span class="line">push 0x70617753                     ; Swap</span><br><span class="line">push esp                            ; &quot;SwapMouseButton&quot;</span><br><span class="line">push eax                            ; user32.dll address</span><br><span class="line">call edx                            ; GetProc(SwapMouseButton)</span><br></pre></td></tr></table></figure>
+
+<h4 id="调用-SwapMouserButton函数"><a href="#调用-SwapMouserButton函数" class="headerlink" title="调用 SwapMouserButton函数"></a>调用 SwapMouserButton函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">add esp,0x14                        ; Cleanup stack</span><br><span class="line">xor ecx,ecx                         ; ECX =0    </span><br><span class="line">inc ecx                             ; true</span><br><span class="line">push ecx                            ; 1</span><br><span class="line">call eax                            ; Swap!</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="关闭程序"><a href="#关闭程序" class="headerlink" title="关闭程序"></a>关闭程序</h3><h4 id="在Kernel32-dll-中查找-ExitProcess函数地址（为了让程序优雅关闭）"><a href="#在Kernel32-dll-中查找-ExitProcess函数地址（为了让程序优雅关闭）" class="headerlink" title="在Kernel32.dll 中查找 ExitProcess函数地址（为了让程序优雅关闭）"></a>在Kernel32.dll 中查找 ExitProcess函数地址（为了让程序优雅关闭）</h4><pre><code>add esp,0x4                        ; Clean stack
+pop edx                            ; GetProcAddress
+pop ebx                            ; Kernel32.dll base address
+mov ecx,0x61737365                ; essa
+push ecx                                
+push dword ptr [esp+0x3],0x61    ; Remove &quot;a&quot;
+push 0x636f7250                    ; Proc
+push 0x74697845                    ; Exit
+push esp                
+push ebx                        ; Kernel32.dll base address
+call edx                        ; GetProc(Exec)</code></pre><h4 id="调用ExitProcess-函数"><a href="#调用ExitProcess-函数" class="headerlink" title="调用ExitProcess 函数"></a>调用ExitProcess 函数</h4><p><code>xor ecx,ecx                            ; ECX =0</code><br><code>push ecx                                ; Retrun code =0</code><br><code>call eax                                ; ExitProcess</code></p>
+<blockquote>
+<p>作者：YangFan<br>链接：<a href="https://youlove.club">https://youlove.club</a><br>来源：Fan的小酒馆<br>著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/汇编语言/" rel="tag"># 汇编语言</a>
+          
+            <a href="/tags/windows/" rel="tag"># windows</a>
+          
+            <a href="/tags/ShellCode/" rel="tag"># ShellCode</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/22/操作系统的壳（Shell）/" rel="next" title="操作系统的壳（Shell）">
+                <i class="fa fa-chevron-left"></i> 操作系统的壳（Shell）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/27/PHP-正则表达式（概念）/" rel="prev" title="PHP-正则表达式">
+                PHP-正则表达式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+  
+    
+    <div class="comments" id="comments"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="/images/tx4.gif" alt="Yang Fan">
+  
+  <p class="site-author-name" itemprop="name">Yang Fan</p>
+  <div class="site-description motion-element" itemprop="description">千里之行，始于足下。</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:483813121@qq.com" title="E-Mail &rarr; mailto:483813121@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://portal.qiniu.com/bucket/hexo_images/resource" title="https://portal.qiniu.com/bucket/hexo_images/resource" rel="noopener" target="_blank">七牛云存储</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://leancloud.cn/dashboard/applist.html#/apps" title="https://leancloud.cn/dashboard/applist.html#/apps" rel="noopener" target="_blank">Leancloud</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://dc.console.aliyun.com/next/index#/domain/list/all-domain" title="https://dc.console.aliyun.com/next/index#/domain/list/all-domain" rel="noopener" target="_blank">阿里云服务</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://www.ms08067.com/about/bachang.html" title="https://www.ms08067.com/about/bachang.html" rel="noopener" target="_blank">在线靶场</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://www.runoob.com/" title="https://www.runoob.com/" rel="noopener" target="_blank">菜鸟教程</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/CHYbeta/Web-Security-Learning" title="https://github.com/CHYbeta/Web-Security-Learning" rel="noopener" target="_blank">Web漏洞总结</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#查找Kernel32-dll加载到内存的位置"><span class="nav-number">1.</span> <span class="nav-text">查找Kernel32.dll加载到内存的位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#找到Kernel32-dll导出表"><span class="nav-number">2.</span> <span class="nav-text">找到Kernel32.dll导出表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#获取GetProcAddress函数的序号"><span class="nav-number">2.1.</span> <span class="nav-text">获取GetProcAddress函数的序号</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#找到GetProcAddress函数地址（根据函数的序号）"><span class="nav-number">3.</span> <span class="nav-text">找到GetProcAddress函数地址（根据函数的序号）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取LoadLibrary函数地址"><span class="nav-number">4.</span> <span class="nav-text">获取LoadLibrary函数地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载user32-dll-动态链接库"><span class="nav-number">5.</span> <span class="nav-text">加载user32.dll 动态链接库</span></a></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#功能区域"><span class="nav-number"></span> <span class="nav-text">功能区域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取SwapMouseButton函数地址（通过调用GetProcAddress的方式来获取SwapMouseButton函数的地址）"><span class="nav-number">1.</span> <span class="nav-text">获取SwapMouseButton函数地址（通过调用GetProcAddress的方式来获取SwapMouseButton函数的地址）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调用-SwapMouserButton函数"><span class="nav-number">2.</span> <span class="nav-text">调用 SwapMouserButton函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭程序"><span class="nav-number"></span> <span class="nav-text">关闭程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在Kernel32-dll-中查找-ExitProcess函数地址（为了让程序优雅关闭）"><span class="nav-number">1.</span> <span class="nav-text">在Kernel32.dll 中查找 ExitProcess函数地址（为了让程序优雅关闭）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调用ExitProcess-函数"><span class="nav-number">2.</span> <span class="nav-text">调用ExitProcess 函数</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yang Fan</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/28/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.2.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'LG1yOQWE3t4WJKBXGLt78Cqb-gzGzoHsz',
+    appKey: 'DyG9SON6dzEHXsMLvkbYA0Xp',
+    placeholder: '非常希望您能留下宝贵的意见！',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+  
+<!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">
+<div id="aplayer"></div>
+<script type="text/javascript" src="https://github.com/fanygit/dist/raw/master/APlayer.min.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/fanygit/dist/master/music.js"></script> -->
+</body>
+</html>

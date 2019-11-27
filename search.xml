@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[原反补]]></title>
+    <url>%2F2019%2F11%2F27%2F%E5%8E%9F%E5%8F%8D%E8%A1%A5%2F</url>
+    <content type="text"><![CDATA[0x01 数据的分类 0x02 原反补原码：最高位表示数的符号，其他位表示数值例：[+7]原 = 0000 0111b [-7]原 = 1000 0111b 反码：正数的反码和原码相同 例：[+7]原 = 0000 0111b = [+7]原 复数的反码是由其原码的符号位不变，其余位按位取反例：[-7]反 = 1111 1000b 补码：正数的补码跟原码相同 例：[+7]补 = 0000 0111b = [+7]原 负数的补码是由其原码的符号位不变，其余位按位取反，在最低位加1 例：[-7]补 = 1111 1001 作者：YangFan链接：https://youlove.club来源：Fan的小酒馆著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>二进制</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[PHP-正则表达式]]></title>
+    <url>%2F2019%2F11%2F27%2FPHP-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88%E6%A6%82%E5%BF%B5%EF%BC%89%2F</url>
+    <content type="text"><![CDATA[一、正则表达式语法规则正则表达式通过特征与特定函数配合对其他字符串进行匹配、查找、替换及分割操作 二、定界符（除了字母、数字、反斜线以外都可以做定界符）/（常用） # ！ {} | 三、普通字符（没有特殊含义）如 a-z、A-Z、0-9、双引号、单引号 四、模式修正符是正则表达式的定界符之后使用，用于调整表达式的解释，扩展匹配、替换等操作时的某些功能，增强处理能力 常见模式修正符 i 在和模式进行匹配时不区分大小写m 多行匹配，如果目标字符串 中没有”\n”字符, 或者模式中没有出现^或$, 设置这个修饰符不产生任何影响s 如果设定了此修正符，那么.将匹配所有的字符包括换行符U 禁止贪婪匹配 五、元字符（特殊含义的字符） 1234561. \d 匹配任意一个十进制数字，等价于[0-9]2. \D 匹配任意一个除十进制数字以外字符,等价于[^0-9]3. \s 匹配任意一个空白字符,比如换页符、换行符、回车符、制表符、垂直制表符4. \S 匹配除空白字符以外的任何一个字符5. \w 匹配任意一个数字或字母或下划线6. \W 匹配除数字、字母、下划线以外的任意一个字符 12345671. . 匹配除换行符以外的任意一个字符2. * 匹配0次、或1次、或多次其前面的字符3. + 匹配1次或多次其前面的字符4. ? 匹配0次或1次其前面的字符5. &#123;n&#125; 表示其前面字符恰好出现n次6. &#123;n,&#125; 表示其前面字符出现不少于n次7. &#123;n,m&#125; 表示其前面的字符至少出现n次，最多出现m次 121. ^或\A 匹配字符串开始位置2. $或者\Z 匹配字符串的结束位置 11. | 匹配两个或多个模式 1231. [] 匹 配方括号中的任意一个字符2. [^] 匹配除方括号中字符以外的任意一个字符3. () 将括号中作为一个整体以便将其中的内容获取到 常用于配合的函数 1.preg_match() 2.preg_match_all() 3.preg_replace() 正则表达式如何使用呢？ 正则表达式 /^\D+\d+@\d+.\D+/匹配的字符串 ”yangfan160816@163.com“ 结果为 yangfan160816@163.com 作者：YangFan链接：https://youlove.club来源：Fan的小酒馆著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+        <tag>PHP</tag>
+        <tag>正则表达式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Windows下ShellCode编写笔记]]></title>
+    <url>%2F2019%2F11%2F27%2FShellCode%E7%BC%96%E5%86%99%E7%AC%94%E8%AE%B0%2F</url>
+    <content type="text"><![CDATA[查找Kernel32.dll加载到内存的位置12345678xor ecx,ecx mov eax,fs:[ecx+0x30] ; EAX = PEBmov eax,[eax+0xc] ; EAX = PEB-&gt;Ldrmov esi,[eax+0x14] ; ESI = PEB-&gt;Ldr.InMemOrderlodsd ; EAX = Second modulexchg eax,esi ; EAX = ESI, ESI = EAXlodsd ; EAX = Third(Kernel32)mov ebx,[eax+0x10] ; EBX = Base address （1-2行）第一条指令将ecx清零 第二条指令 为了避免产生空字节 不使用 mov eax,fs[30]而使用 mov eax,fs[ecx+0x30] （3-4行）现在PEB指针已经保存到eax寄存器，mov eax,[eax+0xc] 取得Ldr，mov esi,[eax+0x14] 是顺着Ldr的0x14偏移处获得模块列表 （5-7行）当前位于“inMemOrderLinks”链表的第一个模块，即“program.exe”,此处，该结构的 第一个元素Fink指针，指向下一模块，然后，我们将这个指针存放在esi寄存器，接着， lodsd指令会根据esi寄存器指向的地址读取双字，即mov eax，[esi]，esi=esi+4； eax = 第二个模块 , 即ntdll.dll，通过xchg eax，esi 交换 eax 和 esi 寄存器中的值，便把 第二个模块的指针存放到esi寄存器，再次调用lodsd，便得到第三个模块地址，即Kernel32.dll （8行） 此时，eax寄存器指向kernel32.dll的“InMemoryOrderLinks”，再加上0x10字节便可以获得 “DllBase”指针，即kernel32.dll加载到内存中的位置 找到Kernel32.dll导出表1234567mov edx,[ebx+03c] ; EDX = Dos-&gt;e_lfanewadd edx,ebx ; EDX = PE Headermov edx,[edx+0x78] ; EDX = Offset export tableadd edx,ebx ; EDX = Export tablemov esi,[edx+0x20] ; ESI = Offset name tableadd esi,ebx ; ESI = Names tablexor ecx,ecx ; EXC = 0 上面的代码找到了Kernel32.dll加载到内存中的位置， （1-2行）: 那么可以在0x3C偏移处获得e_lfanew指针，因为MS-DOS头的大小是0x40字节，而最后4个字节就是e_lfanew指针。 因为这个指针是相对于基地址的（只是偏移值，不是绝对地址），需要把基地址ebx加上 这个偏移值。 （3-4行）：在PE头的0x78偏移处，可以找到导出表的”DataDirectory”.因为PE头（签名，文件头，可选头）在”DataDirectory” 之前的大小是0x78字节,而导出表”DataDirectory”表的第一个元素，再次把edx寄存器加上这个数值，就能抵达 kernel32.dll导出表 （5-7行）：在IMAGE_EXPORT_DIRECTORY结构上，可以在0x20偏移处获得“AddressOfNames”的指针，从而导出函数的名称 这个步骤是需要的，尝试通过函数名来查找函数，也还有其他的方法。接下来将指针保存到esi寄存器，然后把ecx寄存器清零。 AddressOfNames 一个指针数组（此处的指针是相对于映像基址的偏移而已，即Kernel32.dll加载到内存中的位置）。 获取GetProcAddress函数的序号找到函数名称 和函数名称的序号 12345678910Get_Function:inc ecx ; Increment the ordinallodsd ; Get name offsetadd eax,ebx ; Get function namecmp dword ptr[eax],0x50746547 ; GetPjnz Get_Function cmp dword ptr[eax+0x4],0x41636f72 ; rocAjnz Get_Functioncmp dword ptr[eax+0x8],0x65726464 ; ddrejnz Get_Function （1-2行）：第一行是个标号，用于跳转到这个地方执行。第二行自增ecx寄存器，是函数的计时器，也是函数的序号。 （3-4行）：上一段代码中，esi寄存器指向第一个函数的名称，lodsd指令意思是取得双字节数据，赋给eax寄存器， 即mov eax，[esi] ; esi = esi+4。然后把ebx（存放Kernel32的基址）加上这个偏移值便可以获取正确的指针。 lodsd指令会把esi寄存器的值增加4，这点方便我们不需要手动增加它的值，只需要再次调用便可以取得下一函数名 的指针。 （5-10行）：不断地检查获取到地字符是不是“GetProcAddress”，数字在内存中是逆序排列的。检查拆分三次检查字符。第一个是GetP 如果不匹配，jnz 指令跳转到Get_Funcction标签，继续比较下一个函数名，如果匹配就会比较后面4个字节，必须是“rocA”， 如果不是也会跳转到Get_Function标签，最后才是“ddre”。 找到GetProcAddress函数地址（根据函数的序号）12345678mov esi,[edx+0x24] ; ESI = Offset ordinalsadd esi,ebx ; ESI = Ordinals tablemov cx,[esi+ecx*2] ; CX = Number of functiondec ecx mov esi,[edx+0x1c] ; ESI = Offset address tableadd esi,ebx ; ESI = Address tablemov edx,[esi+ecx*4] ; EDX = Pointer(offset)add edx,ebx ; EDX = GetProcAddress （1-2行）：edx寄存器指向 IMAGE_EXPORT_DIRECTORY结构。在此结构的0x24偏移处，可以找到AddressOfNameOrdinals偏移，第二行， 这个偏移值加上ebx寄存器，即Kernel32.dll基地址。可以获得指向名称序号表的有效指针。 （3-4行）：esi寄存器指向名称的序号，这个数组包含2个字节大小的数字。已经知道GetProcAddress函数名称的序号（索引） 存储在ecx寄存器，便可以获得函数地址的序号（索引）。需要递减这个数字，名称序号从0开始。 （5-6行）：在0x1c偏移处，我们可以找到AddressOfFunctions，指向指针的数组，只需要加上Kernel32.dll的基地址便可以访问这个数组的开始位置。 （7-8行）：ecx寄存器存储了AddressOfFunctions[ecx]位置读取GetProcAddress的函数指针（是相对于映像基地址的偏移）。我们使用ecx*4，每个 指针占用4个字节，且esi指针指向数组的开始位置，在第八行，加上映像的基地址之后，edx寄存器便可以指向GetProcAddress函数。 获取LoadLibrary函数地址12345678910xor ecx,ecx ; ECX = 0push ebx ; Kernel32 base addresspush edx ; GetProcAddresspush ecx ; 0push 0x41797261 ; aryApush 0x7262694c ; Librpush 0x64616f4c ; Loadpush esp ; &quot;LoadLibraryA&quot;push ebx ; Kernel32 base addresscall edx ; GetProcAddress(LL) 加载user32.dll 动态链接库12345678910add esp,0xc ; pop &quot;LoadLibraryA&quot;pop ecx ; ECX = 0push eax ; EAX = LoadLibraryApush ecx mov cx,0x6c6c ;11push ecxpush 0x642e3233 ; 32.dpush 0x72657375 ; userpush esp ; &quot;user32.dll&quot;call eax ; LoadLibrary(&quot;user32.dll&quot;) 功能区域获取SwapMouseButton函数地址（通过调用GetProcAddress的方式来获取SwapMouseButton函数的地址）12345678910111213add esp,0x10 ; Clean stackmov edx,[esp+0x4] ; EDX = GetProcAddressxor ecx,ecx ; ECX = 0push ecx mov ecx,0x616E6F74 ; tonapush ecxsub dword ptr[esp+0x3],0x61 ; Remove &quot;a&quot;push 0x74754265 ; eButpush 0x73756F4D ; Mouspush 0x70617753 ; Swappush esp ; &quot;SwapMouseButton&quot;push eax ; user32.dll addresscall edx ; GetProc(SwapMouseButton) 调用 SwapMouserButton函数12345add esp,0x14 ; Cleanup stackxor ecx,ecx ; ECX =0 inc ecx ; truepush ecx ; 1call eax ; Swap! 关闭程序在Kernel32.dll 中查找 ExitProcess函数地址（为了让程序优雅关闭）add esp,0x4 ; Clean stack pop edx ; GetProcAddress pop ebx ; Kernel32.dll base address mov ecx,0x61737365 ; essa push ecx push dword ptr [esp+0x3],0x61 ; Remove &quot;a&quot; push 0x636f7250 ; Proc push 0x74697845 ; Exit push esp push ebx ; Kernel32.dll base address call edx ; GetProc(Exec)调用ExitProcess 函数xor ecx,ecx ; ECX =0push ecx ; Retrun code =0call eax ; ExitProcess 作者：YangFan链接：https://youlove.club来源：Fan的小酒馆著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>汇编语言</tag>
+        <tag>windows</tag>
+        <tag>ShellCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[操作系统的壳（Shell）]]></title>
     <url>%2F2019%2F10%2F22%2F%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A3%B3%EF%BC%88Shell%EF%BC%89%2F</url>
     <content type="text"><![CDATA[能更好的理解操作系统以及shell]]></content>
