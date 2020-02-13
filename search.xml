@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Nginx-Uwsgi-Django部署笔记]]></title>
+    <url>%2F2020%2F02%2F13%2FNginx-Uwsgi-Django%E9%83%A8%E7%BD%B2%E7%AC%94%E8%AE%B0%2F</url>
+    <content type="text"><![CDATA[0x01 安装 Nginxsudo apt-get install python-dev nginx 0x02 安装Uwsgisudo pip3 install uwsgi 0x03 配置 Nginx 新建配置 sudo vim /etc/nginx/sites-available/项目名.conf 写入内容 1234567891011121314151617181920212223upstream 项目名&#123; # Test8_admin.sock 用于 nginx 与uwsgi 进行socket通信 server unix:///tmp/项目名.sock;&#125;server &#123; # 监听端口 listen 8888; # 访问地址 server_name 127.0.0.1; # charset utf-8; client_max_body_size 75M; location /media &#123; alias /home/yangfan/Code/Python/Project/Test8_admin/blog/media; &#125; location /static &#123; alias /home/yangfan/Code/Python/Project/Test8_admin/blog/static; &#125; location / &#123; uwsgi_pass 项目名; include /etc/nginx/uwsgi_params; &#125;&#125; 检查配置是否出错 sudo service nginx configtest 激活 sudo ln -s /etc/nginx/sites-available/项目名.conf /etc/nginx/sites-enabled/项目名.conf 0x04 配置 uwsgi.ini 在项目目录下新建配置 sudo vim uwsgi.ini 写入内容 12345678910[uwsgi]会生成Test8_admin.sock 文件 在 /tmp目录下 作用就是与Nginx 进行socket通信socket = /tmp/Test8_admin.sock# 设置项目目录chdir = /xx/xx/项目目录#module = 项目名称.wsgi:application# 设置权限chmod-socket = 666 0x05 启动 启动nginx sudo service nginx start 启动uwsgi uwsgi --ini uwsgi.ini 0x06 问题排错nginx 日志文件 cat /var/log/nginx/error.log 服务器常见错误代码 500 Internal Server Error 内部服务器错误502 Bad Gateway web服务器错误 参考： https://blog.csdn.net/hj7jay/article/details/72518027 作者：YangFan链接：https://youlove.club来源：Fan的小酒馆著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>服务器部署</tag>
+        <tag>Ubuntu18.04</tag>
+        <tag>Nginx</tag>
+        <tag>Django</tag>
+        <tag>Uwsgi</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[原反补]]></title>
     <url>%2F2019%2F11%2F27%2F%E5%8E%9F%E5%8F%8D%E8%A1%A5%2F</url>
     <content type="text"><![CDATA[0x01 数据的分类 0x02 原反补原码：最高位表示数的符号，其他位表示数值例：[+7]原 = 0000 0111b [-7]原 = 1000 0111b 反码：正数的反码和原码相同 例：[+7]原 = 0000 0111b = [+7]原 复数的反码是由其原码的符号位不变，其余位按位取反例：[-7]反 = 1111 1000b 补码：正数的补码跟原码相同 例：[+7]补 = 0000 0111b = [+7]原 负数的补码是由其原码的符号位不变，其余位按位取反，在最低位加1 例：[-7]补 = 1111 1001 作者：YangFan链接：https://youlove.club来源：Fan的小酒馆著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。]]></content>
