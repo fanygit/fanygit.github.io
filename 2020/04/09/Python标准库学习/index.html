@@ -32,30 +32,30 @@
 
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/fanygit/images/apple-touch-icon-next.png?v=7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/fanygit/images/favicon-32x32-next.png?v=7.2.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/fanygit/images/favicon-16x16-next.png?v=7.2.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
 
 
-  <link rel="mask-icon" href="/fanygit/images/logo.svg?v=7.2.0" color="#222">
-
-
-
-
-
-
-<link rel="stylesheet" href="/fanygit/css/main.css?v=7.2.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
 
 
 
 
 
 
-<link rel="stylesheet" href="/fanygit/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
 
 
 
@@ -67,7 +67,7 @@
 <script id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/fanygit/',
+    root: '/',
     scheme: 'Pisces',
     version: '7.2.0',
     sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
@@ -86,7 +86,7 @@
     },
     localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
     search: {
-      root: '/fanygit/',
+      root: '/',
       path: 'search.xml'
     },
     tabs: true,
@@ -103,11 +103,11 @@
 <meta name="keywords" content="Python,库学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python标准库学习">
-<meta property="og:url" content="https://github.com/fanygit/2020/04/09/Python标准库学习/index.html">
+<meta property="og:url" content="https://fanygit.github.io/2020/04/09/Python标准库学习/index.html">
 <meta property="og:site_name" content="Fan的小酒馆">
 <meta property="og:description" content="说明所有库(除开常用标准库)，按照案例实现的方式，对重要代码进行了总结，方便多次进行复习。数据包制作/网络通信/扫描相关模块包含了socket、scapy、nmap库应用程序服务相关模块包含了paramiko、ftplib、pymysql库网络请求请求模块包含了urllib、urllib2、request库进程/多线程/多进程/队列相关模块包含了subprocess、threading、multi">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-09T14:54:24.595Z">
+<meta property="og:updated_time" content="2020-08-01T03:58:06.812Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python标准库学习">
 <meta name="twitter:description" content="说明所有库(除开常用标准库)，按照案例实现的方式，对重要代码进行了总结，方便多次进行复习。数据包制作/网络通信/扫描相关模块包含了socket、scapy、nmap库应用程序服务相关模块包含了paramiko、ftplib、pymysql库网络请求请求模块包含了urllib、urllib2、request库进程/多线程/多进程/队列相关模块包含了subprocess、threading、multi">
@@ -118,7 +118,7 @@
 
   
   
-  <link rel="canonical" href="https://github.com/fanygit/2020/04/09/Python标准库学习/">
+  <link rel="canonical" href="https://fanygit.github.io/2020/04/09/Python标准库学习/">
 
 
 
@@ -187,16 +187,12 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/fanygit/" class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Fan的小酒馆</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
-      
-        <p class="site-subtitle">往简单处想，往认真处行</p>
-      
     
     
   </div>
@@ -229,7 +225,7 @@
 
     
 
-    <a href="/fanygit/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
 
   </li>
         
@@ -245,7 +241,7 @@
 
     
 
-    <a href="/fanygit/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
 
   </li>
         
@@ -261,7 +257,7 @@
 
     
 
-    <a href="/fanygit/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
 
   </li>
         
@@ -277,7 +273,7 @@
 
     
 
-    <a href="/fanygit/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
 
   </li>
         
@@ -293,7 +289,7 @@
 
     
 
-    <a href="/fanygit/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
 
   </li>
         
@@ -309,7 +305,7 @@
 
     
 
-    <a href="/fanygit/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
+    <a href="/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
 
   </li>
 
@@ -382,12 +378,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/fanygit/fanygit/2020/04/09/Python标准库学习/">
+    <link itemprop="mainEntityOfPage" href="https://fanygit.github.io/2020/04/09/Python标准库学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang Fan">
       <meta itemprop="description" content="千里之行，始于足下。">
-      <meta itemprop="image" content="/fanygit/images/tx5.gif">
+      <meta itemprop="image" content="/images/tx5.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -425,13 +421,23 @@
                 
               
 
-              <time title="创建时间：2020-04-09 22:05:53 / 修改时间：22:54:24" itemprop="dateCreated datePublished" datetime="2020-04-09T22:05:53+08:00">2020-04-09</time>
+              <time title="创建时间：2020-04-09 22:05:53" itemprop="dateCreated datePublished" datetime="2020-04-09T22:05:53+08:00">2020-04-09</time>
             </span>
           
 
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-08-01 11:58:06" itemprop="dateModified" datetime="2020-08-01T11:58:06+08:00">2020-08-01</time>
+              </span>
             
           
 
@@ -444,7 +450,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/fanygit/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
 
                 
                 
@@ -477,8 +483,8 @@
       <span class="post-meta-item-text">评论数：</span>
     
   
-    <a href="/fanygit/2020/04/09/Python标准库学习/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/fanygit/2020/04/09/Python标准库学习/" itemprop="commentCount"></span>
+    <a href="/2020/04/09/Python标准库学习/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/09/Python标准库学习/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -505,7 +511,8 @@
       
 
       
-        <h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>所有库(除开常用标准库)，按照案例实现的方式，对重要代码进行了总结，方便多次进行复习。<br>数据包制作/网络通信/扫描相关模块包含了<strong>socket</strong>、<strong>scapy</strong>、<strong>nmap</strong>库<br>应用程序服务相关模块包含了paramiko、ftplib、pymysql库<br>网络请求请求模块包含了urllib、urllib2、request库<br>进程/多线程/多进程/队列相关模块包含了subprocess、threading、multiprocessing、queue库<br>命令行解析有argparse库<br>编码解码包含了base64、hashlib库<br>常用标准库包含了time、random、re、sys、os库</p>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\fanygit\assets\css\APlayer.min.css"><script src="\fanygit\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\fanygit\assets\js\Meting.min.js"></script><h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>所有库(除开常用标准库)，按照案例实现的方式，对重要代码进行了总结，方便多次进行复习。<br>数据包制作/网络通信/扫描相关模块包含了<strong>socket</strong>、<strong>scapy</strong>、<strong>nmap</strong>库<br>应用程序服务相关模块包含了paramiko、ftplib、pymysql库<br>网络请求请求模块包含了urllib、urllib2、request库<br>进程/多线程/多进程/队列相关模块包含了subprocess、threading、multiprocessing、queue库<br>命令行解析有argparse库<br>编码解码包含了base64、hashlib库<br>常用标准库包含了time、random、re、sys、os库</p>
+<a id="more"></a>
 <h3 id="数据包制作-网络通信-扫描相关模块"><a href="#数据包制作-网络通信-扫描相关模块" class="headerlink" title="数据包制作/网络通信/扫描相关模块"></a>数据包制作/网络通信/扫描相关模块</h3><h4 id="socket"><a href="#socket" class="headerlink" title="socket"></a>socket</h4><p>功能： socket实现简单服务端客户端通信(C/S)</p>
 <p>服务端</p>
 <p>0x01创建socket对象（AF_INET=IPv4，SOCK_STREAM=流式socket，for TCP）<br>sk = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</p>
@@ -1131,9 +1138,9 @@
         
         <div class="post-tags">
           
-            <a href="/fanygit/tags/Python/" rel="tag"># Python</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
-            <a href="/fanygit/tags/库学习/" rel="tag"># 库学习</a>
+            <a href="/tags/库学习/" rel="tag"># 库学习</a>
           
         </div>
       
@@ -1146,7 +1153,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/fanygit/2020/02/13/Nginx-Uwsgi-Django部署笔记/" rel="next" title="Nginx-Uwsgi-Django部署笔记">
+              <a href="/2020/02/13/Nginx-Uwsgi-Django部署笔记/" rel="next" title="Nginx-Uwsgi-Django部署笔记">
                 <i class="fa fa-chevron-left"></i> Nginx-Uwsgi-Django部署笔记
               </a>
             
@@ -1214,7 +1221,7 @@
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   
-    <img class="site-author-image" itemprop="image" src="/fanygit/images/tx5.gif" alt="Yang Fan">
+    <img class="site-author-image" itemprop="image" src="/images/tx5.gif" alt="Yang Fan">
   
   <p class="site-author-name" itemprop="name">Yang Fan</p>
   <div class="site-description motion-element" itemprop="description">千里之行，始于足下。</div>
@@ -1225,7 +1232,7 @@
     
       <div class="site-state-item site-state-posts">
         
-          <a href="/fanygit/archives/">
+          <a href="/archives/">
         
           <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
@@ -1239,7 +1246,7 @@
       <div class="site-state-item site-state-categories">
         
           
-            <a href="/fanygit/categories/">
+            <a href="/categories/">
           
         
         
@@ -1266,7 +1273,7 @@
       <div class="site-state-item site-state-tags">
         
           
-            <a href="/fanygit/tags/">
+            <a href="/tags/">
           
         
         
@@ -1372,7 +1379,7 @@
       
         
       
-        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
     
       <span class="links-of-author-item">
@@ -1421,7 +1428,7 @@
         </li>
       
         <li class="links-of-blogroll-item">
-          <a href="https://github.com/CHYbeta/Web-Security-Learning" title="https://github.com/CHYbeta/Web-Security-Learning">Web漏洞总结</a>
+          <a href="https://github.com/CHYbeta/Web-Security-Learning" title="https://github.com/CHYbeta/Web-Security-Learning" rel="noopener" target="_blank">Web漏洞总结</a>
         </li>
       
         <li class="links-of-blogroll-item">
@@ -1429,7 +1436,7 @@
         </li>
       
         <li class="links-of-blogroll-item">
-          <a href="https://fanygit.github.io/Python-Courseware-/index.html" title="https://fanygit.github.io/Python-Courseware-/index.html" rel="noopener" target="_blank">Python手册</a>
+          <a href="https://fanygit.github.io/Python-Courseware-/index.html" title="https://fanygit.github.io/Python-Courseware-/index.html">Python手册</a>
         </li>
       
     </ul>
@@ -1607,47 +1614,47 @@ setInterval("createtime()",250);
 
 
   
-  <script src="/fanygit/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
 
   
-  <script src="/fanygit/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
   
-  <script src="/fanygit/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
 
 
 
-  <script src="/fanygit/js/utils.js?v=7.2.0"></script>
+  <script src="/js/utils.js?v=7.2.0"></script>
 
-  <script src="/fanygit/js/motion.js?v=7.2.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/fanygit/js/affix.js?v=7.2.0"></script>
-
-  <script src="/fanygit/js/schemes/pisces.js?v=7.2.0"></script>
+  <script src="/js/motion.js?v=7.2.0"></script>
 
 
 
   
-  <script src="/fanygit/js/scrollspy.js?v=7.2.0"></script>
-<script src="/fanygit/js/post-details.js?v=7.2.0"></script>
+  
 
 
+  <script src="/js/affix.js?v=7.2.0"></script>
 
-  <script src="/fanygit/js/next-boot.js?v=7.2.0"></script>
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
 
   
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
 
   
 
   
 
+  
+
 
   
 
@@ -1663,7 +1670,7 @@ setInterval("createtime()",250);
 
 
 
-  <script src="/fanygit/js/local-search.js?v=7.2.0"></script>
+  <script src="/js/local-search.js?v=7.2.0"></script>
 
 
 

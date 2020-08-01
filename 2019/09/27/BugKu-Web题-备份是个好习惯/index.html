@@ -32,30 +32,30 @@
 
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/fanygit/images/apple-touch-icon-next.png?v=7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/fanygit/images/favicon-32x32-next.png?v=7.2.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/fanygit/images/favicon-16x16-next.png?v=7.2.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
 
 
-  <link rel="mask-icon" href="/fanygit/images/logo.svg?v=7.2.0" color="#222">
-
-
-
-
-
-
-<link rel="stylesheet" href="/fanygit/css/main.css?v=7.2.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
 
 
 
 
 
 
-<link rel="stylesheet" href="/fanygit/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
 
 
 
@@ -67,7 +67,7 @@
 <script id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/fanygit/',
+    root: '/',
     scheme: 'Pisces',
     version: '7.2.0',
     sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
@@ -86,7 +86,7 @@
     },
     localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
     search: {
-      root: '/fanygit/',
+      root: '/',
       path: 'search.xml'
     },
     tabs: true,
@@ -103,7 +103,7 @@
 <meta name="keywords" content="BugKu,web-代码审计,writeup">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BugKu-Web题[备份是个好习惯]">
-<meta property="og:url" content="https://github.com/fanygit/2019/09/27/BugKu-Web题-备份是个好习惯/index.html">
+<meta property="og:url" content="https://fanygit.github.io/2019/09/27/BugKu-Web题-备份是个好习惯/index.html">
 <meta property="og:site_name" content="Fan的小酒馆">
 <meta property="og:description" content="0x01 分析 打开网页，发现是一堆md5加密后的字符。但是题目中提到了备份两个字眼，所以直接就在网页后面加上index.php.swp 发现没有这个文件，后面又加上 index.php.bak 。存在这个文件，直接下载在来打开得到下面代码。  1234567891011121314151617181920212223&amp;lt;?phpinclude_once &amp;quot;flag.php&amp;quot">
 <meta property="og:locale" content="zh-CN">
@@ -121,7 +121,7 @@
 
   
   
-  <link rel="canonical" href="https://github.com/fanygit/2019/09/27/BugKu-Web题-备份是个好习惯/">
+  <link rel="canonical" href="https://fanygit.github.io/2019/09/27/BugKu-Web题-备份是个好习惯/">
 
 
 
@@ -190,16 +190,12 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/fanygit/" class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Fan的小酒馆</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
-      
-        <p class="site-subtitle">往简单处想，往认真处行</p>
-      
     
     
   </div>
@@ -232,7 +228,7 @@
 
     
 
-    <a href="/fanygit/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
 
   </li>
         
@@ -248,7 +244,7 @@
 
     
 
-    <a href="/fanygit/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
 
   </li>
         
@@ -264,7 +260,7 @@
 
     
 
-    <a href="/fanygit/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
 
   </li>
         
@@ -280,7 +276,7 @@
 
     
 
-    <a href="/fanygit/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
 
   </li>
         
@@ -296,7 +292,7 @@
 
     
 
-    <a href="/fanygit/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
 
   </li>
         
@@ -312,7 +308,7 @@
 
     
 
-    <a href="/fanygit/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
+    <a href="/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
 
   </li>
 
@@ -385,12 +381,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/fanygit/fanygit/2019/09/27/BugKu-Web题-备份是个好习惯/">
+    <link itemprop="mainEntityOfPage" href="https://fanygit.github.io/2019/09/27/BugKu-Web题-备份是个好习惯/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang Fan">
       <meta itemprop="description" content="千里之行，始于足下。">
-      <meta itemprop="image" content="/fanygit/images/tx5.gif">
+      <meta itemprop="image" content="/images/tx5.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -457,7 +453,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/fanygit/categories/Writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a></span>
 
                 
                 
@@ -490,8 +486,8 @@
       <span class="post-meta-item-text">评论数：</span>
     
   
-    <a href="/fanygit/2019/09/27/BugKu-Web题-备份是个好习惯/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/fanygit/2019/09/27/BugKu-Web题-备份是个好习惯/" itemprop="commentCount"></span>
+    <a href="/2019/09/27/BugKu-Web题-备份是个好习惯/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/09/27/BugKu-Web题-备份是个好习惯/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -518,7 +514,7 @@
       
 
       
-        <h4 id="0x01-分析"><a href="#0x01-分析" class="headerlink" title="0x01 分析"></a>0x01 分析</h4><blockquote>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\fanygit\assets\css\APlayer.min.css"><script src="\fanygit\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\fanygit\assets\js\Meting.min.js"></script><h4 id="0x01-分析"><a href="#0x01-分析" class="headerlink" title="0x01 分析"></a>0x01 分析</h4><blockquote>
 <p>打开网页，发现是一堆md5加密后的字符。但是题目中提到了备份两个字眼，所以直接就在网页后面加上index.php.swp 发现没有这个文件，后面又加上 index.php.bak 。存在这个文件，直接下载在来打开得到下面代码。</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">include_once &quot;flag.php&quot;;</span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = strstr($_SERVER[&apos;REQUEST_URI&apos;], &apos;?&apos;);</span><br><span class="line">//获取 访问页面的url 然后 截取?及后面的字符 赋值给 $str</span><br><span class="line"></span><br><span class="line">$str = substr($str,1);</span><br><span class="line">//截取 $str 第第一位及后边字符</span><br><span class="line"></span><br><span class="line">$str = str_replace(&apos;key&apos;,&apos;&apos;,$str);</span><br><span class="line">//把 $str 中的存在 &apos;key&apos; 字符 替换为 &apos;&apos;</span><br><span class="line"></span><br><span class="line">parse_str($str);</span><br><span class="line">//#parse_str()把查询的字符串解析到变量中</span><br><span class="line"></span><br><span class="line">echo md5($key1);</span><br><span class="line"></span><br><span class="line">echo md5($key2);</span><br><span class="line">if(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2)&#123;</span><br><span class="line">    echo $flag.&quot;取得flag&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
@@ -572,11 +568,11 @@
         
         <div class="post-tags">
           
-            <a href="/fanygit/tags/BugKu/" rel="tag"># BugKu</a>
+            <a href="/tags/BugKu/" rel="tag"># BugKu</a>
           
-            <a href="/fanygit/tags/web-代码审计/" rel="tag"># web-代码审计</a>
+            <a href="/tags/web-代码审计/" rel="tag"># web-代码审计</a>
           
-            <a href="/fanygit/tags/writeup/" rel="tag"># writeup</a>
+            <a href="/tags/writeup/" rel="tag"># writeup</a>
           
         </div>
       
@@ -589,7 +585,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/fanygit/2019/09/27/BugKu-Web题[flag在index里]/" rel="next" title="BugKu-Web题[flag在index里]">
+              <a href="/2019/09/27/BugKu-Web题[flag在index里]/" rel="next" title="BugKu-Web题[flag在index里]">
                 <i class="fa fa-chevron-left"></i> BugKu-Web题[flag在index里]
               </a>
             
@@ -599,7 +595,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/fanygit/2019/09/27/Discuz!-Writeup/" rel="prev" title="Discuz! Writeup">
+              <a href="/2019/09/27/Discuz!-Writeup/" rel="prev" title="Discuz! Writeup">
                 Discuz! Writeup <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -661,7 +657,7 @@
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   
-    <img class="site-author-image" itemprop="image" src="/fanygit/images/tx5.gif" alt="Yang Fan">
+    <img class="site-author-image" itemprop="image" src="/images/tx5.gif" alt="Yang Fan">
   
   <p class="site-author-name" itemprop="name">Yang Fan</p>
   <div class="site-description motion-element" itemprop="description">千里之行，始于足下。</div>
@@ -672,7 +668,7 @@
     
       <div class="site-state-item site-state-posts">
         
-          <a href="/fanygit/archives/">
+          <a href="/archives/">
         
           <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
@@ -686,7 +682,7 @@
       <div class="site-state-item site-state-categories">
         
           
-            <a href="/fanygit/categories/">
+            <a href="/categories/">
           
         
         
@@ -713,7 +709,7 @@
       <div class="site-state-item site-state-tags">
         
           
-            <a href="/fanygit/tags/">
+            <a href="/tags/">
           
         
         
@@ -819,7 +815,7 @@
       
         
       
-        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
     
       <span class="links-of-author-item">
@@ -868,7 +864,7 @@
         </li>
       
         <li class="links-of-blogroll-item">
-          <a href="https://github.com/CHYbeta/Web-Security-Learning" title="https://github.com/CHYbeta/Web-Security-Learning">Web漏洞总结</a>
+          <a href="https://github.com/CHYbeta/Web-Security-Learning" title="https://github.com/CHYbeta/Web-Security-Learning" rel="noopener" target="_blank">Web漏洞总结</a>
         </li>
       
         <li class="links-of-blogroll-item">
@@ -876,7 +872,7 @@
         </li>
       
         <li class="links-of-blogroll-item">
-          <a href="https://fanygit.github.io/Python-Courseware-/index.html" title="https://fanygit.github.io/Python-Courseware-/index.html" rel="noopener" target="_blank">Python手册</a>
+          <a href="https://fanygit.github.io/Python-Courseware-/index.html" title="https://fanygit.github.io/Python-Courseware-/index.html">Python手册</a>
         </li>
       
     </ul>
@@ -1054,47 +1050,47 @@ setInterval("createtime()",250);
 
 
   
-  <script src="/fanygit/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
 
   
-  <script src="/fanygit/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
   
-  <script src="/fanygit/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
 
 
 
-  <script src="/fanygit/js/utils.js?v=7.2.0"></script>
+  <script src="/js/utils.js?v=7.2.0"></script>
 
-  <script src="/fanygit/js/motion.js?v=7.2.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/fanygit/js/affix.js?v=7.2.0"></script>
-
-  <script src="/fanygit/js/schemes/pisces.js?v=7.2.0"></script>
+  <script src="/js/motion.js?v=7.2.0"></script>
 
 
 
   
-  <script src="/fanygit/js/scrollspy.js?v=7.2.0"></script>
-<script src="/fanygit/js/post-details.js?v=7.2.0"></script>
+  
 
 
+  <script src="/js/affix.js?v=7.2.0"></script>
 
-  <script src="/fanygit/js/next-boot.js?v=7.2.0"></script>
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
 
   
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
 
   
 
   
 
+  
+
 
   
 
@@ -1110,7 +1106,7 @@ setInterval("createtime()",250);
 
 
 
-  <script src="/fanygit/js/local-search.js?v=7.2.0"></script>
+  <script src="/js/local-search.js?v=7.2.0"></script>
 
 
 
