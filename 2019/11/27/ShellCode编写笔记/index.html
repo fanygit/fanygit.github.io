@@ -194,6 +194,10 @@
       </a>
     </div>
     
+      
+        <p class="site-subtitle">弱小不是生存的阻碍，无知和傲慢才是</p>
+      
+    
     
   </div>
 
@@ -501,7 +505,7 @@
       
 
       
-        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\fanygit\assets\css\APlayer.min.css"><script src="\fanygit\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\fanygit\assets\js\Meting.min.js"></script><h4 id="查找Kernel32-dll加载到内存的位置"><a href="#查找Kernel32-dll加载到内存的位置" class="headerlink" title="查找Kernel32.dll加载到内存的位置"></a>查找Kernel32.dll加载到内存的位置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xor ecx,ecx                     </span><br><span class="line">mov eax,fs:[ecx+0x30]    ;    EAX = PEB</span><br><span class="line">mov eax,[eax+0xc]        ;    EAX = PEB-&gt;Ldr</span><br><span class="line">mov esi,[eax+0x14]       ;    ESI = PEB-&gt;Ldr.InMemOrder</span><br><span class="line">lodsd                    ;    EAX = Second module</span><br><span class="line">xchg eax,esi             ;    EAX = ESI,    ESI = EAX</span><br><span class="line">lodsd                    ;    EAX = Third(Kernel32)</span><br><span class="line">mov ebx,[eax+0x10]       ;    EBX = Base address</span><br></pre></td></tr></table></figure>
+        <h4 id="查找Kernel32-dll加载到内存的位置"><a href="#查找Kernel32-dll加载到内存的位置" class="headerlink" title="查找Kernel32.dll加载到内存的位置"></a>查找Kernel32.dll加载到内存的位置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xor ecx,ecx                     </span><br><span class="line">mov eax,fs:[ecx+0x30]    ;    EAX = PEB</span><br><span class="line">mov eax,[eax+0xc]        ;    EAX = PEB-&gt;Ldr</span><br><span class="line">mov esi,[eax+0x14]       ;    ESI = PEB-&gt;Ldr.InMemOrder</span><br><span class="line">lodsd                    ;    EAX = Second module</span><br><span class="line">xchg eax,esi             ;    EAX = ESI,    ESI = EAX</span><br><span class="line">lodsd                    ;    EAX = Third(Kernel32)</span><br><span class="line">mov ebx,[eax+0x10]       ;    EBX = Base address</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>   （1-2行）第一条指令将ecx清零<br>      第二条指令 为了避免产生空字节 不使用 mov eax,fs[30]而使用 mov eax,fs[ecx+0x30]<br>   （3-4行）现在PEB指针已经保存到eax寄存器，mov eax,[eax+0xc]    取得Ldr，mov esi,[eax+0x14]<br>            是顺着Ldr的0x14偏移处获得模块列表<br>   （5-7行）当前位于“inMemOrderLinks”链表的第一个模块，即“program.exe”,此处，该结构的<br>            第一个元素Fink指针，指向下一模块，然后，我们将这个指针存放在esi寄存器，接着，<br>            lodsd指令会根据esi寄存器指向的地址读取双字，即mov eax，[esi]，esi=esi+4；<br>            eax = 第二个模块 , 即ntdll.dll，通过xchg eax，esi 交换 eax 和 esi 寄存器中的值，便把<br>            第二个模块的指针存放到esi寄存器，再次调用lodsd，便得到第三个模块地址，即Kernel32.dll<br>   （8行）    此时，eax寄存器指向kernel32.dll的“InMemoryOrderLinks”，再加上0x10字节便可以获得<br>            “DllBase”指针，即kernel32.dll加载到内存中的位置</p>

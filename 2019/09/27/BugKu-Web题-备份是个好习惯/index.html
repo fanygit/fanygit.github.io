@@ -197,6 +197,10 @@
       </a>
     </div>
     
+      
+        <p class="site-subtitle">弱小不是生存的阻碍，无知和傲慢才是</p>
+      
+    
     
   </div>
 
@@ -514,7 +518,7 @@
       
 
       
-        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\fanygit\assets\css\APlayer.min.css"><script src="\fanygit\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\fanygit\assets\js\Meting.min.js"></script><h4 id="0x01-分析"><a href="#0x01-分析" class="headerlink" title="0x01 分析"></a>0x01 分析</h4><blockquote>
+        <h4 id="0x01-分析"><a href="#0x01-分析" class="headerlink" title="0x01 分析"></a>0x01 分析</h4><blockquote>
 <p>打开网页，发现是一堆md5加密后的字符。但是题目中提到了备份两个字眼，所以直接就在网页后面加上index.php.swp 发现没有这个文件，后面又加上 index.php.bak 。存在这个文件，直接下载在来打开得到下面代码。</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">include_once &quot;flag.php&quot;;</span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = strstr($_SERVER[&apos;REQUEST_URI&apos;], &apos;?&apos;);</span><br><span class="line">//获取 访问页面的url 然后 截取?及后面的字符 赋值给 $str</span><br><span class="line"></span><br><span class="line">$str = substr($str,1);</span><br><span class="line">//截取 $str 第第一位及后边字符</span><br><span class="line"></span><br><span class="line">$str = str_replace(&apos;key&apos;,&apos;&apos;,$str);</span><br><span class="line">//把 $str 中的存在 &apos;key&apos; 字符 替换为 &apos;&apos;</span><br><span class="line"></span><br><span class="line">parse_str($str);</span><br><span class="line">//#parse_str()把查询的字符串解析到变量中</span><br><span class="line"></span><br><span class="line">echo md5($key1);</span><br><span class="line"></span><br><span class="line">echo md5($key2);</span><br><span class="line">if(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2)&#123;</span><br><span class="line">    echo $flag.&quot;取得flag&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>

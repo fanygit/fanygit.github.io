@@ -198,6 +198,10 @@
       </a>
     </div>
     
+      
+        <p class="site-subtitle">弱小不是生存的阻碍，无知和傲慢才是</p>
+      
+    
     
   </div>
 
@@ -515,7 +519,7 @@
       
 
       
-        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\fanygit\assets\css\APlayer.min.css"><script src="\fanygit\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\fanygit\assets\js\Meting.min.js"></script><h4 id="0x01分析"><a href="#0x01分析" class="headerlink" title="0x01分析"></a>0x01分析</h4><p><strong>这道考的是文件包含漏洞 ,但是过滤了  ../，根据这道题名提示 ，需要绕过 ../ 把index 文件包含出来 。</strong></p>
+        <h4 id="0x01分析"><a href="#0x01分析" class="headerlink" title="0x01分析"></a>0x01分析</h4><p><strong>这道考的是文件包含漏洞 ,但是过滤了  ../，根据这道题名提示 ，需要绕过 ../ 把index 文件包含出来 。</strong></p>
 <h4 id="0x02-绕过过滤的Payload"><a href="#0x02-绕过过滤的Payload" class="headerlink" title="0x02 绕过过滤的Payload"></a>0x02 绕过过滤的Payload</h4><p><code>php://filter/read=convert.base64-encode/resource=index.php</code></p>
 <p>意思是将index.php的源码打开以base64的形式输出</p>
 <p><img src="http://qiniu.tencentwl.cn/flag%E5%9C%A8index%E9%87%8C-1.1.png" alt="img1"></p>
