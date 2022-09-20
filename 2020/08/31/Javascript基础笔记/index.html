@@ -1,0 +1,2656 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+  
+  
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    
+    
+      
+      
+      
+      
+        
+        
+      
+      
+    
+    
+    
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=微软雅黑:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="javascript 高级、解释型语言  支持面向对象、命令式、函数式编程 开发商：Netscape(网景) 最初发行时间：1995  基础介绍    js输出语句        控制浏览器弹出一个警告框        alert(“内容”)     让计算机在页面中输出一个内容     document.write(&amp;quot;内容&amp;quot;)) 向body中输出一个内容      向控制台输">
+<meta name="keywords" content="javascript学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript基础笔记">
+<meta property="og:url" content="https://fanygit.github.io/2020/08/31/Javascript基础笔记/index.html">
+<meta property="og:site_name" content="Fan的小酒馆">
+<meta property="og:description" content="javascript 高级、解释型语言  支持面向对象、命令式、函数式编程 开发商：Netscape(网景) 最初发行时间：1995  基础介绍    js输出语句        控制浏览器弹出一个警告框        alert(“内容”)     让计算机在页面中输出一个内容     document.write(&amp;quot;内容&amp;quot;)) 向body中输出一个内容      向控制台输">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-12-13T14:52:30.079Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Javascript基础笔记">
+<meta name="twitter:description" content="javascript 高级、解释型语言  支持面向对象、命令式、函数式编程 开发商：Netscape(网景) 最初发行时间：1995  基础介绍    js输出语句        控制浏览器弹出一个警告框        alert(“内容”)     让计算机在页面中输出一个内容     document.write(&amp;quot;内容&amp;quot;)) 向body中输出一个内容      向控制台输">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://fanygit.github.io/2020/08/31/Javascript基础笔记/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Javascript基础笔记 | Fan的小酒馆</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fan的小酒馆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-playlist">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanygit.github.io/2020/08/31/Javascript基础笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fany">
+      <meta itemprop="description" content="路虽远，行则必达。">
+      <meta itemprop="image" content="/images/tx5.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Javascript基础笔记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-08-31 20:30:05" itemprop="dateCreated datePublished" datetime="2020-08-31T20:30:05+08:00">2020-08-31</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-12-13 22:52:30" itemprop="dateModified" datetime="2021-12-13T22:52:30+08:00">2021-12-13</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2020/08/31/Javascript基础笔记/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/31/Javascript基础笔记/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="javascript"><a href="#javascript" class="headerlink" title="javascript"></a>javascript</h2><ul>
+<li>高级、解释型语言 </li>
+<li>支持面向对象、命令式、函数式编程</li>
+<li>开发商：Netscape(网景)</li>
+<li>最初发行时间：1995</li>
+</ul>
+<p>基础介绍<br>    js输出语句<br>        控制浏览器弹出一个警告框<br>        alert(“内容”)</p>
+<pre><code>    让计算机在页面中输出一个内容
+    document.write(&quot;内容&quot;)) 向body中输出一个内容
+
+    向控制台输出一个内容
+    console.log(&quot;内容&quot;)
+
+
+js外部引入方式
+&lt;script type=&quot;text/javascript&quot; src=&quot;js/script.js&quot;&gt;&lt;/script&gt;
+
+注意事项
+    script标签一旦用于引入外部文件，就不能在标签内编写代码
+    如果需要在标签内编写则需要重新创建一个script来编写
+
+Unicode编码使用
+在js中使用Unicode编码
+    \u四位编码
+        - console.log(&quot;\u2620&quot;)
+
+在html页面中使用Unicode编码
+    &amp;#编码; 这里得编码需要得是十进制
+        - &lt;h1&gt;&amp;#9760;&lt;/h1&gt;</code></pre><p>基本语法</p>
+<pre><code>js注释
+    单行注释 //
+    多行注释 /* */
+
+js注意事项
+    1. js中严格区分大小写
+    2. js中每一条语句以分号(;)结尾
+        - 如果不写分号，浏览器会自动添加，但会影响性能
+    3. js中会忽略多个空格和换行
+
+声明变量
+    var a = 100; 
+
+标识符
+    - js中所有可以自主命名的都是标识符
+    - 例如：变量名、函数名、属性名
+    - 命名一个标识符需要遵守的规则
+        1. 标识符中可以含有字母、数字、_、$
+        2. 标识符不能以数字开头
+        3. 标识符不能是ES中的关键字或保留字
+        4. 标识符一般都采用驼峰命名法
+            - 首字母小写，每个单词的开头字母大写，其余字母小写
+    - js底层保存标识符实际上是采用Unicode编码
+    - 所以理论上讲，所有的utf-8中含有的内容都可以作为标识符
+
+数据类型(6种)
+
+    typeof 检查变量的类型
+    语法: typeof 变量
+
+    String 字符串
+        - &apos;&apos;
+        - &quot;&quot;
+
+        转义字符(\)
+            \   转义字符
+            \n  表示换行
+            \t  制表符
+            \\  表示\
+
+    Number 数值
+        - 包括整数和浮点数(小数)
+
+        js中表示数字的最大值
+            Number.MAX_VALUE
+
+        js中表示数字的最小值
+            Number.MIN_VALUE
+
+        Number表示的数字超过了最大值显示：
+            Infinity 表示正无穷
+            -Infinity 表示负无穷
+            用typeof 检查 类型为 Number
+
+        注意事项：
+            1. NaN 是一个特殊的数字
+            2. 如果使用js进行浮点运算，可能得到一个不精确的结果
+
+    Boolean 布尔值
+        - true
+        - false
+
+    Null 空值
+        - 表示一个为空的对象
+        - 使用typeof 检查 会返回 object
+
+    Undefined 未定义
+        - 当声明一个变量，但未赋值，值就为undefined
+
+    Object 对象
+        - Object属于引用数据类型
+
+强制类型转换
+    - 指将一个数据类型强制转换为其他的数据类型
+    - 类型转换主要指，将其他的数据类型，转换为
+        String NumBer Boolean
+
+    将其他数据类型转换为String
+        方式一：
+            - 调用被转换数据类型的toString()方法
+            - 该方法不会影响到原变量，它会将转换的结果返回
+            - 注意：null和undefined这两个值没有toString()方法
+                如果条用他们的方法，会报错
+
+        方式二：
+            - 调用String()函数，并将被转换的数据作为参数传递给函数
+            - 使用String()函数做强制类型转换时，
+                对于Number和Boolean实际上就是调用toString()方法
+                但是对于null和undefined,就不会调用toString()方法
+                    它会将null 直接转换为 &quot;null&quot;
+                    将undefined 直接转换为 &quot;undefined&quot;
+
+    将其他的数据类型转换为Number
+        方式一：
+            使用Number() 函数
+                - 字符串转数字
+                    1. 如果是纯数字的字符串，则直接将其转换为数字
+                    2. 如果字符串中有非数字的内容，则转换为NaN
+                    3. 如果字符串是一个空串或者是一个全是空格的字符串，则转换为0
+
+                - 布尔转数字
+                    true 转成 1
+                    false 转成 0
+
+                - null 转 数字  0
+
+                - undefined 转 数字 NaN
+
+        方式二：
+            - 这种方式专门用来针对字符串
+            - parseInt() 把一个字符串转换为一个整数
+            - parseFloat() 把一个字符串转换成一个浮点数
+
+    将其他数据类型转换为Boolean
+        - 使用Boolean()函数
+            - 数字 转 布尔
+                除了0 和 NaN，其余的都是true
+
+            - 字符串 转 布尔
+                除了空串，其余的都是true
+
+            - null 和 undefined 都会转换为false
+
+            - 对象也会转换为true
+
+运算符
+    算术运算符
+        当对非Number类型的值进行运算时，会将这些值转换为Number然后再运算
+        任何值和NaN做运算都得NaN
+        +   -   *   /   %
+
+    一元运算符
+        +   -
+
+    自增自减运算符
+        ++  --
+
+    逻辑运算符
+        !   &amp;&amp;  ||
+
+        &amp;&amp; || 非布尔值的情况
+            - 对于非布尔值进行与或运算时，
+                会先将其转换为布尔值，然后再运算，并且返回原值
+
+            - 与运算：
+                - 如果第一个值为true，则必然返回第二个值
+                - 如果第一个值为false，则直接返回第一个值
+
+            - 或运算
+                - 如果第一个值为true，则直接返回第一个值
+                - 如果第一个值为false，则返回第二个值
+
+    赋值运算符
+        =   +=  -=  *=  /=  %=
+
+    关系运算符
+        &gt;   &gt;=  &lt;   &lt;=
+
+        - 字符串比较 是比较字符的Unicode编码  
+
+    相等运算符
+        ==(相等 会自动做类型转换)  !=(不相等)     ===(全等 不会自动做类型转换)  !==(不全等)
+            - undefined 衍生自 null      
+
+    条件运算符/三元运算符
+        语法：
+            条件表达式?语句1:语句2;
+
+        执行的流程：
+            条件运算符再执行时，首先对条件表达式进行求值，
+            如果该值为true,则执行语句1，并返回结果
+            如果该值为false，则执行语句2，并返回结果
+
+运算符的优先级
+
+流程控制
+    语句的分类：
+        1. 条件判断语句
+        2. 条件分支语句
+        3. 循环语句
+
+    条件判断语句：
+        语法一：
+            if(条件表达式){
+                语句;
+            }
+
+        语法二：
+            if(条件表达式){
+                语句..;
+            }else{
+                语句..;
+            }
+
+        语法三：
+            if(条件表达式){
+                语句..;
+            }else if(条件表达式){
+                语句..;
+            }else if(条件表达式){
+                语句..;
+            }else{
+                语句..;
+            }
+
+    条件分支语句：
+        语法： 
+            switch(条件表达式){
+                case 表达式:
+                    语句..;
+                case 表达式:
+                    语句..;
+                case 表达式:
+                    语句..;
+                default:
+                    语句..;
+                    break;
+            }
+
+    循环语句
+        while循环：
+            语法：  
+                while(条件表达式){
+                    语句..;
+                }
+
+        do...while循环：
+            语法：  
+                do{
+                    语句..;
+                }while(条件表达式);
+
+        for循环
+            语法:
+                for(初始化表达式;条件表达式;更新表达式){
+                    语句..;
+                }</code></pre><p>(重点内容)<br>对象</p>
+<pre><code>对象属于一种复合的数据类型，在对象中可以保存多个不同数据类型的属性
+
+对象的分类：
+    1. 内建对象
+        - 由ES标准中定义的对象，在任何的ES的实现中都可以使用
+        - 比如：Math String Number Boolean  Function Object ...
+
+    2. 宿主对象
+        - 由js的运行环境提供的对象，目前来讲主要指由浏览器提供的对象
+        - 比如 BOM DOM 
+
+    3. 自定义对象
+        - 由开发人员自己创建的对象
+
+对象的基本操作
+    创建对象
+        使用new关键字调用的函数，是构造函数constructor
+        构造函数是专门用来创建对象的函数
+
+        语法： 
+            var 变量名 = new Object();
+
+    添加对象属性
+        语法： 
+            对象.属性名 = 属性值;
+
+    读取对象中的属性
+        语法： 
+            对象.属性名;
+
+    修改对象的属性值
+        语法： 
+            对象.属性名 = 新值;
+
+    删除对象的属性
+        语法：  
+            delete 对象.属性名;
+
+属性名 和 属性值
+
+    属性名
+
+    如果要使用特殊的属性名，不能采用.的方式来操作
+        需要使用另一种方式：
+            语法： 
+                对象[&apos;属性名&apos;] = 属性值
+
+        特点：
+            使用[]这种形式去操作属性，更加灵活
+
+    属性值
+
+        js对象的属性值，可以是任意的数据类型
+            - 甚至可以是对象
+
+    in 运算符
+        - 通过该运算符可以检查一个对象中是否含有指定的属性
+            如果有则返回true，没有则返回false
+        - 语法：    
+            &quot;属性名&quot; in 对象
+
+基本数据类型与引用数据类型
+    基本数据类型
+        String Number Boolean Null Undefined
+
+    引用数据类型
+        Object
+
+    基本数据类型与引用数据类型区别
+
+        js中的变量(基本数据类型)都是保存到栈内存中的
+            基本数据类型的值直接在栈内存中存储
+            值与值之间是独立存在，修改一个变量不会影响到其他的变量
+
+        对象则是保存到堆内存中
+            每创建一个新的对象，就会在堆内存中开辟出一个新的空间，
+            而变量保存的是对象的内存地址（对象的引用）,如果两个变量
+            保存的是同一个对象引用，当通过一个变量修改属性时，另一个也会受到影响
+
+       当比较两个基本类型的时候，就是比较值。
+       而比较两个引用数据类型时，他们比较的对象是内存地址，
+        如果两个对象是一模一样，但是地址不同，它也会返回false 
+对象字面量
+
+    使用对象字面量，可以在创建对象时，直接指定对象中的属性
+
+    语法：
+        {属性名:属性值,属性名:属性值...}
+            对象字面量的属性名可以加引号也可以不加,建议不加
+            如果要使用一些特殊的名字，则必须加引号
+
+
+函数
+    函数也是一个对象
+    函数的实参可以是任意类型的数据
+    函数返回值可以是任意的数据类型
+
+    创建函数
+
+        使用 函数声明 来创建一个函数
+        语法： 
+            function 函数名([形参1,形参2...形参N]){
+                语句...;
+            }
+
+        使用 函数表达式 来创建一个函数 也叫匿名函数
+        语法： 
+            var 函数名 = function([形参1,形参2...形参N]){
+                语句...;
+            }
+
+    调用函数
+        语法： 
+            函数名();
+
+    函数的方法
+        call()和apply()
+        - 这两个方法都是函数对象的方法，需要通过函数对象来调用
+        - 当对函数调用call() 和 apply() 都会调用函数执行
+        - 在调用call() 和 apply() 可以将一个对象指定为第一个参数
+            此时这个对象将会成为函数执行时的this
+        - call() 方法可以将实参对象之后依次传递
+        - apply() 方法需要将实参在对象之后依次传递
+
+        - this的情况：
+            1. 以函数形式调用时，this永远都是window
+            2. 以方法的形式调用时，this是调用方法的对象
+            3. 以构造函数的形式调用时，this是新创建的那个对象
+            4. 使用call和apply调用时，this是指定的那个对象
+
+    函数的参数(arguments)
+        在调用函数时，浏览器每次都会传递进两个隐含的参数：
+            1. 函数的上下文对象 this
+            2. 封装实参的对象 arguments
+                - arguments 是一个类数组对象，它也可以通过索引来操作数据，也可以获取长度
+                - 在调用函数时，我们所传递的实参都会在arguments中保存
+                - arguments.length 可以用来获取实参的长度
+                - 即使不定义形参，也可以通过arguments来使用实参，只不过比较麻烦
+                    arguments[0] 表示第一个实参
+                    arguments[1] 表示第二个实参
+                    ...
+
+                - 属性 callee
+                    作用：指向当前正在指向的函数的对象
+
+    立即执行函数
+        函数定义完，立即被调用，这种函数叫做立即执行函数
+        立即函数往往只会执行一次
+        语法：
+            (function(a,b){
+                alert(a+b);
+            })(100,100);
+
+    函数也可以成为对象的属性
+        如果一个函数作为一个对象的属性保存，
+        那么我们称这个函数为对象的方法
+        调用这个函数就为调用对象的方法(method)
+
+        但是它只是名称上区别并没有其他区别
+
+    枚举对象中的属性
+        使用for ... in 语句
+        语法： 
+            for(var 变量 in 对象){
+
+            }
+
+    变量的声明提前
+        - 使用var关键字声明的变量，会在所有的代码执行之前被声明（但是不会赋值）
+            但是如果声明变量时不适用var关键字，则变量不会被声明提前
+
+    函数的声明提前
+        - 使用函数声明形式创建的函数 function 函数(){}
+            它会在所有代码执行之前就创建，所以我们可以在声明前调用
+
+    作用域
+        - 作用域指一个变量的作用的范围
+        - 在js中一共有两种作用域：
+            1. 全局作用域
+                - 直接编写在script标签中的js代码，都在全局作用域
+                - 全局作用域在页面打开时创建，在页面关闭时销毁
+                - 在全局作用域中有一个全局对象window，
+                    它代表的是一个浏览器的窗口，它由浏览器创建，我们可以直接使用
+                - 在全局作用域中：
+                    创建的变量都会作为window对象的属性保存
+                    创建的函数都会作为window对象的方法保存
+                - 全局作用域中的变量都是全局变量
+                    在页面的任意的部分都可以访问到
+
+            2. 函数作用域
+                - 调用函数时创建函数作用域，函数执行完毕以后，函数作用域销毁
+                - 每调用一次函数就会创建一个新的函数作用域，他们之间是相互独立的
+                - 在函数作用域中可以访问到全局作用域的变量
+                    在全局作用域中无法访问到函数作用域的变量
+                - 当在函数作用域操作一个变量时，它会现在自身作用域中寻找，如果有就直接使用
+                    如果没有则向上一级作用域中寻找，直到找到全局作用域，
+                    如果全局作用域中依然没有找到，则会报错ReferenceError
+                - 在函数中要访问全局变量可以使用window对象
+
+        解析器在调用函数每次都会向函数内部传递进一个隐含的参数，
+            这个隐含的参数就是this，this指向的是一个对象，
+            这个对象我们称为函数执行的 上下文对象，
+            根据函数的调用方式的不同，this会指向不同的对象
+                1. 以函数的形式调用时，this永远都是window
+                2. 以方法的形式调用时，this就是调用方法的那个对象
+
+
+    构造函数
+        构造函数其实就是普通函数，创建方式和普通方式没有区别，
+            不同的是构造函数习惯首字母大写
+
+        构造函数和普通函数的区别：
+            调用方式的不同
+                普通函数就是直接调用，而构造函数需要使用new关键字来调用
+
+        构造函数的执行流程
+            1. 立即创建一个新对象
+            2. 将新建的对象设置为函数中this，在构造函数中可以使用this来引用新建的对象
+            3. 逐行执行函数中的代码
+            4. 将新建的对象作为返回值返回
+
+        使用同一个构造函数创建的对象，我们称为一类对象，也将一个构造函数称为一个类。
+            我们将通过一个构造函数创建的对象，称为该类的实例
+
+        this的情况
+            1. 当以函数的形式调用时，this是windo
+            2. 当以方法的形式调用时，谁调用方法this就是谁
+            3. 当以构造函数的形式调用时，this就是新创建的那个对象
+
+        运算符 instanceof
+        作用：检查 一个对象 是否 是一个类的实例
+        语法：
+            对象 instamceof 对象
+
+    原型 prototype
+        原型是个对象，可以用来弥补 多次调用构造函数的方法 会产生多个不同内存但是相同的方法。
+        通过把共有的对象写入 到原型对象中，可以有效解决这个缺陷。
+
+        原型对象如何使用？
+        语法： 
+            对象名.prototype.属性名= 属性值;
+            对象名.prototype.方法名 = function(){
+
+            };
+
+
+        我们所创建的每一个函数，解析器都会向函数中添加一个属性prototype
+        这个属性对应着一个对象，这个对象就是我们所谓的原型对象
+
+        如果 函数作为普通函数调用prototype没有任何作用
+        当函数以构造函数的形式调用时，它所创建的对象中都会有一个隐含的属性，
+        指向该构造函数的原型对象，我们可以通过__proto__来访问该属性
+
+        原型对象就相当于一个公共的区域，所有同一个类的实例都可以访问到这个原型对象，
+        我们可以将对象中共有的内容，统一设置到原型对象中
+
+        当我们访问对象的一个属性或方法时，它会先在对象自身中寻找，如果有直接使用，
+        如果没有则会去原型对象中寻找
+
+        以后我们创建构造函数时，可以将这些对象共有的属性和方法，统一添加到构造函数的原型对象中，
+        这样不用分别为每一个对象添加，也不会影响到全局作用域，就可以使每个对象都具有这些属性和方法了
+
+        使用in检查对象中是否含有某个属性时，如果对象中没有但是原型中有 会返回true
+
+        但是如果我们要检查 对象自身中是否含有该属性 则需要用对象的hasOwnProperty()
+        方法来检查
+
+        原型对象也是对象，所有它也有原型
+            当我们使用一个对象的属性或方法时，会先在自身中寻找，
+            自身中如果有，则直接使用，
+            如果没有则去原型对象中寻找，如果原型对象中有，则使用，
+            如果没有则去原型的原型中寻找        
+            Object对象的原型没有原型，如果在Object原型中依然没有找到，则返回undefined
+
+        在页面中打印一个对象时，实际上是输出对象的toString()方法的返回值
+
+        垃圾回收（GC）
+            - 程序运行过程中会产生垃圾，垃圾堆积过多，会导致程序变慢或内存溢出奔溃，
+                所有在程序运行中需要一个垃圾回收机制来处理程序垃圾
+
+            - 什么是程序垃圾？
+                当一个对象没有任何的变量或属性对它进行引用，也永远无法操作该对象，
+                这个对象就是一个程序垃圾。
+
+            - 在js中拥有自动的垃圾回收机制，会自动将这些垃圾对象从内存中销毁，
+                我们不需要也不能进行垃圾回收的操作
+
+            - 我们需要做的只是要将不再使用的对象设置为null即可
+
+数组(Arry)
+
+    - 数组也是一个对象
+    - 它和我们普通对象功能类似，用来存储数据
+    - 数组中的元素可以是任意的数据类型
+    - 不同之处：
+        对象使用字符串作为属性名
+        数组使用数字作为索引操作元素
+    - 索引
+        从0开始的整数就是索引
+    - 数组的存储性能比普通对象要好，在开发中我们经常使用数组来存储一些数据    
+
+
+    创建数组
+        var arr = new Array()
+            使用typeof 检查一个数组时，会返回object
+
+    向数组中添加元素
+    语法： 
+        数组[索引] = 值
+        arr[0] = 100
+
+    读取数组中的元素
+    语法：  
+        数组[索引]
+        arr[0]
+            读取不存在的索引，不会报错，会返回undefined
+
+    获取数组的长度
+    - 可以使用length属性来获取数组的长度（元素的个数）
+
+    语法： 
+        数组.length
+        arr.length  
+            对于连续的数组，使用length可以获取到数组的长度(元素的个数)
+            对于非连续的数组，使用length会获取到数组的最大的索引+1
+            尽量不创建非连续数组
+
+    向数组的最后一位添加元素
+    语法： 
+        数组[arr.length] = 100
+        arr[arr.length] = 100
+
+    使用字面量来创建数组
+    语法： 
+        var arr = []
+            使用字面量创建数组时，可以在创建时就指定数组中的元素
+                var arr = [1,2,3,4,5]
+
+
+    操作数组的方法
+        push()
+            - 该方法可以向数组的末尾添加一个或多个元素，并返回数组的新的长度
+            - 可以将要添加的元素 作为参数传递，这样这些元素会自动添加到数组末尾
+            - 该方法会将数组新的长度作为返回值返回
+
+        pop()
+            - 该方法可以删除数组的最后一个元素，并将被删除的元素作为返回值返回
+
+        unshift()
+            - 向数组开头添加一个或多个元素，并返回新的数组长度
+            - 向前边插入元素以后，其他的元素索引会依次调整
+
+        shift()
+            - 可以删除数组的第一个元素，并将被删除的元素作为返回值返回
+
+        slice()
+            - 可以用来从数组提取指定元素
+            - 该方法不会改变元素数组，而是将截取到的元素封装到一个新数组中返回
+            - 参数：
+                1. 截取开始的位置的索引，包含开始索引
+                2. 截取结束的位置的索引，不包含结束索引
+                    - 第二个参数可以省略不写，此时会截取从开始索引往后的所有元素
+                - 索引可以传递一个负值，如果传递一个负值，则从后往前计算
+                    -1 代表倒数第一个
+                    -2 代表倒数第二个
+
+        splice()
+            - 可以用于删除数组中的指定元素
+            - 使用splice()会影响到原数组，会将指定元素从原数组中删除
+                并将被删除的元素作为返回值返回
+
+            - 参数：
+                第一个，表示开始位置的索引
+                第二个，表示删除的数量
+                第三个及以后
+                    可以传递一些新的元素，这些元素将会自动插入到开始位置索引前边
+
+        concat()
+            - 可以连接两个或多个数组，并将新的数组返回
+            - 该方法不会对原数组产生影响
+
+        join()
+            - 该方法可以将数组转换为一个字符串
+            - 该方法不会对原数组产生影响，而是将转换后的字符串作为结果返回
+            - 再join() 中可以指定一个字符串作为参数，这个字符串将会成为数组中元素的连接符
+                如果不指定连接符，则默认,作为连接符
+
+        reverse()
+            - 该方法用来反转数组（前面的去后边，后边的去前边）
+            - 该方法会直接修改原数组
+
+        sort()
+            - 可以用来对数组中的元素进行排序
+            - 也会影响原数组，默认会按照Unicode编码进行排序
+
+
+    forEach() 遍历数组
+        - 这个方法只支持IE8以上的浏览器
+            IE8及以下的浏览器均不支持该方法，所有如果需要兼容IE8，则不要使用forEach
+        - 方法需要一个函数作为参数
+        - 像这种函数，由我们创建但是不由我们调用，我们称回调函数
+        - 数组中有几个元素函数就会执行几次，每次执行时，浏览器会将遍历到的元素
+            以实参的形式传递进来，我们可以定义形参，来读取这些内容
+        - 浏览器会在回调函数中传递三个参数：
+            第一个参数，就是当前正在遍历的元素
+            第二个参数，就是当前正在遍历的元素的索引
+            第三个参数，就是正在遍历的数组（整个数组对象）
+
+Date对象
+    - 在JS中使用Date对象来表示一个时间
+
+    创建一个Date对象
+        var d = new Date();
+
+    创建一个指定的时间对象
+        日期的格式  月份/日/年 时:分:秒
+        var d2 = new Date(&quot;2/18/2011 11:10:30&quot;);
+
+    日期获取的几个方法
+
+        getDate()
+            - 获取当前日期对象是几日
+
+        getDay()
+            -  获取当前日期对象时周几
+            - 会返回一个0-6的值
+                0 表示周日
+
+        getMonth()
+            - 获取当前时间对象的月份
+            - 会返回一个0-11的值
+                0 表示1月
+
+        getFullYear()
+            - 获取当前日期对象的年份
+
+        getTime()
+            - 获取当前日期对象的时间戳
+            - 时间戳，指的是从格林威治标准时间的1970年1月1日，0时0分0秒
+                到当前日期所花费的毫秒数（1秒 = 1000毫秒）
+            - 计算机底层在保存时间时使用都是时间戳
+
+Math对象
+    - Math和其他的对象不同，它不是一个构造函数，
+        它属于一个工具类不用创建对象，它里边封装了数学运算相关的属性和方法
+    - 比如
+        Math.PI 表示的圆周率
+
+    方法：   
+        abs()
+            - 可以用来计算一个数的绝对值
+
+        Math.ceil()
+            - 可以对一个数进行向上取整，小数位只有有值就自动进1
+
+        Math.floor()
+            - 可以对一个数进行向下取整，小数部分会被舍掉
+
+        Math.round()
+            - 可以对一个数进行四舍五入取整
+
+        Math.random()
+            - 可以用来生成一个0-1之间的随机数
+            - 生成一个0-10的随机数
+            - 生成一个0-x之间的随机数
+            Math.round(Math.random()*x)
+
+            - 生成一个1-10
+            - 生成一个x-y之间的随机数
+                Math.round(Math.random()*(y-x)+x)
+
+        Math.max() 可以获取多个数中的最大值 
+        Math.min() 可以获取多个数中的最小值
+        Math.pow(x,y) 返回x的y次幂
+        Math.sqrt() 用于对一个数进行开方运算
+
+包装类
+
+    在JS中为我们提供了三个包装类，通过这三个包装类可以将基本数据类型的数据转换为对象
+    方法：
+        String()
+        - 可以将基本数据类型字符串转换为String对象
+        Number()
+        - 可以将基本数据类型的数字转换为Number对象
+        Boolean()
+        - 可以将基本数据类型的布尔值转换为Boolean对象
+        但是注意：我们在实际应用中不会使用基本数据类型的对象，
+        如果使用基本数据类型的对象，在做一些比较时可能会带来一些不可预期的结果
+
+    注意事项：
+        方法和属性只能添加给对象，不能添加给基本数据类型
+        当我们对一些基本数据类型的值去调用属性和方法时，
+        浏览器会临时使用包装类将其转换为对象，然后在调用对象的属性和方法
+        调用完以后，在将其转换为基本数据类型    
+
+操作字符串的相关方法
+
+    属性：
+        length
+            - 可以用来获取字符串的长度
+
+    方法：
+        charAt()
+            - 可以返回字符串中指定位置的字符
+            - 根据索引获取指定的字符     
+
+        charCodeAt()
+            - 获取指定位置字符的字符编码（Unicode编码）
+
+        formCharCode()
+            - 可以根据字符编码去获取字符
+
+        concat()
+            - 可以用来连接两个或多个字符串
+            - 作用和+一样 
+
+        indexof()
+            - 该方法可以检索一个字符串中是否含有指定内容
+            - 如果字符串中含有该内容，则会返回其第一次出现的索引
+                如果没有找到指定的内容，则返回-1
+            - 可以指定一个第二个参数，指定开始查找的位置 
+
+        lastIndexOf();
+            - 该方法的用法和indexOf()一样，
+                不同的是indexOf是从前往后找，
+                而lastIndexOf是从后往前找
+            - 也可以指定开始查找的位置     
+
+        slice()
+            - 可以从字符串中截取指定的内容
+            - 不会影响原字符串，而是将截取到内容返回
+            - 参数：
+                第一个，开始位置的索引（包括开始位置）
+                第二个，结束位置的索引（不包括结束位置）
+                    - 如果省略第二个参数，则会截取到后边所有的
+                    - 也可以传递一个负数作为参数，负数的话将会从后边计算
+
+        substring()
+            - 可以用来截取一个字符串，可以slice()类似
+            - 参数：
+                - 第一个：开始截取位置的索引（包括开始位置）
+                - 第二个：结束位置的索引（不包括结束位置）
+                - 不同的是这个方法不能接受负值作为参数，
+                    如果传递了一个负值，则默认使用0
+                - 而且他还自动调整参数的位置，如果第二个参数小于第一个，则自动交换
+
+        substr()
+            - 用来截取字符串
+            - 参数：
+                1.截取开始位置的索引
+                2.截取的长度
+
+        split()
+            - 可以将一个字符串拆分为一个数组
+            - 参数：
+                -需要一个字符串作为参数，将会根据该字符串去拆分数组
+
+        toUpperCase()
+            - 将一个字符串转换为大写并返回
+
+        toLowerCase()
+            -将一个字符串转换为小写并返回
+
+正则表达式
+    - 正则表达式用于定义一些字符串的规则，
+        计算机可以根据正则表达式，来检查一个字符串是否符合规则
+        获取将字符串中符合规则的内容提取出来
+
+    创建正则表达式的对象
+        使用构造函数创建正则对象
+        语法： 
+            var 变量 = new RegExp(&apos;正则表达式&apos;, &apos;匹配模式&apos;);
+            使用typeof检查正则对象，会返回object
+
+        使用字面量创建正则对象
+            var patt = /正则表达式/匹配模式
+
+    修饰符/匹配模式
+        i   执行对大小写不敏感的匹配
+        g   执行全局匹配（查找所有匹配而非在找到第一个匹配后停止）
+        m   执行多行匹配
+
+    方括号
+        [abc]   查找方括号之间的任何字符
+        [^abc]  查找任何不在方括号之间的字符
+        [0-9]   查找任何从 0 到 9 的数字
+        [a-z]   查找任何从小写 a 到 小写 z 的字符
+        [A-Z]   查找任何从大写 A 到 大写 Z的字符
+        (reg|blue|green)    查找任何指定的选项
+
+    元字符
+        .   查找单个字符，除了换行和行结束符
+        \w  查找单词字符
+        \W  查找非单词字符
+        \d  查找数字
+        \D  查找非数字字符
+        \s  查找空白字符
+        \S  查找非空白字符
+    ...
+
+    量词
+        n+  匹配任何包含至少一个 n 的字符串
+        n*  匹配任何包含零个或多个 n 的 字符串
+        n?  匹配任何包含零个或一个 n的 字符串
+        ...   
+
+    RegExp对象属性
+        global RegExp 对象是否具有标志g
+        ignoreCase RegExp 对象是否具有标志i
+        lastIndex 一个整数，标示开始下一次匹配的字符位置
+        multiline RegExp 对象是否具有标志 m
+
+    正则表达式的方法
+        compile()
+            - 编译正则表达式
+
+        exec() 
+            - 匹配字符串中指定的值，返回找到的值，并确定其位置
+
+        test()
+            - 使用这个方法可以用来检查一个字符串是否符合正则表达式的规则，
+                如果符合则返回true，否则返回false
+
+    支持正则表达式的String对象的方法
+        search()
+            - 匹配与正则表达式想匹配的值
+
+        match()
+            - 找到一个或多个正则表达式的匹配
+
+        replace()
+            - 替换与正则表达式匹配的字串
+
+        split()
+            - 把字符串分割为字符串数组</code></pre><p>(重点内容)<br>DOM (全称 Document Object Model 文档对象模型)<br>    核心思想：找对象，搞对象</p>
+<pre><code>- 文档
+    文档表示的就是整个的HTML网页文档
+- 对象
+    对象表示将网页中的每个部分都转换为了一个对象
+- 模型
+    使用模型来表示对象之间的关系，这样方便我们获取对象
+
+节点(Node)
+    - 构成HTML文档最基本的单元
+    常用节点分为四类
+    - 文档节点
+        整个HTML文档
+    - 元素节点
+        HTML文档中的HTML标签
+    - 属性节点
+        元素的属性
+    - 文本节点
+        HTML标签中的文本内容
+
+获取元素节点
+    - 通过document对象调用
+
+    getElementById()
+        - 通过id属性获取一个元素节点对象
+
+    getElementsByTagName()
+        - 通过标签名获取一组元素节点对象
+
+    getElementsByName()
+        - 通过name属性获取一组元素节点对象
+
+
+    获取元素节点的子节点
+        - 通过具体的元素节点调用
+
+        getElementsByTagName
+            - 方法，返回当前节点的指定标签名后代节点
+
+        childNodes
+            - 属性，表示当前节点的所有子节点
+
+        children
+            - 属性， 表示当前节点的所有有元素节点
+
+        firstChild
+            - 属性，表示当前节点的第一个子节点
+
+        lastChild
+            - 属性，表示当前节点的最后一个子节点
+
+    获取父节点和兄弟节点
+        - 通过具体的节点调用
+
+        parentNode
+            - 属性，表示当前节点的父节点
+
+        previousSibling
+            - 属性，表示当前节点的前一个兄弟节点
+
+        nextSibling
+            - 属性，表示当前节点的后一个兄弟节点
+
+    元素节点的属性
+        - 获取元素节点的值    
+            元素对象.属性名
+
+            element.value 
+            element.id 
+            element.className
+
+        - 设置元素节点的值
+            元素对象.属性名 = 新的值
+
+            element.value = &apos;值&apos;
+            element.id = &apos;值&apos;
+            element.className = &apos;值&apos;
+
+        其他属性
+            nodeValue
+                - 文本节点可以通过nodeValue属性获取和设置文本节点的内容
+
+            innerHTML
+                - 元素节点通过该属性获取和设置标签内部的html代码
+
+    DOM查询的其余方法
+        document.body
+            保存的是body的引用
+
+        document.documentElement
+            保存的是html根标签
+
+        document.all
+            代表页面中所有的元素
+
+        getElementByClassName()
+            根据元素的class属性值查询一组元素节点对象
+            但是该方法不支持IE8及以下的浏览器
+
+        getElementsByTagName()
+            可以指定标签名来获取页面中所有的指定标签
+
+        querySelector()
+            - 需要一个选择器的字符串做为参数，可以根据一个css选择器来查询一个元素节点对象
+            - 支持IE8及以上
+            - 只返回唯一的一个元素，如果满足条件的元素有多个，也只会返回一个
+
+        querySelectorAll()
+            - 该方法和querySelector()类似，不同的是它会将符合条件的元素封装到一个数组中返回
+            - 即使符合条件的元素只有一个，它也会返回数组
+
+DOM增删改方法
+    document.createElement()
+        - 可以用于创建一个元素节点对象
+        - 它需要一个标签名作为参数，将会根据该标签名创建元素节点对象
+            并将创建好的对象作为返回值返回
+
+    document.createTextNode()
+        - 用来创建一个文本节点对象
+        - 需要一个文本内容作为参数，将会根据该内容创建文本节点，并将新的节点返回
+
+    appendChild()
+        - 向一个父节点中添加一个新的子节点
+        - 用法：
+            父节点.appendChild(子节点);
+
+    insertBefore()
+        - 可以在指定的子节点前插入新的子节点
+        - 语法： 
+            父节点.insertBefore(新节点, 旧节点);
+
+    replaceChild()
+        - 可以使用指定的子节点替换已有的子节点
+        - 语法： 
+            父节点.replaceChild(新节点, 旧节点);
+
+    removeChild()
+        - 可以删除一个子节点
+        - 语法： 
+            父节点.removeChild(子节点);
+            或
+            子节点.parentNode.removeChild(子节点);
+
+JS修改元素的样式
+    语法： 
+        元素.style.样式名 = 样式值
+
+    注意事项： 
+        如果CSS的样式名中含有-这种名称在JS中是不合法的，
+        比如background-color,要想使用，需要将这种样式名改
+        为驼峰命名法，去掉-，然后将-后的字母大写
+
+    说明：
+        通过style属性设置的样式都是内联样式，而内联样式有较高的
+        优先级，通过JS修改的样式往往会立即显示
+
+        但是如果在样式中写了!important, 则此时样式会有最高的优先级
+        即使通过js也不能覆盖该样式，此时将会导致JS修改样式失效
+        所以尽量不会为样式添加！important
+
+JS读取元素的样式
+    语法： 
+        元素.style.样式名
+
+    说明：
+        通过style属性设置和读取的都是内联样式，无法读取样式表中的样式
+
+JS读取元素当前显示的样式
+    - 通过currentStyle 和 getComputedStyle() 读取到的样式都只是只读的，
+        不能修改，如果要修改必须通过style属性
+
+    currentStyle
+        语法： 
+            元素.currentStyle.样式名
+
+        说明： 
+            它可以用来读取当前正在显示的样式，如果该元素没有设置该样式，
+            则获取它的默认值
+
+        注意事项： 
+            currentStyle只有IE浏览器支持，其他浏览器都不支持
+
+    getComputedStyle()
+        说明：
+            这个方法来获取元素当前的样式，这个方法是window的方法，可以直接使用
+            该方法会返回一个对象，对象中封装了当前元素对应的样式，
+            可通过对象.样式名来读取样式
+            如果获取的样式没有设置，则会获取到真实的值，而不是默认值
+            比如: 没有设置width，它不会获取到auto，而是一个长度
+
+        语法： 
+            getComputedStyle(box1, null)
+                参数： 
+                    第一个：
+                        要获取样式的元素
+                    第二个：
+                        可以传递一个伪元素，一般都传null
+
+        注意事项：
+            该方法不支持IE8及以下的浏览器
+
+
+事件(Event)
+
+    常用事件
+
+        onclick
+            - 单击事件
+
+        onmousemove
+            - 该事件将会在鼠标在元素中移动时被触发
+
+        onmousedown
+            - 该事件将会在鼠标被按下时被触发
+
+        onmouseup
+            - 该事件将会在鼠标被松开时触发
+
+
+    鼠标/键盘属性
+        clientX和clientY
+            - 用于获取鼠标在当前的可见窗口的坐标
+
+        pageX和pageY
+            - 用于获取鼠标相对于当前页面的坐标
+
+            但是这两个属性在IE8中不支持
+
+    事件的冒泡(Bubble)
+        - 所谓的冒泡指的就是事件的向上传导，当后代元素上的事件被触发时，其祖先元素的相同事件也会触发
+        - 在开发中大部分情况冒泡都是有用的，如果不希望发生事件冒泡可以通过事件对象来取消冒泡
+
+        取消冒泡
+            可以将事件对象的cancelBubble设置为true, 即可取消冒泡
+            语法： 
+                event.cancelBubble = true;
+
+    事件的委派
+        - 指将事件统一绑定给元素的共同的祖先元素，这样当后代元素上的事件触发时，会一直冒泡到祖先元素
+            从而通过祖先元素的响应函数来处理事件。
+
+        - 事件委派是利用了冒泡，通过委派可以减少事件绑定的次数，提高程序的性能
+
+        关键点
+            target
+                - event中的target表示的触发事件的对象
+
+
+    事件的绑定
+        addEventListener()
+            - 特点： 可以绑定多个单击响应函数
+            - 这个方法不支持IE8以以下浏览器
+            - 通过这个方法可以为元素绑定响应函数
+            - 参数：
+                1. 事件的字符串，不要on
+                    onclick不要on 只要click
+                2. 回调函数，当事件触发时该函数会被调用
+                3. 是否在捕获阶段触发事件，需要一个布尔值，一般都传false
+
+        attachEvent()
+            - 在IE8中可以使用
+            - 绑定多个单击响应函数
+            - 参数：
+                1. 事件的字符串, 要on 
+                2. 回调函数
+            - 这个方法也可以同时为一个事件绑定多个处理函数
+                不同的是它是后绑定先执行，执行顺序和addEventListener() 相反
+
+    事件的传播(了解)
+
+    取消浏览器的默认行为：
+        第一种方法： 
+            return false
+
+        第二种方法： 
+            event.preventDefault() 
+            注意： 
+                IE8 不支持
+
+
+
+    鼠标事件
+    拖拽
+
+        注意事项：
+            当我么拖拽一个网页中的内容时，浏览器会默认去搜索引擎中搜索内容，
+            这个行为会导致拖拽功能的异常，这个是浏览器提供的默认行为，
+            如果不希望发生这个行为，则可以通过 return false 来取消默认行为
+
+            但是 不对IE8起作用
+
+        IE8解决方法：
+            使用setCapture() 方法 将所有的拖拽事件 捕获到 自己身上
+            setCaptrue()
+                - 只有IE支持，但是火狐中调用时不会报错，
+                    而如果使用chrom调用，会报错
+
+            releaseCapture()
+                -  取消对事件的捕获
+
+    滚轮事件
+        onmousewheel 
+            - 鼠标滚轮的事件 ，会在滚轮滚动时触发
+            - 但是火狐不支持该属性
+
+        DOMMouseScroll
+            - 鼠标滚轮的事件
+            - 可以支持火狐
+            - 但是该事件需要通过addEventListener() 函数来绑定
+
+        事件对象
+            event.wheelDelta 
+                - 可以获取鼠标滚轮滚动的方向
+                -  向上滚 120 向下滚 -120
+                - 这个属性在火狐中不支持
+
+            event.detail
+                - 可以获取鼠标滚轮滚动的方向
+                - 支持火狐
+                - 向上滚 -3 向下滚 3
+
+    键盘事件
+        onkeydown
+            - 按键被按下
+            - 对于onkeydown来说如果一直按着某个按键不松手，则事件会一直触发
+                当onkeydown连续触发时，第一次和第二次之间会间隔稍微长一点，其他都会非常快
+                这种设计是为了防止误操作发生
+
+        onkeyup
+            - 按键被松开
+
+        键盘事件一般都会绑定给一些可以获取到焦点的对象或者是document 
+
+        事件对象
+            event.keyCode
+                - 获取按键的编码
+
+            altKey
+            ctrlKey
+            shiftKey
+                - 这三个用来判断 alt ctrl 和 shift  是否被按下
+                    如果按下则返回true，否则返回false       </code></pre><p>(重点内容)<br>BOM(浏览器对象模型)<br>    - BOM可以使我么通过js来操作浏览器<br>    - 在BOM中为我们提供了一组对象，用来完成对浏览器的操作<br>    - BOM对象<br>        Window<br>            - 代表的是整个浏览器的窗口，同时window也是网页中的全局对象<br>        Navigator<br>            - 代表的当前浏览器的信息，通过该对象可以来识别不同的浏览器<br>        Location<br>            - 代表当前浏览器的地址栏信息，通过Location可以获取地址栏信息，或者操作浏览器跳转页面<br>        History<br>            - 代表浏览器的历史记录，可以通过该对象来操作浏览器的历史记录<br>                由于隐私原因，该对象不能获取到具体的历史记录，只能操作浏览器向前或向后翻页<br>                而且该操作只在当成访问时有效<br>        Screen<br>            - 代表用户的屏幕的信息，通过该对象可以获取到用户的显示器的相关的信息</p>
+<pre><code>    - 这些BOM对象在浏览器中都是作为window对象的属性保存的，
+        可以通过window对象来使用，也可以直接使用
+
+
+Navigator
+    - 代表的当前浏览器的信息，通过该对象可以来识别不同的浏览器
+    - 由于历史原因，Navigator对象中大部分属性都已经不能帮助我们识别浏览器了
+    - 一般只会使用userAgent来判断浏览器的信息，
+        userAgent是一个字符串，这个字符串中包含有用来描述浏览器信息的内容，
+        不同的浏览器会有不同的userAgent
+
+    属性
+        userAgent
+            - 返回由客户机发送服务器的 user-agent 头部的值。
+            - 用法： 
+                Navigator.userAgent 
+
+History
+    - 对象可以用来操作浏览器向前或向后翻页
+
+    属性
+        length
+            - 可以获取到当前访问的链接数量
+
+    方法
+        back()
+            - 可以用来回退到上一个页面，作用和浏览器的回退按钮一样
+
+        forward()
+            - 可以跳转下一个页面，作用和浏览器的前进按钮一样
+
+        go()
+            - 可以用来跳转到指定的页面
+            - 它需要一个整数作为参数
+                1: 表示向前跳转一个页面 相当于forward()
+                2: 表示向前跳转两个页面
+                -1: 表示向后跳转一个页面
+                -2: 表向后跳转两个页面
+
+Location
+    - 该对象中封装了浏览器的地址栏的信息
+    - 直接输出location，则会获取到地址栏的信息(当前页面的完整路径)
+
+    属性
+        hostname
+            - 设置或返回当前URL的主机名
+
+    方法
+        assign()
+            - 用来跳转到其他的页面，作用和直接修改location一样
+
+        reload()
+            - 用于重新加载当前页面，作用和刷新按钮一样
+            - 如果在方法中传递一个true，作为参数，则会强制清空缓存刷新页面
+
+        replace()
+            - 可以使用一个新的页面替换当前页面，调用完毕也会跳转页面
+                不好生成历史记录，不能使用回退按钮回退
+
+定时器
+
+    setInterval()
+        - 定时调用
+        - 可以将一个函数，每隔一段时间执行一次
+        - 参数：
+            1. 回调函数，该函数会每隔一段时间被调用一次
+            2. 每次调用间隔的时间，单位是毫秒
+
+        - 返回值
+            返回一个Number类型的数据
+            这个数字用来作为定时器的唯一标识
+
+        setInterval(function(){}, 1000);
+
+
+    clearInterval()
+        - 用来关闭一个定时器
+        - 方法中需要一个定时器的标识作为参数，这样会关闭标识对应的定时器
+
+
+
+    延时调用
+        - 延时调用一个函数不马上执行，而是隔一段时间以后在执行，而且只会执行一次
+        - 延时调用与定时调用区别：定时调用会执行多次，而延时调用只会执行一次
+        - 说明：延时调用河定时调用实际上是可以互相代替的，在开发中可以根据自己需要去选择
+
+        setTimeout()
+            - 用来开启一个延时调用
+            - 参数同定时调用一致
+
+        clearTimeout()
+            - 用来关闭一个延时调用</code></pre><p>JSON(JS对象表示法)<br>    - js中的对象只有js自己认识，其他的语言都不认识<br>    - JSON就是一个特殊格式的字符串，这个字符串可以被任意的语言所识别<br>        并且可以转换为任意语言中的对象，JSON在开发中主要用来数据交互</p>
+<pre><code>- JSON
+    - Javascript Object Notation JS对象表示法
+    - JSON 和 JS对象的格式一样，只不过JSON字符串中的属性名必须加双引号
+        其他的和JS语法一致
+
+    - JSON分类
+        1. 对象 {}
+        2. 数组 {}
+
+    - JSON中允许的值
+        1. 字符串
+        2. 数值
+        3. 布尔值
+        4. null
+        5. 对象
+        6. 数组
+
+- JSON的转换
+    - 将JSON字符串转换为JS中的对象
+    - 在JS中，为我们提供了一个工具类，就叫JSON
+        这个对象可以帮助我们将JSON转换为JS对象，也可以将一个JS对象转换为JSON
+
+    - JSON --&gt; js对象 
+        方法：
+            JSON.parse()
+                - 可以将JSON字符串转换为js对象
+                - 它需要一个JSON字符串作为参数， 会将该字符串转换为JS对象并返回
+
+    - js对象 --&gt; JSON
+        方法：
+            JSON.stringify()
+                - 可以将一个JS对象转换为JSON字符串
+                - 需要一个js对象作为参数，会返回一个JSON字符串
+
+注意事项：
+    JSON这个对象在IE7及以下的浏览器中不支持，有些浏览器中调用会报错
+
+
+eval()
+    - 这个函数可以用来执行一段字符串形式的JS代码，并将执行结果返回
+    - 如果使用eval()执行的字符串中含有{}, 它会将{}当成是代码块
+        如果不希望当成代码块来执行，则需要在字符串外加一个()
+
+    - eval() 这个函数的功能很强大, 可以直接执行一个字符中的JS代码
+        但是在开发中尽量不要使用，首先它的执行性能比较差，然后它还存在安全隐患。</code></pre>
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Fany</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://fanygit.github.io/2020/08/31/Javascript基础笔记/" title="Javascript基础笔记">https://fanygit.github.io/2020/08/31/Javascript基础笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/javascript学习/" rel="tag"># javascript学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/08/31/jQuery学习笔记/" rel="prev" title="jQuery学习笔记">
+                jQuery学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+  
+    
+    <div class="comments" id="comments"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/tx5.gif" alt="Fany">
+  
+  <p class="site-author-name" itemprop="name">Fany</p>
+  <div class="site-description motion-element" itemprop="description">路虽远，行则必达。</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:483813121@qq.com" title="E-Mail &rarr; mailto:483813121@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+  <div class="cc-license motion-element" itemprop="license">
+  
+  
+    
+  
+  
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://leancloud.cn/dashboard/applist.html#/apps" title="https://leancloud.cn/dashboard/applist.html#/apps" rel="noopener" target="_blank">Leancloud</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">P牛</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://drun1baby.github.io/" title="https://drun1baby.github.io/" rel="noopener" target="_blank">崖余</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#javascript"><span class="nav-number">1.</span> <span class="nav-text">javascript</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fany</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/28/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  
+    
+  
+
+  
+
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.2.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'pbe8vhO6luYrD6pclzm8NQST-gzGzoHsz',
+    appKey: 'sKqLiA3nL8BojxzmOL3HCdGO',
+    placeholder: '非常希望您能留下宝贵的意见！',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+  
+<!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">
+<div id="aplayer"></div>
+<script type="text/javascript" src="https://github.com/fanygit/dist/raw/master/APlayer.min.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/fanygit/dist/master/music.js"></script> -->
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</html>

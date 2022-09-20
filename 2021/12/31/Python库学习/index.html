@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+  
+  
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    
+    
+      
+      
+      
+      
+        
+        
+      
+      
+    
+    
+    
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=微软雅黑:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="前言 说明：所有库(除开os、time、sys标准库)，按照案例实现的方式，对重要代码进行了总结，方便之后进行复习。   数据包制作/网络通信/扫描相关模块包含了socket、scapy、nmap库  应用程序服务相关模块包含了paramiko、ftplib、pymysql库  网络请求模块包含了urllib、urllib2、request库  进程/多线程/多进程/队列相关模块包含了subpro">
+<meta name="keywords" content="Python常用库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python库学习">
+<meta property="og:url" content="https://fanygit.github.io/2021/12/31/Python库学习/index.html">
+<meta property="og:site_name" content="Fan的小酒馆">
+<meta property="og:description" content="前言 说明：所有库(除开os、time、sys标准库)，按照案例实现的方式，对重要代码进行了总结，方便之后进行复习。   数据包制作/网络通信/扫描相关模块包含了socket、scapy、nmap库  应用程序服务相关模块包含了paramiko、ftplib、pymysql库  网络请求模块包含了urllib、urllib2、request库  进程/多线程/多进程/队列相关模块包含了subpro">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+<meta property="og:updated_time" content="2021-12-13T15:03:42.146Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python库学习">
+<meta name="twitter:description" content="前言 说明：所有库(除开os、time、sys标准库)，按照案例实现的方式，对重要代码进行了总结，方便之后进行复习。   数据包制作/网络通信/扫描相关模块包含了socket、scapy、nmap库  应用程序服务相关模块包含了paramiko、ftplib、pymysql库  网络请求模块包含了urllib、urllib2、request库  进程/多线程/多进程/队列相关模块包含了subpro">
+<meta name="twitter:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://fanygit.github.io/2021/12/31/Python库学习/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Python库学习 | Fan的小酒馆</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fan的小酒馆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-playlist">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/playlist/" rel="section"><i class="menu-item-icon fa fa-fw fa-music"></i> <br>歌单</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanygit.github.io/2021/12/31/Python库学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fany">
+      <meta itemprop="description" content="路虽远，行则必达。">
+      <meta itemprop="image" content="/images/tx5.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python库学习
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-12-31 22:26:00" itemprop="dateCreated datePublished" datetime="2021-12-31T22:26:00+08:00">2021-12-31</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-12-13 23:03:42" itemprop="dateModified" datetime="2021-12-13T23:03:42+08:00">2021-12-13</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2021/12/31/Python库学习/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/31/Python库学习/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>说明：所有库(除开os、time、sys标准库)，按照案例实现的方式，对重要代码进行了总结，方便之后进行复习。</p>
+</blockquote>
+<ul>
+<li><p>数据包制作/网络通信/扫描相关模块包含了socket、scapy、nmap库</p>
+</li>
+<li><p>应用程序服务相关模块包含了paramiko、ftplib、pymysql库</p>
+</li>
+<li><p>网络请求模块包含了urllib、urllib2、request库</p>
+</li>
+<li><p>进程/多线程/多进程/队列相关模块包含了subprocess、threading、multiprocessing、queue库</p>
+</li>
+<li><p>命令行解析有argparse库</p>
+</li>
+<li><p>编码解码包含了base64、hashlib库</p>
+</li>
+<li><p>常用标准库包含了time、random、re、sys、os库</p>
+</li>
+</ul>
+<h3 id="据包制作-网络通信-扫描相关模块"><a href="#据包制作-网络通信-扫描相关模块" class="headerlink" title="据包制作/网络通信/扫描相关模块"></a>据包制作/网络通信/扫描相关模块</h3><h4 id="socket"><a href="#socket" class="headerlink" title="socket"></a>socket</h4><h5 id="功能：-socket实现简单服务端客户端通信-C-S"><a href="#功能：-socket实现简单服务端客户端通信-C-S" class="headerlink" title="功能： socket实现简单服务端客户端通信(C/S)"></a>功能： socket实现简单服务端客户端通信(C/S)</h5><p>服务端</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 0x01创建socket对象（AF_INET=IPv4，SOCK_STREAM=流式socket，for TCP）</span></span><br><span class="line">sk = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"><span class="comment"># 0x02为socket绑定IP端口</span></span><br><span class="line">sk.bind((<span class="string">'主机地址'</span>, 端口))</span><br><span class="line"><span class="comment"># 0x03设置监听</span></span><br><span class="line">sk.listen(<span class="number">5</span>)</span><br><span class="line"><span class="comment"># 0x04设置堵塞(返回一个通信对象conn 和 一个连接地址 address)</span></span><br><span class="line">conn,address = sk.accept()</span><br><span class="line"><span class="comment"># 0x05数据交互发送数据</span></span><br><span class="line">conn.send()  <span class="comment"># 发送数据 返回值为发送数据字节数量</span></span><br><span class="line">conn.sendall() <span class="comment"># 完整发送数据，返回之前会尝试发送所有数据，成功返回None，失败则抛出异常</span></span><br><span class="line"><span class="comment"># 接收数据</span></span><br><span class="line">conn.recv(bufsize) <span class="comment"># bufsize为接收大小 </span></span><br><span class="line"><span class="comment"># 0x06关闭连接</span></span><br><span class="line">sk.close()</span><br></pre></td></tr></table></figure>
+
+<p>客户端</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 0x01 创建socket对象</span></span><br><span class="line">sk = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"><span class="comment"># 0x02连接</span></span><br><span class="line">sk.connect((<span class="string">'主机地址'</span>, 端口))</span><br><span class="line"><span class="comment"># 0x03数据交互发送数据</span></span><br><span class="line">conn.send() <span class="comment">#发送数据 返回值为发送数据字节数量conn.sendall() #完整发送数据，返回之前会尝试发送所有数据，成功返回None，失败则抛出异常接收数据</span></span><br><span class="line">conn.recv(bufsize) <span class="comment"># bufsize为接收大小</span></span><br><span class="line"><span class="comment"># 0x04关闭</span></span><br><span class="line">sk.close()</span><br></pre></td></tr></table></figure>
+
+<h4 id="scapy"><a href="#scapy" class="headerlink" title="scapy"></a>scapy</h4><h5 id="功能：scapy实现主机发现功能"><a href="#功能：scapy实现主机发现功能" class="headerlink" title="功能：scapy实现主机发现功能"></a>功能：scapy实现主机发现功能</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 构造arp数据包</span></span><br><span class="line">arp = Ether(dst=<span class="string">'ff:ff:ff:ff:ff:ff'</span>)/ARP(pdst=<span class="string">'IP段'</span>)</span><br><span class="line"><span class="comment"># 2. 发送数据包(res 保存探测结果 unres 保存未答复的)（srp 二层发包 具有接收功能）</span></span><br><span class="line">res,unres = srp(arp, timeout=<span class="number">2</span>)</span><br><span class="line"><span class="comment"># 3. 显示结果（res保存着存活主机的结果集，s是res中的一个头部 ，h也是res中的一个头部，只不过，很多信息保存在h头部里。  h.hwsc 代表目的MAC地址，h.psrc代表目的的IP地址。）</span></span><br><span class="line"><span class="keyword">for</span> s,h <span class="keyword">in</span> res:    print(<span class="string">"MAC："</span>+h.hwsrc+<span class="string">"  "</span>+<span class="string">"IP："</span>+h.psrc)</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：scapy实现TCP全连接端口扫描"><a href="#功能：scapy实现TCP全连接端口扫描" class="headerlink" title="功能：scapy实现TCP全连接端口扫描"></a>功能：scapy实现TCP全连接端口扫描</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 构造tcp端口扫描数据包</span></span><br><span class="line">tcp = IP(dst=<span class="string">'目的IP'</span>)/TCP(dport=端口号, flags=<span class="string">"S"</span>)</span><br><span class="line"><span class="comment"># 2. 发送数据包(sr1 在三层发送数据包 有接收功能 只接收一个)</span></span><br><span class="line">res = sr1(tcp,  timeout=<span class="number">2</span>)</span><br><span class="line"><span class="comment"># 3 . 判断 接收数据包的TCP头部的flags 含有 SA(端口打开) 或 RA(端口关闭)</span></span><br><span class="line"><span class="keyword">if</span> res[<span class="string">'TCP'</span>].flags == <span class="string">'SA'</span>   或者 ifres[<span class="string">'TCP'</span>].flags ==<span class="string">'RA'</span></span><br><span class="line"><span class="comment"># 4 . 继续发送数据包 继续完成三次握手 (如果上一步为RA 则直接输出当前端口关闭)</span></span><br><span class="line">res = sr1(IP(dst=<span class="string">'目的IP'</span>)/TCP(dport=端口号, flags=<span class="string">"AR"</span>), timeout=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：scapy实现ICMP探测主机存活"><a href="#功能：scapy实现ICMP探测主机存活" class="headerlink" title="功能：scapy实现ICMP探测主机存活"></a>功能：scapy实现ICMP探测主机存活</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1 . 构造icmp数据包</span></span><br><span class="line">icmp = IP(dst=<span class="string">'目的IP'</span>, id=<span class="number">100</span>)/ICMP(seq=<span class="number">100</span>, id=<span class="number">100</span>)/<span class="string">b'hello'</span></span><br><span class="line"><span class="comment"># 2 . 发送数据包</span></span><br><span class="line">res = sr1(icmp, timeout=<span class="number">2</span>)</span><br><span class="line"><span class="comment"># 3 . 判断主机存活和输出结果判断</span></span><br><span class="line"><span class="keyword">if</span> res:</span><br><span class="line">    <span class="comment"># 输出结果</span></span><br><span class="line">    <span class="comment"># 输出地址 </span></span><br><span class="line">    res[<span class="string">'IP'</span>].src     </span><br><span class="line">    <span class="comment"># 输出ttl值 </span></span><br><span class="line">    res.[<span class="string">'IP'</span>].ttl</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：scapy实现syn半开方式扫描（与TCP扫描区别在于继续发送数据包中的flags-为-R）"><a href="#功能：scapy实现syn半开方式扫描（与TCP扫描区别在于继续发送数据包中的flags-为-R）" class="headerlink" title="功能：scapy实现syn半开方式扫描（与TCP扫描区别在于继续发送数据包中的flags 为 R）"></a>功能：scapy实现syn半开方式扫描（与TCP扫描区别在于继续发送数据包中的flags 为 R）</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 构造syn端口扫描数据包</span></span><br><span class="line">syn = IP(dst=<span class="string">'目的IP'</span>)/TCP(dport=端口号, flags=<span class="string">"S"</span>)</span><br><span class="line"><span class="comment"># 2. 发送数据包(sr1 在三层发送数据包 有接收功能 只接收一个)</span></span><br><span class="line">res = sr1(syn,  timeout=<span class="number">2</span>)</span><br><span class="line"><span class="comment"># 3 . 判断 接收数据包的TCP头部的flags 含有 SA(端口打开) 或 RA(端口关闭)</span></span><br><span class="line"><span class="keyword">if</span> res[<span class="string">'TCP'</span>].flags == <span class="string">'SA'</span>   或者 ifres[<span class="string">'TCP'</span>].flags ==<span class="string">'RA'</span></span><br><span class="line"><span class="comment"># 4 . 继续发送数据包 完成完成三次握手 (如果上一步为RA 则直接输出当前端口关闭)</span></span><br><span class="line">res = sr1(IP(dst=<span class="string">'目的IP'</span>)/TCP(dport=端口号, flags=<span class="string">"R"</span>), timeout=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h4><p>nmap 扫描参数</p>
+<p>主机发现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-sP  -sn -sA</span><br></pre></td></tr></table></figure>
+
+<p>端口扫描</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-sS -sT -sU</span><br></pre></td></tr></table></figure>
+
+<p>检测应用程序版本和操作系统信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-sV(应用程序版本) -O(操作系统信息)</span><br></pre></td></tr></table></figure>
+
+<p>脚本使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--script=vuln(扫描主机是否存在常见漏洞)</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：nmap实现端口扫描和结果输出（输出-PORT-STATE-SERVICE-VERSION-）"><a href="#功能：nmap实现端口扫描和结果输出（输出-PORT-STATE-SERVICE-VERSION-）" class="headerlink" title="功能：nmap实现端口扫描和结果输出（输出 PORT STATE SERVICE VERSION ）"></a>功能：nmap实现端口扫描和结果输出（输出 PORT STATE SERVICE VERSION ）</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1 . 创建对象</span></span><br><span class="line">nm = nmap.PortScanner()</span><br><span class="line"><span class="comment"># 2 . 填写参数执行扫描(根据参数自定义)</span></span><br><span class="line">nm.scan(hosts=<span class="string">'IP/IP段'</span>, arguments=<span class="string">'-sV -p0-65535'</span>) </span><br><span class="line"><span class="comment"># 3 . 显示结果（返回的对象可以用以下方法进行处理）</span></span><br></pre></td></tr></table></figure>
+
+<p>PortScanner()类方法</p>
+<p>示例</p>
+<p>nm.command_line()</p>
+<pre><code>1. command_line() 返回扫描方法
+2. scaninfo() 返回nmap扫描信息
+3. all_hosts() 返回nmap扫描的主机清单</code></pre><p>PortScannerHostDict()类方法</p>
+<p>示例</p>
+<p>nm[‘ip’].hostname()</p>
+<ol>
+<li>hostname()         返回扫描对象主机名</li>
+<li>state( )                 返回扫描对象状态</li>
+<li>all_protocols()    返回扫描的协议</li>
+<li>all_tcp()               返回tcp协议扫描的端口</li>
+<li>tcp(port)             返回扫描tcp协议port端口的信息</li>
+<li>all_udp()             返回udp协议扫描的端口</li>
+<li>udp(port)          返回扫描udp协议port端口的信息</li>
+</ol>
+<h3 id="应用程序服务相关模块"><a href="#应用程序服务相关模块" class="headerlink" title="应用程序服务相关模块"></a>应用程序服务相关模块</h3><h4 id="paramiko"><a href="#paramiko" class="headerlink" title="paramiko"></a>paramiko</h4><p>SSHClient() 类</p>
+<h5 id="功能：paramiko库的SSHClient实现ssh连接和执行命令并回显结果"><a href="#功能：paramiko库的SSHClient实现ssh连接和执行命令并回显结果" class="headerlink" title="功能：paramiko库的SSHClient实现ssh连接和执行命令并回显结果"></a>功能：paramiko库的SSHClient实现ssh连接和执行命令并回显结果</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.  创建ssh对象</span></span><br><span class="line">client = paramiko.SSHClient()</span><br><span class="line"><span class="comment"># 2 . 设置远程服务器应对策略</span></span><br><span class="line">client.set_missing_host_key_policy(paramiko.AutoAddPolicy())</span><br><span class="line"><span class="comment"># 3 . 设置参数进行连接</span></span><br><span class="line">client.connect(hostname=<span class="string">'主机地址'</span> , port=<span class="string">'主机端口'</span>, username=<span class="string">'主机用户名'</span>, password=<span class="string">'主机密码'</span>)</span><br><span class="line"><span class="comment"># 4 . 执行命令</span></span><br><span class="line">stdin,stdout,stderr = clinet.exec_command(<span class="string">'netstat -lnt'</span>)stdout 为正确输出 stderr 为错误输出 两者同时只有一个变量有值<span class="comment"># 5 . 输出结果输出</span></span><br><span class="line"><span class="comment"># 正确结果</span></span><br><span class="line"><span class="keyword">if</span> stdout:    </span><br><span class="line">    print(stdout.read().decode(<span class="string">'utf-8'</span>))</span><br><span class="line"><span class="comment"># 输出错误结果</span></span><br><span class="line"><span class="keyword">if</span> stderr:    </span><br><span class="line">    print(stderr.read().decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：SSHClient封装Transport方式实现ssh连接"><a href="#功能：SSHClient封装Transport方式实现ssh连接" class="headerlink" title="功能：SSHClient封装Transport方式实现ssh连接"></a>功能：SSHClient封装Transport方式实现ssh连接</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1 . 创建一个通道</span></span><br><span class="line">transport = paramiko.Transport((<span class="string">'主机地址'</span>, 端口号))transport.connect(username=<span class="string">'主机用户名'</span>, password=<span class="string">'主机密码'</span>)<span class="comment"># 2 . 创建SSHClient对象</span></span><br><span class="line">ssh = paramiko.SSHClient()ssh._transport = transport</span><br><span class="line"><span class="comment"># 3 . 执行命令</span></span><br><span class="line">stdin,stdout,stderr = ssh.exec_command(<span class="string">'netstat -lnt'</span>)</span><br><span class="line"><span class="comment"># 4 . 输出结果</span></span><br><span class="line"><span class="comment"># 输出正确结果</span></span><br><span class="line"><span class="keyword">if</span> stdout:    </span><br><span class="line">    print(stdout.read().decode(<span class="string">'utf-8'</span>))</span><br><span class="line"><span class="comment"># 输出错误结果 </span></span><br><span class="line"><span class="keyword">if</span> stderr:    </span><br><span class="line">    print(stderr.read().decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
+
+<h5 id="SFTPClient-类功能：SFTPClient封装Transport方式实现文件上传与下载"><a href="#SFTPClient-类功能：SFTPClient封装Transport方式实现文件上传与下载" class="headerlink" title="SFTPClient() 类功能：SFTPClient封装Transport方式实现文件上传与下载"></a>SFTPClient() 类功能：SFTPClient封装Transport方式实现文件上传与下载</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1 . 创建通道</span></span><br><span class="line">tran = paramiko.Transport((<span class="string">'主机地址'</span>, 端口号))tran.connect(username=<span class="string">'主机名'</span>, password=<span class="string">'主机密码'</span>)</span><br><span class="line"><span class="comment"># 2 . 创建SFTP对象</span></span><br><span class="line">sftp = paramiko.SFTPClient.from_transport(tran)</span><br><span class="line"><span class="comment"># 3 . 设置路径</span></span><br><span class="line">localpath = <span class="string">'本地文件路径'</span>remotepath = <span class="string">'远程文件路径'</span></span><br><span class="line"><span class="comment"># 4 . 执行上传</span></span><br><span class="line">sftp.put(localpath, remotepath)</span><br><span class="line"><span class="comment"># 5 . 执行下载</span></span><br><span class="line">stfp.get(remorepath, localpath)</span><br></pre></td></tr></table></figure>
+
+<p>常用方法</p>
+<p>mkdir()       在服务上创建目录</p>
+<p>remove()    在服务器上删除目录</p>
+<p>rename()    在服务器上重命名目录</p>
+<p>stat()          查看服务器文件目录</p>
+<p>listdir()        列出服务器目录下的文件 </p>
+<h5 id="ftplib功能：实现上传本地文件到ftp服务器"><a href="#ftplib功能：实现上传本地文件到ftp服务器" class="headerlink" title="ftplib功能：实现上传本地文件到ftp服务器"></a>ftplib功能：实现上传本地文件到ftp服务器</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建对象</span></span><br><span class="line">ftp = ftplib.FTP()</span><br><span class="line"><span class="comment"># 配置连接</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置调试级别，显示详细信息</span></span><br><span class="line">ftp.set_debuglevel(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接ftp server</span></span><br><span class="line">ftp.connect(<span class="string">'主机地址'</span>, <span class="string">'端口号'</span>)</span><br><span class="line"><span class="comment"># 登录</span></span><br><span class="line">ftp.login(<span class="string">'ftp用户名'</span>, <span class="string">'密码'</span>)</span><br><span class="line"><span class="comment"># 输出欢迎信息</span></span><br><span class="line">print(ftp.getwelcome())</span><br><span class="line"><span class="comment"># 执行操作</span></span><br><span class="line"><span class="comment"># 设置缓冲区大小</span></span><br><span class="line">bufsize = <span class="number">1024</span></span><br><span class="line"><span class="comment"># 设置本地路径</span></span><br><span class="line">localpath = <span class="string">'本地文件路径'</span></span><br><span class="line"><span class="comment"># 设置远程文件路径</span></span><br><span class="line">remotepath =  <span class="string">'远程文件路径'</span></span><br><span class="line"><span class="comment"># 打开本地路径文件</span></span><br><span class="line">file = open(filename, <span class="string">'rb'</span>)</span><br><span class="line"><span class="comment"># 上传文件</span></span><br><span class="line">ftp.storbinary(<span class="string">"STOR"</span>+remotepath, remotepath, bufsize)</span><br><span class="line"><span class="comment"># 关闭调试信息</span></span><br><span class="line">ftp.set_debuglevel(<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">ftp.quit()</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：实现从ftp服务器下载文件到本地"><a href="#功能：实现从ftp服务器下载文件到本地" class="headerlink" title="功能：实现从ftp服务器下载文件到本地"></a>功能：实现从ftp服务器下载文件到本地</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建对象ftp = ftplib.FTP()# 配置连接</span></span><br><span class="line"><span class="comment"># 设置调试级别，显示详细信息</span></span><br><span class="line">ftp.set_debuglevel(<span class="number">2</span>)</span><br><span class="line"><span class="comment"># 连接ftp server</span></span><br><span class="line">ftp.connect(<span class="string">'主机地址'</span>, <span class="string">'端口号'</span>)</span><br><span class="line"><span class="comment"># 登录</span></span><br><span class="line">ftp.login(<span class="string">'ftp用户名'</span>, <span class="string">'密码'</span>)</span><br><span class="line"><span class="comment"># 输出欢迎信息</span></span><br><span class="line">print(ftp.getwelcome())<span class="comment"># 执行操作</span></span><br><span class="line"><span class="comment"># 设置缓冲区大小</span></span><br><span class="line">bufsize = <span class="number">1024</span></span><br><span class="line"><span class="comment"># 设置本地路径</span></span><br><span class="line">localpath = <span class="string">'本地文件路径'</span></span><br><span class="line"><span class="comment"># 设置远程文件路径</span></span><br><span class="line">remopepath = <span class="string">'远程文件路径'</span></span><br><span class="line"><span class="comment"># 打开本地文件路径</span></span><br><span class="line">file = open(localpath, <span class="string">'wb'</span>).write</span><br><span class="line"><span class="comment"># 下载文件</span></span><br><span class="line">ftp.retrbinary(<span class="string">"RETR"</span>+remopepathf, file, bufsize)</span><br><span class="line"><span class="comment"># 关闭调试信息</span></span><br><span class="line">ftp.set_debuflevel(<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">ftp.quit()</span><br></pre></td></tr></table></figure>
+
+<p> <strong>相关方法</strong></p>
+<ul>
+<li><p>ftp.dir()              显示目录下所有目录信息</p>
+</li>
+<li><p>ftp.nlst()                    获取目录下的文件</p>
+</li>
+<li><p>ftp.pwd()                     返回当前所在位置</p>
+</li>
+<li><p>ftp.cwd(pathname)       设置FTP当前操作路径   </p>
+</li>
+<li><p>ftp.mkd(pathname)      新建远程目录</p>
+</li>
+<li><p>ftp.rmd(dirname)         删除远程目录</p>
+</li>
+<li><p>ftp.delete(filename)     删除远程文件</p>
+</li>
+<li><p>ftp.rename(fromname, toname)       将fromname 修改名称为 toname</p>
+</li>
+</ul>
+<h3 id="MySQLdb-只支持到py3-4-、pymysql-支持py3-5"><a href="#MySQLdb-只支持到py3-4-、pymysql-支持py3-5" class="headerlink" title="MySQLdb(只支持到py3.4)、pymysql(支持py3.5+)"></a>MySQLdb(只支持到py3.4)、pymysql(支持py3.5+)</h3><blockquote>
+<p>（查阅资料后 两个库基本方法均一致 用pymyql演示）</p>
+</blockquote>
+<h5 id="功能：实现数据库连接后进行增删改查"><a href="#功能：实现数据库连接后进行增删改查" class="headerlink" title="功能：实现数据库连接后进行增删改查"></a>功能：实现数据库连接后进行增删改查</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建连接</span></span><br><span class="line">conn = pymysql.connect(<span class="string">'主机地址'</span>, <span class="string">'mysql用户名'</span>, <span class="string">'密码'</span>, <span class="string">'数据库'</span>)</span><br><span class="line"><span class="comment"># 创建游标</span></span><br><span class="line">cur = conn.cursor()</span><br><span class="line"><span class="comment"># 执行</span></span><br><span class="line">sqlcur.execute(sql语句)</span><br><span class="line"><span class="comment"># 输出结果</span></span><br><span class="line">data = cur.fetchone()   <span class="comment"># 输出一条结果</span></span><br><span class="line">data = cur.fetchall()   <span class="comment"># 输出所有结果</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭游标</span></span><br><span class="line">cur.close()</span><br><span class="line"><span class="comment"># 关闭连接</span></span><br><span class="line">conn.close()</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：pymysql实现数据库DML操作"><a href="#功能：pymysql实现数据库DML操作" class="headerlink" title="功能：pymysql实现数据库DML操作"></a>功能：pymysql实现数据库DML操作</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建连接</span></span><br><span class="line">conn = pymysql.connect(<span class="string">'主机地址'</span>, <span class="string">'myql用户名'</span>, <span class="string">'密码'</span>, <span class="string">'数据库'</span>)</span><br><span class="line"><span class="comment"># 创建游标</span></span><br><span class="line">cur = conn.cursor()</span><br><span class="line"><span class="comment"># 执行</span></span><br><span class="line">sqlcur.execute(<span class="string">"update 表名 set 字段名='新值' where 条件 "</span>)</span><br><span class="line"><span class="comment"># 关闭游标</span></span><br><span class="line">cur.close()</span><br><span class="line"><span class="comment"># 执行DML语句 保存方法</span></span><br><span class="line">cur.commit()</span><br><span class="line"><span class="comment"># 关闭连接</span></span><br><span class="line">conn.close()</span><br></pre></td></tr></table></figure>
+
+<p><strong>相关SQL语句：</strong></p>
+<p>增：</p>
+<p>增加表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table 表名 (字段名 字段类型 其他, 字段名 字段类型 其他, ...);</span><br></pre></td></tr></table></figure>
+
+<p>增加字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 add 字段 类型 其他;</span><br></pre></td></tr></table></figure>
+
+<p>删：</p>
+<p>删除表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop table 表名</span><br></pre></td></tr></table></figure>
+
+<p>删除表中数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from 表名 where 表达式</span><br></pre></td></tr></table></figure>
+
+<p>改：</p>
+<p>改表名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename table 原表名 to 新表名;</span><br></pre></td></tr></table></figure>
+
+<p>改字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update 表名 set 字段=新值 where 条件</span><br></pre></td></tr></table></figure>
+
+<h3 id="网络请求模块"><a href="#网络请求模块" class="headerlink" title="网络请求模块"></a>网络请求模块</h3><h5 id="功能：python2下-urllib-urllib2-进行POST提交数据（dvwa-xss-提交数据为例）"><a href="#功能：python2下-urllib-urllib2-进行POST提交数据（dvwa-xss-提交数据为例）" class="headerlink" title="功能：python2下 urllib+urllib2 进行POST提交数据（dvwa xss 提交数据为例）"></a>功能：python2下 urllib+urllib2 进行POST提交数据（dvwa xss 提交数据为例）</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置提交url</span></span><br><span class="line">url = <span class="string">'http://127.0.0.1/DVWA/vulnerabilities/xss_s/'</span></span><br><span class="line"><span class="comment"># 设置请求头部</span></span><br><span class="line">headers = &#123;<span class="string">'cookie'</span>: <span class="string">'cookie值'</span>&#125;</span><br><span class="line"><span class="comment"># POST提交data 参数</span></span><br><span class="line">data = &#123;<span class="string">'txtName'</span>: <span class="string">'标题'</span>, <span class="string">'mtxMessage'</span>: <span class="string">'内容'</span>, <span class="string">'btnSign'</span>: <span class="string">'Sign Guestbook'</span>&#125;</span><br><span class="line"><span class="comment"># data 进行url编码</span></span><br><span class="line">data = urllib.urlencode(data)</span><br><span class="line"><span class="comment"># 构建Request 对象</span></span><br><span class="line">request = urllib2.Request(url, data, headers)</span><br><span class="line"><span class="comment"># 请求urlopen() 只接收url, data, timeout 三个参数</span></span><br><span class="line">resp = urllib2.urlopen(request)</span><br><span class="line"><span class="comment"># 输出结果</span></span><br><span class="line">print(resp.read())</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：python2-下用-urllib2-re-实现对dvwa（xss）评论内容爬取"><a href="#功能：python2-下用-urllib2-re-实现对dvwa（xss）评论内容爬取" class="headerlink" title="功能：python2 下用 urllib2 + re 实现对dvwa（xss）评论内容爬取"></a>功能：python2 下用 urllib2 + re 实现对dvwa（xss）评论内容爬取</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置爬取的url</span></span><br><span class="line">url = <span class="string">"http://127.0.0.1/DVWA/vulnerabilities/xss_s/"</span></span><br><span class="line"><span class="comment"># 设置头部</span></span><br><span class="line">headers = &#123;<span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'</span>, <span class="string">'Cookie'</span>: <span class="string">' security=impossible; PHPSESSID=adcc9b21be4a5689bc5fa145a9f15a25'</span>&#125;</span><br><span class="line"><span class="comment"># 构造Request对象</span></span><br><span class="line">request = urllib2.Request(url=url, headers=headers)</span><br><span class="line"><span class="comment"># 请求urlopen()</span></span><br><span class="line">resp = urllib2.urlopen(request)</span><br><span class="line">str1 = resp.read()</span><br><span class="line"><span class="comment"># 正则匹配内容数据(绿色部分为正则表达式)</span></span><br><span class="line">result = re.findall(<span class="string">'&lt;div id="guestbook_comments"&gt;Name: ([a-z1-9A-Z]+)&lt;br /&gt;Message: ([a-zA-Z0-9]+)&lt;br /&gt;&lt;/div&gt;'</span>, str1)</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> result:    print(<span class="string">'Name:'</span>+item[<span class="number">0</span>]+<span class="string">'Content:'</span>+item[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<p>功能：python3下 urllib 进行POST提交数据（dvwa xss 提交数据为例）</p>
+<blockquote>
+<p>（说明：python3下 urllib和urllib2 合并成了一个urllib 这个包分为四个模块 ）  (分为：urllib.request urllib.error urllib.parse urllib.robotaparser)</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置提交链接</span></span><br><span class="line">url = <span class="string">' http://127.0.0.1/DVWA/vulnerabilities/xss_s/'</span></span><br><span class="line"><span class="comment"># 设置headers头部</span></span><br><span class="line">headers = &#123;<span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'</span>,<span class="string">'Cookie'</span>:<span class="string">'security=low; PHPSESSID=c53448691f29843f229d25fdc0b4871a'</span>&#125;</span><br><span class="line"><span class="comment"># 构建data数据</span></span><br><span class="line">data = &#123;<span class="string">'txtName'</span>: <span class="string">'python3'</span>, <span class="string">'mtxMessage'</span>: <span class="string">'connect'</span>, <span class="string">'btnSign'</span>: <span class="string">' Sign Guestbook'</span>&#125;</span><br><span class="line"><span class="comment"># data进行url编码</span></span><br><span class="line">data = urllib.parse.urlencode(data)</span><br><span class="line"><span class="comment"># 构建request对象</span></span><br><span class="line">request = urllib.request.Request(url, data.encode(<span class="string">'utf-8'</span>), headers)</span><br><span class="line"><span class="comment"># urllib.request.urlopen()提交</span></span><br><span class="line">resp = urllib.request.urlopen(request)</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：python3-下-urllib2-re-实现对dvwa（xss）评论内容爬取"><a href="#功能：python3-下-urllib2-re-实现对dvwa（xss）评论内容爬取" class="headerlink" title="功能：python3 下 urllib2 + re 实现对dvwa（xss）评论内容爬取"></a>功能：python3 下 urllib2 + re 实现对dvwa（xss）评论内容爬取</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置url</span></span><br><span class="line">url = <span class="string">'http://127.0.0.1/DVWA/vulnerabilities/xss_s/ '</span></span><br><span class="line"><span class="comment"># 设置头部</span></span><br><span class="line">headers = &#123;<span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'</span>,<span class="string">'Cookie'</span>: <span class="string">'security=low; PHPSESSID=c53448691f29843f229d25fdc0b4871a'</span>&#125;</span><br><span class="line"><span class="comment"># 构建request</span></span><br><span class="line">request = urllib.request.Request(url=url, headers=headers)</span><br><span class="line"><span class="comment"># urlopen() 进行请求</span></span><br><span class="line">resp = urllib.request.urlopen(request)</span><br><span class="line"><span class="comment"># 用re正则 对返回结果进行处理（转为返回结果文本格式为gbk）</span></span><br><span class="line">str1 = resp.read().decode(<span class="string">'gbk'</span>)</span><br><span class="line">res = re.findall(<span class="string">'&lt;div id="guestbook_comments"&gt;Name: ([a-z1-9A-Z]+)&lt;br /&gt;Message: ([a-zA-Z0-9]+)&lt;br /&gt;&lt;/div&gt;'</span>, str1)</span><br><span class="line"><span class="comment"># 输出结果</span></span><br><span class="line">print(<span class="string">'Tittle'</span>+<span class="string">'\t'</span>+<span class="string">'Connect'</span>)<span class="keyword">for</span> item <span class="keyword">in</span> res:    print(item[<span class="number">0</span>] + <span class="string">'\t\t'</span> + item[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：python3下-requests-进行POST提交数据（dvwa-xss-提交数据为例）"><a href="#功能：python3下-requests-进行POST提交数据（dvwa-xss-提交数据为例）" class="headerlink" title="功能：python3下  requests 进行POST提交数据（dvwa xss 提交数据为例）"></a>功能：python3下  requests 进行POST提交数据（dvwa xss 提交数据为例）</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置提交url地址</span></span><br><span class="line">url = <span class="string">'http://127.0.0.1/DVWA/vulnerabilities/xss_s/ '</span></span><br><span class="line"><span class="comment"># 构建headers头部</span></span><br><span class="line">headers = &#123;<span class="string">'User-Agent'</span>: <span class="string">' Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'</span>,<span class="string">'Cookie'</span>: <span class="string">' security=low; PHPSESSID=c53448691f29843f229d25fdc0b4871a'</span>&#125;</span><br><span class="line"><span class="comment"># 构建需要提交的data数据</span></span><br><span class="line">data = &#123;<span class="string">'txtName'</span>: <span class="string">'request'</span>, <span class="string">'mtxMessage'</span>: <span class="string">'123456789'</span>, <span class="string">' btnSign'</span>:<span class="string">' Sign Guestbook'</span>&#125;</span><br><span class="line"><span class="comment"># 进行提交</span></span><br><span class="line">resp = request.post(url=url, data=data, headers=headers)</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：python3-下-request-re-实现dvwa（xss）评论内容爬取"><a href="#功能：python3-下-request-re-实现dvwa（xss）评论内容爬取" class="headerlink" title="功能：python3 下 request +re 实现dvwa（xss）评论内容爬取"></a>功能：python3 下 request +re 实现dvwa（xss）评论内容爬取</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置url链接</span></span><br><span class="line">url = <span class="string">' http://127.0.0.1/DVWA/vulnerabilities/xss_s/'</span></span><br><span class="line"><span class="comment"># 构建headers头部</span></span><br><span class="line">headers = &#123;<span class="string">'User-Agent'</span>: <span class="string">' Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'</span>,<span class="string">'Cookie'</span>: <span class="string">' security=low; PHPSESSID=c53448691f29843f229d25fdc0b4871a'</span>&#125;</span><br><span class="line"><span class="comment"># 进行提交</span></span><br><span class="line">resp = request.get(url=url, headers=headers)str1 = resp.text</span><br><span class="line"><span class="comment"># 用re正则对返回结果进行处理</span></span><br><span class="line">res = re.findall(<span class="string">'&lt;div id="guestbook_comments"&gt;Name: ([a-z1-9A-Z]+)&lt;br /&gt;Message: ([a-zA-Z0-9]+)&lt;br /&gt;&lt;/div&gt;'</span>, str1)</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">print(<span class="string">'Tittle'</span>+<span class="string">'\t'</span>+<span class="string">'Connect'</span>)<span class="keyword">for</span> item <span class="keyword">in</span> res:    print(item[<span class="number">0</span>] + <span class="string">'\t\t'</span> + item[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="进程-多线程-多进程-队列相关模块"><a href="#进程-多线程-多进程-队列相关模块" class="headerlink" title="进程/多线程/多进程/队列相关模块"></a>进程/多线程/多进程/队列相关模块</h3><h4 id="subprocess"><a href="#subprocess" class="headerlink" title="subprocess"></a>subprocess</h4><p>功能：subprocess实现执行命令输出结果</p>
+<blockquote>
+<p>（subprocess 有4个方法都可以实现创建子进程功能，四个方法都是对Popen()方法的封装）（分别为：call() check_call() check_output() 以及3.5之后代替前三个方法的run()）</p>
+</blockquote>
+<p><strong>run()方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 调用子进程(返回CompletedProcess对象)</span><br><span class="line">s = subprocess.run([&apos;ipconfig&apos;, &apos;-all&apos;], stdout=subprocess.PIPE, shell=True)</span><br><span class="line"># 输出结果</span><br><span class="line">print(s.stdout.decode(&apos;GBK&apos;))</span><br></pre></td></tr></table></figure>
+
+<p><strong>Popen()方法(支持stdin和stdout)</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 调用子进程(返回subprocess.Popen对象)</span></span><br><span class="line">s = subprocess.Popen(<span class="string">'python'</span>, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 输入</span></span><br><span class="line">s.stdin.write(<span class="string">b'import sys \n'</span>)</span><br><span class="line">s.stdin.write(<span class="string">b'print(sys.version) \n'</span>)</span><br><span class="line">s.stdin.close()</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">print(s.stdout.read().decode(<span class="string">'GBK'</span>))</span><br><span class="line">s.stdout.clode()</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：subprocess-socket实现-linux下-反弹shell功能"><a href="#功能：subprocess-socket实现-linux下-反弹shell功能" class="headerlink" title="功能：subprocess+socket实现(linux下)反弹shell功能"></a>功能：subprocess+socket实现(linux下)反弹shell功能</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建socket对象</span></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"><span class="comment"># 连接到远程主机</span></span><br><span class="line">s.connect((<span class="string">'主机地址'</span>, 端口号))</span><br><span class="line"><span class="comment"># 将socket对象的文件描述符复制到系统 0标准输入 1标准输出 2标准错误</span></span><br><span class="line"><span class="comment">#（os.dup2(fd, fd2) 将文件描述符fd复制到fd2 ）</span></span><br><span class="line"><span class="comment"># (s.fileno() 获取socket对象的文件描述符)</span></span><br><span class="line">os.dup2(s.fileno(), <span class="number">0</span>)</span><br><span class="line">os.dup2(s.fileno(), <span class="number">1</span>)</span><br><span class="line">os.dup2(s.fileno(), <span class="number">2</span>)</span><br><span class="line"><span class="comment"># 调用call() 执行指令</span></span><br><span class="line">p = subprocess.call([<span class="string">'/bin/bash'</span>, <span class="string">'-i'</span>])</span><br></pre></td></tr></table></figure>
+
+<h4 id="threading"><a href="#threading" class="headerlink" title="threading"></a>threading</h4><p>功能：执行输出任务，创建十条线程，同步执行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个需要用多线程完成的任务</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">task</span><span class="params">(num)</span>:</span>    </span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>):        </span><br><span class="line">        print(<span class="string">'[+] this is %s'</span>%(num))    </span><br><span class="line">    print(<span class="string">'[+] %s end'</span>%(num))</span><br><span class="line"><span class="comment"># 创建线程池</span></span><br><span class="line">threads = []</span><br><span class="line"><span class="comment"># 创建多线程并启动多线程</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">11</span>):    </span><br><span class="line">    thread = threading.Thread(target=task, args=(i,), name=<span class="string">'线程名'</span>)    </span><br><span class="line">    threads.append(thread)    </span><br><span class="line">    thread.start()</span><br><span class="line"><span class="comment"># 设置堵塞</span></span><br><span class="line"><span class="keyword">for</span> thread <span class="keyword">in</span> threads:    </span><br><span class="line">    thread.join()</span><br></pre></td></tr></table></figure>
+
+<h4 id="multiprocessing-方法与threading的常用几个方法类似"><a href="#multiprocessing-方法与threading的常用几个方法类似" class="headerlink" title="multiprocessing(方法与threading的常用几个方法类似)"></a>multiprocessing(方法与threading的常用几个方法类似)</h4><h5 id="功能：multiprocessing-Process实现多进程"><a href="#功能：multiprocessing-Process实现多进程" class="headerlink" title="功能：multiprocessing.Process实现多进程"></a>功能：multiprocessing.Process实现多进程</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个需要用多进程完成的任务</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(num)</span>:</span>    </span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>):        </span><br><span class="line">        print(<span class="string">"[+] This is %s"</span>%(num))    </span><br><span class="line">        print(<span class="string">"[+] %s end"</span>%(num))</span><br><span class="line">        </span><br><span class="line"><span class="comment"># 创建进程池</span></span><br><span class="line">    courses = []</span><br><span class="line"><span class="comment"># 创建进程并启动多进程</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):    </span><br><span class="line">	course = multiprocess.Process(target=worker, args=(i,), name=<span class="string">'进程名'</span>)    </span><br><span class="line">	courses.append(course)    </span><br><span class="line">    courses.start()</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 设置堵塞</span></span><br><span class="line"><span class="keyword">for</span> course <span class="keyword">in</span> courses:    </span><br><span class="line">    course.join()</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能：multiprocessing-dummy实现多线程"><a href="#功能：multiprocessing-dummy实现多线程" class="headerlink" title="功能：multiprocessing.dummy实现多线程"></a>功能：multiprocessing.dummy实现多线程</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导包</span></span><br><span class="line"><span class="keyword">from</span> multiprocess.dummy <span class="keyword">import</span> Pool <span class="keyword">as</span> ThreadPool</span><br><span class="line"><span class="comment"># 创建一个需要用多线程完成的任务</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(num)</span>:</span>    </span><br><span class="line">    print(<span class="string">'[+] This is %s'</span>%(num))    </span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 开4个 worker， 没有参数时默认是cpu的核心数</span></span><br><span class="line">pool = ThreadPool(<span class="number">4</span>)</span><br><span class="line"><span class="comment"># 设置任务所需参数(把列表遍历完，就会结束, 写爬虫的时候可以用来遍历url)</span></span><br><span class="line">nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>]</span><br><span class="line"><span class="comment"># 执行任务（同时执行4个任务，相当于每次遍历4个,遍历完就结束）</span></span><br><span class="line">results = pool.map(worker, nums)</span><br><span class="line"><span class="comment"># 关闭和阻塞</span></span><br><span class="line">pool.close()</span><br><span class="line">pool.join()</span><br></pre></td></tr></table></figure>
+
+<h4 id="queue"><a href="#queue" class="headerlink" title="queue"></a>queue</h4><p>功能：从文件中读取字符保存到队列(queue对象)中，再进行输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置读取文件路径</span></span><br><span class="line">filePath = <span class="string">'file.txt'</span></span><br><span class="line"><span class="comment"># 创建队列</span></span><br><span class="line">q = queue.Queue()</span><br><span class="line"><span class="comment"># 打开文件并输出到队列</span></span><br><span class="line"><span class="keyword">with</span> open(filePath) <span class="keyword">as</span> f:    </span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:        </span><br><span class="line">        password = line.strip(<span class="string">'\n'</span>)        </span><br><span class="line">        q.put(password)</span><br><span class="line"><span class="comment"># 输出队列</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:    </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> q.empty():        </span><br><span class="line">        print(q.get())    </span><br><span class="line">    <span class="keyword">else</span>:        </span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="命令行解析模块"><a href="#命令行解析模块" class="headerlink" title="命令行解析模块"></a>命令行解析模块</h3><h4 id="argparse"><a href="#argparse" class="headerlink" title="argparse"></a>argparse</h4><p>功能：实现创建命令行选项</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建对象</span></span><br><span class="line">parse = argparse.ArgumentParser(description=<span class="string">'在-h中显示的解析注释'</span>)</span><br><span class="line"><span class="comment"># 添加参数</span></span><br><span class="line"><span class="comment">#（add_argument(name or flags...[, action][, nargs][, const][, default][, type][, choices][, required][, help][, metavar] [, dest] )）</span></span><br><span class="line">parse.add_argument(<span class="string">'-f'</span>, <span class="string">'--file'</span>, dest=<span class="string">'filename'</span>, help=<span class="string">'set filename path'</span>)</span><br><span class="line">parse.add_argument(<span class="string">'-y'</span>, <span class="string">'--yes'</span>, action=<span class="string">'store_false'</span>, help=<span class="string">"action default false "</span>)</span><br><span class="line"><span class="comment"># 解析参数</span></span><br><span class="line">args = parse.parse_args()</span><br></pre></td></tr></table></figure>
+
+<h3 id="编码解码"><a href="#编码解码" class="headerlink" title="编码解码"></a>编码解码</h3><h4 id="base64"><a href="#base64" class="headerlink" title="base64"></a>base64</h4><h5 id="功能：实现对字符串的base64编码解码"><a href="#功能：实现对字符串的base64编码解码" class="headerlink" title="功能：实现对字符串的base64编码解码"></a>功能：实现对字符串的base64编码解码</h5><blockquote>
+<p>(说明：因编码只能是bytes 需要进行utf-8编码 输出的时候 需要str 进行转码输出)</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义字符串</span></span><br><span class="line">str1 = <span class="string">"system('cat /flag.txt');"</span></span><br><span class="line"><span class="comment"># 字符串utf-8编码</span></span><br><span class="line">str1 = str1.encode(encoding=<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="comment"># base64编码</span></span><br><span class="line">en_str = base64.b64encode(str1)</span><br><span class="line">print(<span class="string">"base64编码前："</span>+ str(str1))</span><br><span class="line">print(<span class="string">"base64编码后："</span> + str(en_str))</span><br><span class="line"><span class="comment"># base64解码</span></span><br><span class="line">de_str = base64.b64decode(en_str)</span><br><span class="line">print(<span class="string">"base解码前："</span>+str(en_str))</span><br><span class="line">print(<span class="string">"base解码后："</span>+str(de_str))</span><br></pre></td></tr></table></figure>
+
+<h4 id="hashlib"><a href="#hashlib" class="headerlink" title="hashlib"></a>hashlib</h4><h5 id="功能：hashlib实现对字符串的md5加密"><a href="#功能：hashlib实现对字符串的md5加密" class="headerlink" title="功能：hashlib实现对字符串的md5加密"></a>功能：hashlib实现对字符串的md5加密</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义字符串</span></span><br><span class="line">str1 = <span class="string">'This is not md5'</span></span><br><span class="line"><span class="comment"># 字符串编码 </span></span><br><span class="line">str1 = str1.encode(encoding=<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="comment"># 创建md5对象</span></span><br><span class="line">m = hashlib.md5()</span><br><span class="line"><span class="comment"># 加密</span></span><br><span class="line">m.update(str1)</span><br><span class="line">str1_md5 = m.hexdigest()</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">print(<span class="string">"MD5加密前："</span>+str(str1))</span><br><span class="line">print(<span class="string">"MD5加密后："</span>+str1_md5)</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用标准库"><a href="#常用标准库" class="headerlink" title="常用标准库"></a>常用标准库</h3><h4 id="time–时间的访问和转换"><a href="#time–时间的访问和转换" class="headerlink" title="time–时间的访问和转换"></a>time–时间的访问和转换</h4><blockquote>
+<p>（三种方式表示时间：1.timestamp(时间戳) 2. struct_time (格式化的时间字符串) 3. tuple(元组)）</p>
+</blockquote>
+<p><strong>时间格式相互转化关系图</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="https://hexo-1253463144.cos.ap-chongqing.myqcloud.com/time.jpg" alt="time" style="zoom: 50%;"></th>
+</tr>
+</thead>
+</table>
+<ul>
+<li><p>time()</p>
+<ul>
+<li>返回当前时间的时间戳</li>
+</ul>
+</li>
+<li><p>localtime([secs])</p>
+<ul>
+<li>将一个时间戳转换位当前时区的struct_time,secs参数未提供，则以当前时间为准</li>
+</ul>
+</li>
+<li><p>asctime([t])</p>
+<ul>
+<li>将一个表示时间的元组或者struct_time表示为”Sun Jun 20 23:21:05 2020” 这种形式 不设置参数时，默认将time_localtime() 作为参数 </li>
+</ul>
+</li>
+<li><p>mktime(t)</p>
+<ul>
+<li>将一个struct_time转化为时间戳</li>
+</ul>
+</li>
+<li><p>sleep(secs)</p>
+<ul>
+<li>线程推迟指定的时间运行，单位为秒</li>
+</ul>
+</li>
+<li><p>gmtime([secs])</p>
+<ul>
+<li>将一个时间戳转换为UTC时区的struct_time</li>
+</ul>
+</li>
+<li><p>ctime([secs])</p>
+<ul>
+<li>把一个时间戳转化为time.asctime()”Sun Jun 20 23:21:05 2020”的形式，不设置参数时，默认time.time()为参数 </li>
+</ul>
+</li>
+<li><p>strftime(format[, t])</p>
+<ul>
+<li>把一个代表时间的元组或者struct_time（如由time.localtime()和time.gmtime()返回) 转化为格式化的时间字符串  如t未指定，将传入time.localtime()</li>
+</ul>
+</li>
+<li><p>strptime(string[, format])</p>
+<ul>
+<li>把一个格式化时间字符串转化为struct_time，与strftime是逆操作</li>
+</ul>
+</li>
+</ul>
+<h4 id="random–生成伪随机数"><a href="#random–生成伪随机数" class="headerlink" title="random–生成伪随机数"></a>random–生成伪随机数</h4><ul>
+<li>random()<ul>
+<li>随机生成0.xxx 的浮点小数</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">random.random()                                  </span><br><span class="line">&gt;&gt;&gt;<span class="number">0.2786970302306403</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>uniform(a, b)</p>
+<ul>
+<li>随机生成一个指定范围内的浮点数，a是低位，b是高位</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">random.uniform(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">&gt;&gt;&gt;<span class="number">2.431852539010123</span></span><br><span class="line">random.uniform(<span class="number">20</span>,<span class="number">100</span>)</span><br><span class="line">&gt;&gt;&gt;<span class="number">87.86159294411607</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>randint(a, b)<ul>
+<li>随机生成一个指定范围内的整数，a是低位，b是高位</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">random.randint(<span class="number">1</span>, <span class="number">20</span>)</span><br><span class="line">&gt;&gt;&gt;<span class="number">18</span></span><br><span class="line">random.randint(<span class="number">20</span>, <span class="number">50</span>)</span><br><span class="line">&gt;&gt;&gt;<span class="number">26</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>choice(squence) </p>
+<ul>
+<li><p>随机从squence（表示一个有序类型，不是特定类型，而是泛指一些列类型，list，tuple，字符串(字典和集合都是无序的)）中返回一个元素</p>
+<p>x = [2,3,4,1,5,6,7,8,9]<br>random.choice(x)</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>3<br>x = [2,3,4,1,5,6,7,8,9]<br>random.choice(x)<br>9</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>sample(sequence, k) </p>
+<ul>
+<li>随机从指定序列sequence中返回长度k的片段</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line">random.sample(x, <span class="number">2</span>)</span><br><span class="line">&gt;&gt;&gt;[<span class="number">8</span>,<span class="number">4</span>]</span><br><span class="line">x = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line">random.sample(x, <span class="number">4</span>)</span><br><span class="line">&gt;&gt;&gt;[<span class="number">1</span>,<span class="number">6</span>,<span class="number">3</span>,<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>shuffle(x)<ul>
+<li>用于将一个列表打乱 (洗牌)</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line">random.shuffle(x)</span><br><span class="line">&gt;&gt;&gt;[<span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="re–正则表达式操作"><a href="#re–正则表达式操作" class="headerlink" title="re–正则表达式操作"></a>re–正则表达式操作</h4><h5 id="正则表达式修饰符（对应flags）"><a href="#正则表达式修饰符（对应flags）" class="headerlink" title="正则表达式修饰符（对应flags）"></a>正则表达式<code>修饰符</code>（对应flags）</h5><pre><code>1. re.I 忽略大小写
+
+2. re.L 做本地化识别（locale-aware）匹配
+
+3. re.M 多行匹配，影响^和$
+
+4. re.S 即为.并且包括换行符在内的任意字符（.不包括换行符）
+
+5. re.U 表示特殊字符集\w,\W,\b,\B,\d,\D,\s,\S 依赖于Unicode字符属性数据库
+
+6. re.x 为了增加可读性，忽略空格和#后面的注释</code></pre><p><strong>正则表达式常用<code>模式</code></strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">模式</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">^</td>
+<td align="center">匹配字符串的开头</td>
+</tr>
+<tr>
+<td align="center">$</td>
+<td align="center">匹配字符串的末尾</td>
+</tr>
+<tr>
+<td align="center">[…]</td>
+<td align="center">用来表示一组字符[0-9] [a-z] …</td>
+</tr>
+<tr>
+<td align="center">[0-9]</td>
+<td align="center">匹配任何数字</td>
+</tr>
+<tr>
+<td align="center">[a-z]</td>
+<td align="center">匹配任何小写字母</td>
+</tr>
+<tr>
+<td align="center">[A-Z]</td>
+<td align="center">匹配任何大写字母</td>
+</tr>
+<tr>
+<td align="center">re{n}</td>
+<td align="center">精确匹配n个前面表达式</td>
+</tr>
+<tr>
+<td align="center">re{n,m}</td>
+<td align="center">匹配n到m次由前面的正则表达式定义的片段</td>
+</tr>
+<tr>
+<td align="center">a|b</td>
+<td align="center">匹配a或b</td>
+</tr>
+<tr>
+<td align="center">(re)</td>
+<td align="center">对正则表达式分组并记住匹配的文本</td>
+</tr>
+<tr>
+<td align="center">\w</td>
+<td align="center">匹配字母数字及下划线</td>
+</tr>
+<tr>
+<td align="center">\W</td>
+<td align="center">匹配非字母数字及下划线</td>
+</tr>
+<tr>
+<td align="center">\s</td>
+<td align="center">匹配任意空白字符</td>
+</tr>
+<tr>
+<td align="center">\S</td>
+<td align="center">匹配任意非空字符</td>
+</tr>
+<tr>
+<td align="center">\d</td>
+<td align="center">匹配任意数字</td>
+</tr>
+<tr>
+<td align="center">\D</td>
+<td align="center">匹配任意非数字</td>
+</tr>
+</tbody></table>
+<p><strong>正则表达式常用方法</strong></p>
+<ul>
+<li>re.compile(pattern[, flags])<ul>
+<li>用于编译正则表达式</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pattern = re.compile(<span class="string">r'\d+'</span>)</span><br><span class="line">res = pattern.match(<span class="string">'one12twothree34four'</span>)</span><br><span class="line">&gt;&gt;&gt;none</span><br><span class="line">res = pattern.search(<span class="string">'one12twothree34four'</span>)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">&lt;_sre.SRE_Match object; span=(<span class="number">2</span>, <span class="number">4</span>), match=<span class="string">'12'</span>&gt;</span><br><span class="line">&gt;&gt;&gt;m.group()</span><br><span class="line">&gt;&gt;&gt;<span class="string">'12'</span></span><br><span class="line">res = pattern.findall(<span class="string">'one12twothree34four'</span>)</span><br><span class="line">&gt;&gt;&gt;[<span class="string">'12'</span>, <span class="string">'34'</span>]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>re.search(pattern, string[, flags])</p>
+<ul>
+<li>pattern匹配整个字符串，返回第一个成功的匹配</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res = re.search(<span class="string">r'\d+'</span>, <span class="string">'abcdefghijkl123lnm345'</span>)</span><br><span class="line">res.group()</span><br><span class="line">&gt;&gt;&gt;<span class="string">'123'</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>re.match(pattern, string[, flags])<ul>
+<li>pattern匹配字符串起始位置，起始位置没有，则返回none</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">res = re.match(<span class="string">r'\d+'</span>, <span class="string">'abcdef123lijklm345'</span>)</span><br><span class="line">&gt;&gt;&gt;none</span><br><span class="line">res = re.match(<span class="string">r'\d+'</span>, <span class="string">'123abcdef456'</span>)</span><br><span class="line">&gt;&gt;&gt;res.group()</span><br><span class="line">&gt;&gt;&gt;<span class="string">'123'</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>re.findall(patter, string[, flags])<ul>
+<li>patter匹配整个字符串的所有字串，返回一个列表</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res = re.findall(<span class="string">r'\d+'</span>, <span class="string">'abc123def456lkj789'</span>)</span><br><span class="line">&gt;&gt;&gt;[<span class="string">'123'</span>, <span class="string">'456'</span>, <span class="string">'789'</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="sys"><a href="#sys" class="headerlink" title="sys"></a>sys</h4><blockquote>
+<p>sys模块负责程序与python解释器的交互，提供了一系列的函数和变量，用于操控python的运行时环境。</p>
+</blockquote>
+<h5 id="python解释器交互"><a href="#python解释器交互" class="headerlink" title="python解释器交互"></a>python解释器交互</h5><ul>
+<li><p>sys.argv[0]</p>
+<ul>
+<li>一个列表，其中包含了被传递给python脚本的命令行参数</li>
+</ul>
+</li>
+<li><p>sys.platform</p>
+<ul>
+<li>返回运行平台更详细的信息</li>
+</ul>
+</li>
+<li><p>sys.executable</p>
+<ul>
+<li>返回python解析器对应的可执行程序所在的绝对路径</li>
+</ul>
+</li>
+<li><p>sys.modules</p>
+<ul>
+<li>一个字典，包含的是各种以加载的模块的模块名到模块具体位置的映射，可以通过修改这个字典，重新加载某些模块</li>
+</ul>
+</li>
+<li><p>sys.builtin_module_names</p>
+<ul>
+<li>一个字符串元组，元素均为当前所使用的python解释器内置模块名称</li>
+</ul>
+</li>
+<li><p>sys.path</p>
+<ul>
+<li>一个字符串组成的列表，各个元素表示的是python搜索模块的路径，在程序期间被初始化</li>
+</ul>
+</li>
+<li><p>sys.stdin</p>
+<ul>
+<li>一个属性，python标准输入通道，可实现输入重定向</li>
+</ul>
+</li>
+<li><p>sys.stdout</p>
+<ul>
+<li>一个属性，python标准输出，可以实现输出到屏幕或文件中</li>
+</ul>
+</li>
+<li><p>sys.err</p>
+<ul>
+<li>一个属性，标准错误输出，输出到屏幕</li>
+</ul>
+</li>
+<li><p>sys.getrecursionlimit()</p>
+<ul>
+<li>获取python的最大递归数目</li>
+</ul>
+</li>
+<li><p>sys.setrecursionlimit()</p>
+<ul>
+<li>设置最大递归数目</li>
+</ul>
+</li>
+<li><p>sys.getrefcount()</p>
+<ul>
+<li>返回python中某个对象被引用的次数</li>
+</ul>
+</li>
+<li><p>sys.getsizeof()</p>
+<ul>
+<li>返回作用对象所占用的字节数</li>
+</ul>
+</li>
+<li><p>sys.ps1</p>
+<ul>
+<li>一级提示符 python交互界面的 &gt;&gt;&gt;</li>
+</ul>
+</li>
+<li><p>sys.ps2</p>
+<ul>
+<li>二级提升符 if xx: 之后的 …</li>
+</ul>
+</li>
+</ul>
+<h4 id="os"><a href="#os" class="headerlink" title="os"></a>os</h4><blockquote>
+<p>os模块负责程序与操作系统的交互，提供了访问操作系统底层的接口</p>
+<p>（参考： <a href="https://docs.python.org/zh-cn/3.6/library/os.html，https://www.runoob.com/python/python-os-path.html" target="_blank" rel="noopener">https://docs.python.org/zh-cn/3.6/library/os.html，https://www.runoob.com/python/python-os-path.html</a> ， <a href="https://www.runoob.com/python/os-file-methods.html）" target="_blank" rel="noopener">https://www.runoob.com/python/os-file-methods.html）</a></p>
+</blockquote>
+<h5 id="文件和目录（操作文件和目录、进程、文件标识符、路径）"><a href="#文件和目录（操作文件和目录、进程、文件标识符、路径）" class="headerlink" title="文件和目录（操作文件和目录、进程、文件标识符、路径）"></a>文件和目录（操作<code>文件</code>和<code>目录</code>、<code>进程</code>、<code>文件标识符</code>、<code>路径</code>）</h5><ul>
+<li><p>os.access(path, mode)</p>
+<ul>
+<li>检验权限</li>
+</ul>
+</li>
+<li><p>os.chdir(path)</p>
+<ul>
+<li>将当前工作目录更改为path</li>
+</ul>
+</li>
+<li><p>os.chflags(path, flags) </p>
+<ul>
+<li>设置路径的标记为数字标记</li>
+</ul>
+</li>
+<li><p>os.chmod(path, mode)</p>
+<ul>
+<li>更改路径权限</li>
+</ul>
+</li>
+<li><p>os.chown(path, uid, gid)</p>
+<ul>
+<li>更改文件所有者 （Unix）</li>
+</ul>
+</li>
+<li><p>os.chroot(path)</p>
+<ul>
+<li>将当前进程的根目录更改为path （Unix）</li>
+</ul>
+</li>
+<li><p>os.fchdir(fd)</p>
+<ul>
+<li>将当前工作目录更改为文件描述符fd指向的目录（Unix）</li>
+</ul>
+</li>
+<li><p>os.getcwd()</p>
+<ul>
+<li>返回表示当前工作目录的字符串</li>
+</ul>
+</li>
+<li><p>os.link(src, dst)</p>
+<ul>
+<li>创建一个指向src的硬链接，名为dst （Unix、Windows）</li>
+</ul>
+</li>
+<li><p>os.symlink(src, dst) </p>
+<ul>
+<li>创建一个指向src的软链接，名为dst</li>
+</ul>
+</li>
+<li><p>os.listdir(path)</p>
+<ul>
+<li>返回一个列表，该列表包含了path中所有文件与目录</li>
+</ul>
+</li>
+<li><p>os.mkdir(path[,mode])</p>
+<ul>
+<li>创建一个名为path的目录，应用以数字表示的权限模式mode</li>
+</ul>
+</li>
+<li><p>os.makedirs(name[, mode])</p>
+<ul>
+<li>递归目录创建函数</li>
+</ul>
+</li>
+<li><p>os.mkfifo(path[, mode])</p>
+<ul>
+<li>创建命名管道，mode为数字</li>
+</ul>
+</li>
+<li><p>os.remove(path)</p>
+<ul>
+<li>删除文件path</li>
+</ul>
+</li>
+<li><p>os.removedirs(name)</p>
+<ul>
+<li>递归删除目录</li>
+</ul>
+</li>
+<li><p>os.rmdir(path)</p>
+<ul>
+<li>删除目录</li>
+</ul>
+</li>
+<li><p>os.rename(src, dst)</p>
+<ul>
+<li>将文件或目录src重命名为dst</li>
+</ul>
+</li>
+<li><p>os.renames(old, new)</p>
+<ul>
+<li>递归地对文件或目录进行重命名</li>
+</ul>
+</li>
+<li><p>os.replace(src, dst)</p>
+<ul>
+<li>将文件或目录src重命名为dst </li>
+</ul>
+</li>
+<li><p>os.stat(path)</p>
+<ul>
+<li>获取path指定的路径的信息</li>
+</ul>
+</li>
+</ul>
+<h5 id="文件描述符操作（-这些函数对文件描述符所引用的I-O-流进行操作。）"><a href="#文件描述符操作（-这些函数对文件描述符所引用的I-O-流进行操作。）" class="headerlink" title="文件描述符操作（ 这些函数对文件描述符所引用的I/O 流进行操作。）"></a>文件描述符操作（ 这些<code>函数</code>对<code>文件描述符</code>所引用的<code>I/O 流</code>进行<code>操作</code>。）</h5><ul>
+<li>os.close(fd)<ul>
+<li>关闭文件描述符fd</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>os.closerange(fd_low, fd_high)</p>
+<ul>
+<li>关闭fd_low(包括) 到 fd_high(排除)间的文件描述符</li>
+</ul>
+</li>
+<li><p>os.dup(fd)</p>
+<ul>
+<li>复制一个文件描述符的副本</li>
+</ul>
+</li>
+<li><p>os.dup2(fd, fd2)</p>
+<ul>
+<li>将文件描述符fd复制到fd2</li>
+</ul>
+</li>
+<li><p>os.fchdir(fd)</p>
+<ul>
+<li>将当前工作目录更改为文件描述符fd指向的目录 </li>
+</ul>
+</li>
+<li><p>os.fchmod(fd, mode)</p>
+<ul>
+<li>将fd指定文件的权限状态修改为mode </li>
+</ul>
+</li>
+<li><p>os.fchown(fd, uid, gid)</p>
+<ul>
+<li>分别将fd指定文件的所有者和组ID修改为uid和gid值</li>
+</ul>
+</li>
+<li><p>os.fdatasync(fd)</p>
+<ul>
+<li>强制将文件描述符fd指定文件写入磁盘</li>
+</ul>
+</li>
+<li><p>os.fdopen(fd)</p>
+<ul>
+<li>返回打开文件描述符fd对应文件的对象</li>
+</ul>
+</li>
+<li><p>os.fpathconf(fd, name)</p>
+<ul>
+<li>返回与打开的文件有关的系统配置信息</li>
+</ul>
+</li>
+<li><p>os.fstat(fd)</p>
+<ul>
+<li>获取文件描述符fd的状态，返回一个stat_result对象</li>
+</ul>
+</li>
+<li><p>os.fstatvfs(fd)</p>
+<ul>
+<li>返回文件系统的信息，该文件系统是文件描述符fd指向的文件所在的文件系统 </li>
+</ul>
+</li>
+<li><p>os.open(path, flags, mode=0o77)</p>
+<ul>
+<li>打开文件 path，根据 flags 设置各种标志位，并根据 mode 设置其权限模式。</li>
+</ul>
+</li>
+<li><p>os.write(fd, str)</p>
+<ul>
+<li>将str中的字节串写入文件描述符fd。返回实际写入的字节数。</li>
+</ul>
+</li>
+<li><p>os.read(fd, n)</p>
+<ul>
+<li>从文件描述符fd中最多读取n个字节。返回一个包含读取字节的字节字符串。</li>
+</ul>
+</li>
+</ul>
+<h5 id="进程参数（-这些函数和数据项提供了操作当前进程和用户的信息。）"><a href="#进程参数（-这些函数和数据项提供了操作当前进程和用户的信息。）" class="headerlink" title="进程参数（ 这些函数和数据项提供了操作当前进程和用户的信息。）"></a>进程参数（ 这些函数和数据项提供了<code>操作当前进程</code>和<code>用户的信息</code>。）</h5><ul>
+<li>os.ctermid()<ul>
+<li>返回与进程控制终端对应的文件名（Unix）</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>os.getlogin()</p>
+<ul>
+<li>返回通过控制终端进程进行登录的用户名（Unix、Windows）</li>
+</ul>
+</li>
+<li><p>os.uname()</p>
+<ul>
+<li>返回当前操作系统的识别信息（Unix）</li>
+</ul>
+</li>
+<li><p>os.setgid(gid)</p>
+<ul>
+<li>设置当前进程的组ID（Unix）</li>
+</ul>
+</li>
+<li><p>os.setsid()</p>
+<ul>
+<li>使用系统调用 getsid()（Unix）</li>
+</ul>
+</li>
+<li><p>os.setuid(uid)</p>
+<ul>
+<li>设置当前进程的用户ID（Unix）</li>
+</ul>
+</li>
+<li><p>os.getgid()</p>
+<ul>
+<li>返回当前进程的实际组ID（Unix）</li>
+</ul>
+</li>
+<li><p>os.getsid(pid) </p>
+<ul>
+<li>调用系统调用 getsid()（Unix）</li>
+</ul>
+</li>
+<li><p>os.getuid()</p>
+<ul>
+<li>返回当前进程的真实用户ID（Unix）</li>
+</ul>
+</li>
+<li><p>os.getpid()</p>
+<ul>
+<li>返回当前进程ID（Unix）</li>
+</ul>
+</li>
+<li><p>os.setegid(egid)</p>
+<ul>
+<li>设置当前进程的有效组ID （Unix）</li>
+</ul>
+</li>
+<li><p>os.seteuid(euid)</p>
+<ul>
+<li>设置当前进程的有效用户ID (Unix)</li>
+</ul>
+</li>
+<li><p>os.getegid() </p>
+<ul>
+<li>返回当前进程的有效组ID（Unix）</li>
+</ul>
+</li>
+<li><p>os.geteuid()</p>
+<ul>
+<li>返回当前进程的有效用户ID（Unix）</li>
+</ul>
+</li>
+<li><p>os.setpgid(pid, pgrp)</p>
+<ul>
+<li>使用系统调用setpgid(),将pid对应进程的组ID设置为pgrp（Unix）</li>
+</ul>
+</li>
+<li><p>os.getpgid(pid)</p>
+<ul>
+<li>根据进程id pid 返回进程的组ID列表（Unix）</li>
+</ul>
+</li>
+</ul>
+<h5 id="进程管理（-函数可用于创建和管理进程）"><a href="#进程管理（-函数可用于创建和管理进程）" class="headerlink" title="进程管理（ 函数可用于创建和管理进程）"></a>进程管理（ 函数可用于<code>创建</code>和<code>管理进程</code>）</h5><ul>
+<li><p>os._exit(n)</p>
+<ul>
+<li>以状态码n(退出原因指令)退出进程,通常用在fork() 出的子进程中使用</li>
+</ul>
+</li>
+<li><p>os.fork()</p>
+<ul>
+<li>Fork出一个子进程（Unix）</li>
+</ul>
+</li>
+<li><p>os.forkpty()</p>
+<ul>
+<li>Fork出一个子进程，使用新的伪终端作为子进程的控制终端（返回一对pid, fd）（Unix）</li>
+</ul>
+</li>
+<li><p>os.kill(pid, sid)</p>
+<ul>
+<li>将信号sig发送至进程pid sid值为signal.SIGKILL 为终止程序（Unix）</li>
+</ul>
+</li>
+<li><p>os.popen(command[, mode[, bufsize]])</p>
+<ul>
+<li>从一个command打开一个管道</li>
+</ul>
+</li>
+<li><p>os.system(command)</p>
+<ul>
+<li>在子shell中执行命令（字符串） </li>
+</ul>
+</li>
+</ul>
+<h5 id="操作路径-os-path-该模块在路径名上实现了一些有用的功能"><a href="#操作路径-os-path-该模块在路径名上实现了一些有用的功能" class="headerlink" title="操作路径 os.path ( 该模块在路径名上实现了一些有用的功能)"></a>操作路径 os.path ( 该模块在<code>路径名</code>上实现了一些<code>有用的功能</code>)</h5><p>​      </p>
+<ul>
+<li>os.path.abspath(path) <ul>
+<li>返回路径path的绝对路径</li>
+</ul>
+</li>
+<li>os.path.basename(path) <ul>
+<li>返回路径path的基本名称</li>
+</ul>
+</li>
+<li>os.path.commonpath() </li>
+<li>os.path.commonprefix(list) <ul>
+<li>返回list(多个路径)中,所有path共有的最长的路径 </li>
+</ul>
+</li>
+<li>os.path.dirname(path) <ul>
+<li>返回文件路径</li>
+</ul>
+</li>
+<li>os.path.exists(path) <ul>
+<li>路径path存在，返回True，不存在，返回False </li>
+</ul>
+</li>
+<li>os.path.lexists() <ul>
+<li>路径存在则返回True,路径损坏也返回True </li>
+</ul>
+</li>
+<li>os.path.getatime(path) <ul>
+<li>返回最近访问时间（浮点型秒数）</li>
+</ul>
+</li>
+<li>os.path.getmtime(path) <ul>
+<li>返回最近文件修改时间</li>
+</ul>
+</li>
+<li>os.path.getctime(path) <ul>
+<li>返回path创建时间</li>
+</ul>
+</li>
+<li>os.path.getsize(path) <ul>
+<li>返回文件大小，如果文件不存在就返回错误</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Fany</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://fanygit.github.io/2021/12/31/Python库学习/" title="Python库学习">https://fanygit.github.io/2021/12/31/Python库学习/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python常用库/" rel="tag"># Python常用库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/31/Linux学习笔记/" rel="next" title="Linux学习笔记">
+                <i class="fa fa-chevron-left"></i> Linux学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/03/10/数据结构学习笔记1/" rel="prev" title="数据结构学习笔记1">
+                数据结构学习笔记1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+  
+    
+    <div class="comments" id="comments"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/tx5.gif" alt="Fany">
+  
+  <p class="site-author-name" itemprop="name">Fany</p>
+  <div class="site-description motion-element" itemprop="description">路虽远，行则必达。</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:483813121@qq.com" title="E-Mail &rarr; mailto:483813121@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+  <div class="cc-license motion-element" itemprop="license">
+  
+  
+    
+  
+  
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://leancloud.cn/dashboard/applist.html#/apps" title="https://leancloud.cn/dashboard/applist.html#/apps" rel="noopener" target="_blank">Leancloud</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">P牛</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://drun1baby.github.io/" title="https://drun1baby.github.io/" rel="noopener" target="_blank">崖余</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#据包制作-网络通信-扫描相关模块"><span class="nav-number">2.</span> <span class="nav-text">据包制作/网络通信/扫描相关模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#socket"><span class="nav-number">2.1.</span> <span class="nav-text">socket</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：-socket实现简单服务端客户端通信-C-S"><span class="nav-number">2.1.1.</span> <span class="nav-text">功能： socket实现简单服务端客户端通信(C/S)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scapy"><span class="nav-number">2.2.</span> <span class="nav-text">scapy</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：scapy实现主机发现功能"><span class="nav-number">2.2.1.</span> <span class="nav-text">功能：scapy实现主机发现功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：scapy实现TCP全连接端口扫描"><span class="nav-number">2.2.2.</span> <span class="nav-text">功能：scapy实现TCP全连接端口扫描</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：scapy实现ICMP探测主机存活"><span class="nav-number">2.2.3.</span> <span class="nav-text">功能：scapy实现ICMP探测主机存活</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：scapy实现syn半开方式扫描（与TCP扫描区别在于继续发送数据包中的flags-为-R）"><span class="nav-number">2.2.4.</span> <span class="nav-text">功能：scapy实现syn半开方式扫描（与TCP扫描区别在于继续发送数据包中的flags 为 R）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nmap"><span class="nav-number">2.3.</span> <span class="nav-text">nmap</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：nmap实现端口扫描和结果输出（输出-PORT-STATE-SERVICE-VERSION-）"><span class="nav-number">2.3.1.</span> <span class="nav-text">功能：nmap实现端口扫描和结果输出（输出 PORT STATE SERVICE VERSION ）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序服务相关模块"><span class="nav-number">3.</span> <span class="nav-text">应用程序服务相关模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#paramiko"><span class="nav-number">3.1.</span> <span class="nav-text">paramiko</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：paramiko库的SSHClient实现ssh连接和执行命令并回显结果"><span class="nav-number">3.1.1.</span> <span class="nav-text">功能：paramiko库的SSHClient实现ssh连接和执行命令并回显结果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：SSHClient封装Transport方式实现ssh连接"><span class="nav-number">3.1.2.</span> <span class="nav-text">功能：SSHClient封装Transport方式实现ssh连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SFTPClient-类功能：SFTPClient封装Transport方式实现文件上传与下载"><span class="nav-number">3.1.3.</span> <span class="nav-text">SFTPClient() 类功能：SFTPClient封装Transport方式实现文件上传与下载</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ftplib功能：实现上传本地文件到ftp服务器"><span class="nav-number">3.1.4.</span> <span class="nav-text">ftplib功能：实现上传本地文件到ftp服务器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：实现从ftp服务器下载文件到本地"><span class="nav-number">3.1.5.</span> <span class="nav-text">功能：实现从ftp服务器下载文件到本地</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQLdb-只支持到py3-4-、pymysql-支持py3-5"><span class="nav-number">4.</span> <span class="nav-text">MySQLdb(只支持到py3.4)、pymysql(支持py3.5+)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：实现数据库连接后进行增删改查"><span class="nav-number">4.0.1.</span> <span class="nav-text">功能：实现数据库连接后进行增删改查</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：pymysql实现数据库DML操作"><span class="nav-number">4.0.2.</span> <span class="nav-text">功能：pymysql实现数据库DML操作</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#网络请求模块"><span class="nav-number">5.</span> <span class="nav-text">网络请求模块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：python2下-urllib-urllib2-进行POST提交数据（dvwa-xss-提交数据为例）"><span class="nav-number">5.0.1.</span> <span class="nav-text">功能：python2下 urllib+urllib2 进行POST提交数据（dvwa xss 提交数据为例）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：python2-下用-urllib2-re-实现对dvwa（xss）评论内容爬取"><span class="nav-number">5.0.2.</span> <span class="nav-text">功能：python2 下用 urllib2 + re 实现对dvwa（xss）评论内容爬取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：python3-下-urllib2-re-实现对dvwa（xss）评论内容爬取"><span class="nav-number">5.0.3.</span> <span class="nav-text">功能：python3 下 urllib2 + re 实现对dvwa（xss）评论内容爬取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：python3下-requests-进行POST提交数据（dvwa-xss-提交数据为例）"><span class="nav-number">5.0.4.</span> <span class="nav-text">功能：python3下  requests 进行POST提交数据（dvwa xss 提交数据为例）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：python3-下-request-re-实现dvwa（xss）评论内容爬取"><span class="nav-number">5.0.5.</span> <span class="nav-text">功能：python3 下 request +re 实现dvwa（xss）评论内容爬取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程-多线程-多进程-队列相关模块"><span class="nav-number">6.</span> <span class="nav-text">进程/多线程/多进程/队列相关模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#subprocess"><span class="nav-number">6.1.</span> <span class="nav-text">subprocess</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：subprocess-socket实现-linux下-反弹shell功能"><span class="nav-number">6.1.1.</span> <span class="nav-text">功能：subprocess+socket实现(linux下)反弹shell功能</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#threading"><span class="nav-number">6.2.</span> <span class="nav-text">threading</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#multiprocessing-方法与threading的常用几个方法类似"><span class="nav-number">6.3.</span> <span class="nav-text">multiprocessing(方法与threading的常用几个方法类似)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：multiprocessing-Process实现多进程"><span class="nav-number">6.3.1.</span> <span class="nav-text">功能：multiprocessing.Process实现多进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：multiprocessing-dummy实现多线程"><span class="nav-number">6.3.2.</span> <span class="nav-text">功能：multiprocessing.dummy实现多线程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#queue"><span class="nav-number">6.4.</span> <span class="nav-text">queue</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行解析模块"><span class="nav-number">7.</span> <span class="nav-text">命令行解析模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#argparse"><span class="nav-number">7.1.</span> <span class="nav-text">argparse</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码解码"><span class="nav-number">8.</span> <span class="nav-text">编码解码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#base64"><span class="nav-number">8.1.</span> <span class="nav-text">base64</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：实现对字符串的base64编码解码"><span class="nav-number">8.1.1.</span> <span class="nav-text">功能：实现对字符串的base64编码解码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hashlib"><span class="nav-number">8.2.</span> <span class="nav-text">hashlib</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#功能：hashlib实现对字符串的md5加密"><span class="nav-number">8.2.1.</span> <span class="nav-text">功能：hashlib实现对字符串的md5加密</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用标准库"><span class="nav-number">9.</span> <span class="nav-text">常用标准库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#time–时间的访问和转换"><span class="nav-number">9.1.</span> <span class="nav-text">time–时间的访问和转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#random–生成伪随机数"><span class="nav-number">9.2.</span> <span class="nav-text">random–生成伪随机数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#re–正则表达式操作"><span class="nav-number">9.3.</span> <span class="nav-text">re–正则表达式操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#正则表达式修饰符（对应flags）"><span class="nav-number">9.3.1.</span> <span class="nav-text">正则表达式修饰符（对应flags）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sys"><span class="nav-number">9.4.</span> <span class="nav-text">sys</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#python解释器交互"><span class="nav-number">9.4.1.</span> <span class="nav-text">python解释器交互</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#os"><span class="nav-number">9.5.</span> <span class="nav-text">os</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#文件和目录（操作文件和目录、进程、文件标识符、路径）"><span class="nav-number">9.5.1.</span> <span class="nav-text">文件和目录（操作文件和目录、进程、文件标识符、路径）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件描述符操作（-这些函数对文件描述符所引用的I-O-流进行操作。）"><span class="nav-number">9.5.2.</span> <span class="nav-text">文件描述符操作（ 这些函数对文件描述符所引用的I/O 流进行操作。）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进程参数（-这些函数和数据项提供了操作当前进程和用户的信息。）"><span class="nav-number">9.5.3.</span> <span class="nav-text">进程参数（ 这些函数和数据项提供了操作当前进程和用户的信息。）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进程管理（-函数可用于创建和管理进程）"><span class="nav-number">9.5.4.</span> <span class="nav-text">进程管理（ 函数可用于创建和管理进程）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#操作路径-os-path-该模块在路径名上实现了一些有用的功能"><span class="nav-number">9.5.5.</span> <span class="nav-text">操作路径 os.path ( 该模块在路径名上实现了一些有用的功能)</span></a></li></ol></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fany</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/28/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  
+    
+  
+
+  
+
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.2.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'pbe8vhO6luYrD6pclzm8NQST-gzGzoHsz',
+    appKey: 'sKqLiA3nL8BojxzmOL3HCdGO',
+    placeholder: '非常希望您能留下宝贵的意见！',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+  
+<!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">
+<div id="aplayer"></div>
+<script type="text/javascript" src="https://github.com/fanygit/dist/raw/master/APlayer.min.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/fanygit/dist/master/music.js"></script> -->
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</html>
